@@ -38,6 +38,21 @@ export const authOptions: NextAuthOptions = {
   theme: {
     colorScheme: "light",
   },
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log("callbacks signin", user, account, profile);
+
+      const isAllowedToSignIn = true;
+      if (isAllowedToSignIn) {
+        return true;
+      } else {
+        // Return false to display a default error message
+        return false;
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
+      }
+    },
+  },
 };
 
 export default NextAuth(authOptions);
