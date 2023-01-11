@@ -15,7 +15,7 @@ const ProjectCreate: React.FC = () => {
     setVisibleForm(false);
     try {
       const body = { projectName };
-      await fetch("/api/me/projects/", {
+      await fetch("/api/projects/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -30,7 +30,7 @@ const ProjectCreate: React.FC = () => {
   const cssInput =
     "w-full text-5xl h-20 mt-0 pt-0 mb-4 bg-jam-light-transparent text-white";
 
-  const { data, error, isLoading } = useSWR("/api/me/profile/", fetcher);
+  const { data, error, isLoading } = useSWR("/api/users/me", fetcher);
   console.log("swr", data);
   if (error) return <div>failed to load Artist Profile</div>;
   if (isLoading) return <div>loading Artist Profile...</div>;
@@ -68,7 +68,7 @@ const ProjectCreate: React.FC = () => {
         `}
               disabled={!projectName || !visibleForm}
               type="submit"
-              value="Set Artist Name"
+              value="Create a project"
             />
           </div>
         </form>

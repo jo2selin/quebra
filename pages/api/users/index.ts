@@ -21,7 +21,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    console.log("getting all artists profiles infos ");
     const data = await ddbClient.send(new QueryCommand(paramsAllArtists));
     return res.status(200).json(data.Items);
   }

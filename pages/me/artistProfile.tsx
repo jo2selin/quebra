@@ -6,7 +6,7 @@ const New: React.FC = () => {
   const [visibleForm, setVisibleForm] = useState(true);
 
   const fetchPublicProfile = async () => {
-    const res = await fetch("/api/me/profile");
+    const res = await fetch("/api/users/me");
     const data = await res.json();
     if (data.artistName) {
       setArtistName(data.artistName);
@@ -22,7 +22,7 @@ const New: React.FC = () => {
     setVisibleForm(false);
     try {
       const body = { artistName };
-      await fetch("/api/me/profile", {
+      await fetch("/api/users/me", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

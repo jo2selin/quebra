@@ -26,19 +26,19 @@ export default async function handler(
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
 
-  // if (!session) {
-  //   res.send({
-  //     error: "You must be signed in to access this route.",
-  //   });
-  // }
+  if (!session) {
+    res.send({
+      error: "You must be signed in to access this route.",
+    });
+  }
 
   // === GET ========================================
-  if (req.method === "GET") {
-    // get all PROJECTS
-    const data = await ddbClient.send(new QueryCommand(paramsAllProjects));
-    return res.status(200).json(data.Items);
-    postMessage;
-  }
+  // if (session && session.user?.email && req.method === "GET") {
+  //   // get all PROJECTS
+  //   const data = await ddbClient.send(new QueryCommand(paramsAllProjects));
+  //   return res.status(200).json(data.Items);
+  //   postMessage;
+  // }
 
   // === POST ========================================
   if (session && session.user?.email && req.method === "POST") {

@@ -4,7 +4,6 @@ import Button from "../button";
 
 export default function Header() {
   const { data: session, status } = useSession();
-  console.log("header session", session);
 
   return (
     <>

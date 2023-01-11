@@ -7,6 +7,7 @@ import useSWR from "swr";
 // import JamListItem, { JamProps } from "../../components/jam";
 import Button from "../../components/button";
 import SetYourArtistProfile from "../../components/setYourArtistProfile";
+import ArtistProjects from "../../components/artistProjects";
 import Router from "next/router";
 import slugify from "slugify";
 
@@ -43,7 +44,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 function ArtistProfile() {
   // using an array style key.
-  const { data, error, isLoading } = useSWR("/api/me/profile/", fetcher);
+  const { data, error, isLoading } = useSWR("/api/users/me/", fetcher);
   console.log("swr", data);
   if (error) return <div>failed to load Artist Profile</div>;
   if (isLoading) return <div>loading Artist Profile...</div>;
@@ -73,14 +74,6 @@ const Me: React.FC = () => {
   const loading = status === "loading";
 
   const [artistName, setArtistName] = useState(null);
-
-  // useEffect(() => {
-  //   const { data, error } = useSWR("/api/me/profile/", fetcher);
-
-  //   return () => {
-  //     second
-  //   }
-  // }, [third])
 
   // const [jams, setJams] = useState<Jams>();
   // const [showNameForm, setShowNameForm] = useState(false);
@@ -164,6 +157,7 @@ const Me: React.FC = () => {
           </div>
 
           <ArtistProfile />
+          <ArtistProjects />
           {/* <div>
             <p className="px-3 mb-2">My profile url:</p>
             <p className="text-white font-mono lowercase bg-jam-light-transparent px-3 py-2 rounded-md">

@@ -1,9 +1,9 @@
 import { GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]";
+import { authOptions } from "../auth/[...nextauth]";
 
-import { ddbClient } from "../../../../libs/ddbClient.js";
+import { ddbClient } from "../../../libs/ddbClient.js";
 import type { NextApiRequest, NextApiResponse } from "next";
 import slugify from "slugify";
 
