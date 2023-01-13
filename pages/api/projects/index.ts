@@ -1,10 +1,9 @@
-import { QueryCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { UpdateCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
-const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
-import { ddbClient } from "../../../libs/ddbClient.js";
+import { ddbDocClient } from "../../../libs/ddbDocClient";
+
 import type { NextApiRequest, NextApiResponse } from "next";
 import slugify from "slugify";
 import { server } from "../../../config";
@@ -13,12 +12,14 @@ export const paramsAllProjects = {
   TableName: process.env.TABLE,
   KeyConditionExpression: "pk = :pk",
   ExpressionAttributeValues: {
-    ":pk": { S: "PROJECT" },
+    ":pk": "PROJECT",
   },
   ProjectionExpression: "pk, sk, projectName",
 };
 
 async function addProjectToUSER(email: string, slug: string) {
+  console.log("addProjectToUSER", email, slug);
+
   const paramsOwnerOfProject = {
     TableName: process.env.TABLE,
     Key: {
@@ -26,17 +27,20 @@ async function addProjectToUSER(email: string, slug: string) {
       sk: email,
     },
     // ProjectionExpression: "#r",
-    UpdateExpression: "SET #attrName  = list_append(#attrName , :attrValue)",
+    UpdateExpression: "set #attrName  = list_append(#attrName , :attrValue)",
     ExpressionAttributeNames: {
       "#attrName": "projects",
     },
     ExpressionAttributeValues: {
       ":attrValue": [slug],
     },
+    ReturnValues: "ALL_NEW",
   };
 
   try {
-    const data = await ddbClient.send(new UpdateCommand(paramsOwnerOfProject));
+    const data = await ddbDocClient.send(
+      new UpdateCommand(paramsOwnerOfProject)
+    );
     console.log("Success - item added or updated", data);
     return data;
   } catch (err) {
@@ -60,9 +64,9 @@ export default async function handler(
   // === GET ========================================
   if (req.method === "GET") {
     // get all PROJECTS
-    const data = await ddbClient.send(new QueryCommand(paramsAllProjects));
+    const data = await ddbDocClient.send(new QueryCommand(paramsAllProjects));
     return res.status(200).json(data.Items);
-    postMessage;
+    // postMessage;
   }
 
   // === POST ========================================
@@ -85,20 +89,20 @@ export default async function handler(
       const userArtist: any = await getUserArtist(session.user?.email);
       console.log("userArtist=-==========", userArtist);
 
-      const data = await ddbClient.send(
-        new PutItemCommand({
+      const data = await ddbDocClient.send(
+        new PutCommand({
           TableName: process.env.TABLE,
           Item: {
-            pk: { S: "PROJECT" },
-            sk: { S: slugProjectName },
-            projectName: { S: projectName },
-            email: { S: session.user?.email },
-            artistSlug: { S: userArtist.slug },
+            pk: "PROJECT",
+            sk: slugProjectName,
+            projectName: projectName,
+            email: session.user?.email,
+            artistSlug: userArtist.slug,
           },
         })
       );
 
-      addProjectToUSER(session.user?.email, slugProjectName);
+      await addProjectToUSER(session.user?.email, slugProjectName);
 
       return res.status(201).json(data);
     }

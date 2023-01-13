@@ -1,21 +1,18 @@
-import {
-  GetItemCommand,
-  QueryCommand,
-  PutItemCommand,
-} from "@aws-sdk/client-dynamodb";
-const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
+import { GetCommand } from "@aws-sdk/lib-dynamodb";
+import { ddbDocClient } from "../../../libs/ddbDocClient";
+
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 
-import { ddbClient } from "../../../libs/ddbClient.js";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { server } from "../../../config";
+import { getProjectBySlug } from "../../../libs/api";
 
 export const paramsAllProjects = {
   TableName: process.env.TABLE,
   KeyConditionExpression: "pk = :pk",
   ExpressionAttributeValues: {
-    ":pk": { S: "PROJECT" },
+    ":pk": "PROJECT",
   },
   ProjectionExpression: "projectName, slug, sk",
 };
@@ -35,15 +32,10 @@ export default async function handler(
   const getProjectFromSlug = async (slugs: Array<string>) => {
     let userProjectsData: Array<Object> = [];
 
-    async function queryProject(slug: string) {
-      const projectData = await fetch(`${server}/api/projects/${slug}`, {
-        method: "GET",
-      });
-      return projectData.json();
-    }
-
     for (const slug of slugs) {
-      userProjectsData = [...userProjectsData, await queryProject(slug)];
+      console.log(slug);
+
+      userProjectsData = [...userProjectsData, await getProjectBySlug(slug)];
     }
 
     return userProjectsData;
@@ -51,18 +43,20 @@ export default async function handler(
 
   // === GET ========================================
   if (session && session.user?.email && req.method === "GET") {
-    const data = await ddbClient.send(
-      new GetItemCommand({
+    const data = await ddbDocClient.send(
+      new GetCommand({
         TableName: process.env.TABLE,
-        Key: marshall({ pk: "ARTIST", sk: session.user?.email }),
+        Key: { pk: "ARTIST", sk: session.user?.email },
       })
     );
 
+    console.log("data====", data.Item);
+
     if (!data.Item) {
       // profile does not exist yet
-      return res.status(200).json({});
+      return res.status(403).json({ info: "Your Artist is not set" });
     } else {
-      const projects = await getProjectFromSlug(unmarshall(data.Item).projects);
+      const projects = await getProjectFromSlug(data.Item.projects || []);
       console.log("projects final res", projects);
 
       return res.status(200).json(projects);

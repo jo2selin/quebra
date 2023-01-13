@@ -1,20 +1,19 @@
-import { GetItemCommand } from "@aws-sdk/client-dynamodb";
-const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
-import { ddbClient } from "../../../libs/ddbClient.js";
+import { GetCommand } from "@aws-sdk/lib-dynamodb";
+import { ddbDocClient } from "../../../libs/ddbDocClient";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-// GET /api/users/:userEmail
+// GET /api/projects/:slug
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   // === GET ========================================
   if (req.method === "GET") {
-    const data = await ddbClient.send(
-      new GetItemCommand({
+    const data = await ddbDocClient.send(
+      new GetCommand({
         TableName: process.env.TABLE,
-        Key: marshall({ pk: "PROJECT", sk: req.query.slug }),
+        Key: { pk: "PROJECT", sk: req.query.slug },
       })
     );
 
@@ -22,7 +21,7 @@ export default async function handler(
       // profile does not exist yet
       return res.status(400).json({ error: "no data found" });
     } else {
-      return res.status(200).json(unmarshall(data.Item));
+      return res.status(200).json(data.Item);
     }
   }
 }

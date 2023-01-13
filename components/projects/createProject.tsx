@@ -1,12 +1,11 @@
 import React from "react";
-
 import Router from "next/router";
-import useSWR from "swr";
 import SetYourArtistProfile from "../../components/setYourArtistProfile";
+import useSWR from "swr";
+import { fetcher } from "../../libs/fetcher";
+import { cssInput } from "../../libs/css";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-const ProjectCreate: React.FC = () => {
+export default function CreateProject() {
   const [projectName, setProjectName] = React.useState("");
   const [visibleForm, setVisibleForm] = React.useState(true);
 
@@ -27,11 +26,7 @@ const ProjectCreate: React.FC = () => {
     }
   };
 
-  const cssInput =
-    "w-full text-5xl h-20 mt-0 pt-0 mb-4 bg-jam-light-transparent text-white";
-
   const { data, error, isLoading } = useSWR("/api/users/me", fetcher);
-  console.log("swr", data);
   if (error) return <div>failed to load Artist Profile</div>;
   if (isLoading) return <div>loading Artist Profile...</div>;
   if (data.artistName && data.sk && data.pk && data.slug) {
@@ -77,6 +72,4 @@ const ProjectCreate: React.FC = () => {
   } else {
     return <SetYourArtistProfile />;
   }
-};
-
-export default ProjectCreate;
+}

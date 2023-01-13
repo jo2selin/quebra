@@ -1,14 +1,18 @@
 import React from "react";
 import { GetStaticProps } from "next";
-import { server } from "../../config";
-import { getProjects, getProjectBySlug, getArtistBySlug } from "../../libs/api";
+import { server } from "../../../config";
+import {
+  getProjects,
+  getProjectBySlug,
+  getArtistBySlug,
+} from "../../../libs/api";
 
 // Creating static pages with slugs
 export async function getStaticPaths() {
   const projects = await getProjects();
 
   const paths = projects.map((project: Project) => ({
-    params: { projectSlug: project.sk.S },
+    params: { projectSlug: project.sk },
   }));
 
   return {
@@ -26,16 +30,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const artist = await getArtistBySlug(project.artistSlug);
 
-  // console.log("all infos========", { project, artist });
-
   return {
     props: { project, artist },
   };
 };
 
-export default function Post(props: Project) {
-  // Render post...
+type propsType = { project: Project; artist: Artist };
+
+export default function Project(props: propsType) {
   console.log("props PAGE ==", props);
 
-  return <h1>{props.projectName}</h1>;
+  return <h1>{props.project.projectName}</h1>;
 }

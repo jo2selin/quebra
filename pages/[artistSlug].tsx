@@ -4,8 +4,8 @@ import { server } from "../config";
 import { getArtists } from "../libs/api";
 
 type typePropsArtist = {
-  artistName: { S: string };
-  slug: { S: string };
+  artistName: string;
+  slug: string;
 };
 
 async function getAllArtists() {
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
   const artists = await getAllArtists();
 
   const paths = artists.map((artist: any) => ({
-    params: { artistSlug: artist.slug.S },
+    params: { artistSlug: artist.slug },
   }));
 
   return {
@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const artists = await getAllArtists();
   // find artist matching w actual slug
   const pageArtist = artists.filter(
-    (a: typePropsArtist) => a.slug.S === params?.artistSlug
+    (a: typePropsArtist) => a.slug === params?.artistSlug
   );
   console.log("params", params);
   console.log("pageArtist", pageArtist);
@@ -48,5 +48,5 @@ export default function Post(props: typePropsArtist) {
   // Render post...
   console.log("props PAGE ==", props);
 
-  return <h1>{props.artistName.S}</h1>;
+  return <h1>{props.artistName}</h1>;
 }

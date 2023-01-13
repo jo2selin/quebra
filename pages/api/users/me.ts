@@ -1,9 +1,9 @@
-import { GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
-const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
+import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { ddbDocClient } from "../../../libs/ddbDocClient";
+
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 
-import { ddbClient } from "../../../libs/ddbClient.js";
 import type { NextApiRequest, NextApiResponse } from "next";
 import slugify from "slugify";
 
@@ -21,12 +21,10 @@ export default async function handler(
 
   // === GET ========================================
   if (session && session.user?.email && req.method === "GET") {
-    console.log("getting profile infos ", session.user?.email);
-
-    const data = await ddbClient.send(
-      new GetItemCommand({
+    const data = await ddbDocClient.send(
+      new GetCommand({
         TableName: process.env.TABLE,
-        Key: marshall({ pk: "ARTIST", sk: session.user?.email }),
+        Key: { pk: "ARTIST", sk: session.user?.email },
       })
     );
 
@@ -34,7 +32,7 @@ export default async function handler(
       // profile does not exist yet
       return res.status(200).json({});
     } else {
-      return res.status(200).json(unmarshall(data.Item));
+      return res.status(200).json(data.Item);
     }
   }
 
@@ -43,14 +41,15 @@ export default async function handler(
     const { artistName } = req.body;
     const slugArtistName = slugify(artistName, { lower: true, strict: true });
 
-    const data = await ddbClient.send(
-      new PutItemCommand({
+    const data = await ddbDocClient.send(
+      new PutCommand({
         TableName: process.env.TABLE,
         Item: {
-          pk: { S: "ARTIST" },
-          sk: { S: session.user?.email },
-          artistName: { S: artistName },
-          slug: { S: slugArtistName },
+          pk: "ARTIST",
+          sk: session.user?.email,
+          artistName: artistName,
+          slug: slugArtistName,
+          projects: [],
         },
       })
     );

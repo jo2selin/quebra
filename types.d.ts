@@ -1,6 +1,6 @@
 interface Project {
-  pk: string;
-  sk: string | Object<{}>;
+  pk: "PROJECT";
+  sk: string;
   artistSlug: string;
   projectName: string;
 }

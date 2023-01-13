@@ -1,17 +1,14 @@
-import { QueryCommand } from "@aws-sdk/client-dynamodb";
-const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
-import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
-import slugify from "slugify";
+import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 
-import { ddbClient } from "../../../libs/ddbClient.js";
+import { ddbDocClient } from "../../../libs/ddbDocClient";
+
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export const paramsAllArtists = {
   TableName: process.env.TABLE,
   KeyConditionExpression: "pk = :pk",
   ExpressionAttributeValues: {
-    ":pk": { S: "ARTIST" },
+    ":pk": "ARTIST",
   },
   ProjectionExpression: "artistName, slug",
 };
@@ -21,7 +18,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const data = await ddbClient.send(new QueryCommand(paramsAllArtists));
+    const data = await ddbDocClient.send(new QueryCommand(paramsAllArtists));
     return res.status(200).json(data.Items);
   }
 }
