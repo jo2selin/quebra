@@ -1,5 +1,5 @@
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
-import { ddbDocClient } from "../../../libs/ddbDocClient";
+import { ddbDocClient } from "../../../../libs/ddbDocClient";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -13,7 +13,7 @@ export default async function handler(
     const data = await ddbDocClient.send(
       new GetCommand({
         TableName: process.env.TABLE,
-        Key: { pk: "PROJECT", sk: req.query.slug },
+        Key: { pk: `TRACK#${req.query.slug}`, sk: req.query.trackSlug },
       })
     );
 

@@ -11,3 +11,9 @@ interface Artist {
   projects: string;
   slug: string;
 }
+interface Tracks {
+  pk: `${"TRACK#"}${string}`;
+  sk: string;
+  track_name: string;
+  track_url: string;
+}
