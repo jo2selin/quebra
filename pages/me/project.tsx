@@ -6,9 +6,9 @@ import CreateProject from "../../components/projects/createProject";
 
 const Project: React.FC = () => {
   const router = useRouter();
-  const { slug } = router.query;
+  const { uuid } = router.query;
 
-  return slug ? <EditProject slug={slug as string} /> : <CreateProject />;
+  return uuid ? <EditProject uuid={uuid as string} /> : <CreateProject />;
 };
 
 export default Project;

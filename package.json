@@ -23,6 +23,7 @@
     "eslint-config-next": "13.0.7",
     "next": "13.0.7",
     "next-auth": "^4.18.6",
+    "next-s3-upload": "^0.2.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "slugify": "^1.6.5",

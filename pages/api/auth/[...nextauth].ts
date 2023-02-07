@@ -6,7 +6,7 @@ import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import Providers from "next-auth/providers";
 import { DynamoDBAdapter } from "@next-auth/dynamodb-adapter";
 
-const config: DynamoDBClientConfig = {
+const config: any = {
   credentials: {
     accessKeyId: process.env.NEXT_AUTH_AWS_ACCESS_KEY as string,
     secretAccessKey: process.env.NEXT_AUTH_AWS_SECRET_KEY as string,
@@ -26,12 +26,12 @@ export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
   adapter: DynamoDBAdapter(client),

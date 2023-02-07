@@ -3,6 +3,9 @@ interface Project {
   sk: string;
   artistSlug: string;
   projectName: string;
+  uuid: string;
+  slug: string;
+  cover: string;
 }
 interface Artist {
   pk: "ARTIST";
@@ -10,10 +13,15 @@ interface Artist {
   artistName: string;
   projects: string;
   slug: string;
+  uuid: string;
 }
 interface Tracks {
   pk: `${"TRACK#"}${string}`;
   sk: string;
+  slug: string;
   track_name: string;
   track_url: string;
+  track_id: string;
+
+  uuid: string;
 }

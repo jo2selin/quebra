@@ -36,10 +36,22 @@ export async function getProjects() {
   return data;
 }
 
-export async function getProjectBySlug(slug: string) {
-  // Call an external API endpoint to get users
-  const res = await fetch(`${server}/api/projects/${slug}`);
-  const data = await res.json();
+export async function checkAvaibilityProjectSlug(slug: string) {
+  const slugFound = getProjects().then((projects) =>
+    projects.filter((p: Project) => {
+      console.log(p, "===", slug);
+      return p.slug === slug;
+    })
+  );
+  const ProjectSlugIsAvailable = (await slugFound) ? false : true;
 
-  return data;
+  return ProjectSlugIsAvailable;
 }
+
+// export async function getProjectBySlug(slug: string) {
+//   // Call an external API endpoint to get users
+//   const res = await fetch(`${server}/api/projects/${slug}`);
+//   const data = await res.json();
+
+//   return data;
+// }

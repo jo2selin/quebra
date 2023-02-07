@@ -1,18 +1,16 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import { server } from "../../../config";
-import {
-  getProjects,
-  getProjectBySlug,
-  getArtistBySlug,
-} from "../../../libs/api";
+import { getProjects } from "../../../libs/api";
 
 // Creating static pages with slugs
 export async function getStaticPaths() {
   const projects = await getProjects();
 
   const paths = projects.map((project: Project) => ({
-    params: { projectSlug: project.sk },
+    params: {
+      projectSlug: project.projectName,
+    },
   }));
 
   return {
@@ -22,16 +20,19 @@ export async function getStaticPaths() {
 }
 
 // `getStaticPaths` requires using `getStaticProps`
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  console.log("getstatocProp params", params);
+export const getStaticProps = async ({ params }: any) => {
   if (!params?.projectSlug) return false;
 
-  const project = await getProjectBySlug(params?.projectSlug as string);
+  const projects = await getProjects();
 
-  const artist = await getArtistBySlug(project.artistSlug);
+  const project = projects.filter(
+    (p: Project) => p.projectName === params.projectSlug
+  )[0];
+
+  console.log("the project is ", project);
 
   return {
-    props: { project, artist },
+    props: { project: project },
   };
 };
 

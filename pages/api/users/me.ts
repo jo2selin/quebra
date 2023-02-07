@@ -3,6 +3,7 @@ import { ddbDocClient } from "../../../libs/ddbDocClient";
 
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
+import { v4 as uuidv4 } from "uuid";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import slugify from "slugify";
@@ -40,6 +41,7 @@ export default async function handler(
   if (session && session.user?.email && req.method === "POST") {
     const { artistName } = req.body;
     const slugArtistName = slugify(artistName, { lower: true, strict: true });
+    const uuid = uuidv4();
 
     const data = await ddbDocClient.send(
       new PutCommand({
@@ -50,6 +52,7 @@ export default async function handler(
           artistName: artistName,
           slug: slugArtistName,
           projects: [],
+          uuid: uuid,
         },
       })
     );

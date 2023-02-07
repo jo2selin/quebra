@@ -1,11 +1,15 @@
+import React from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { fetcher } from "../../libs/fetcher";
 import { useSession } from "next-auth/react";
 import AccessDenied from "../../components/access-denied";
-
-interface Slug {
-  slug: string;
+import UploadCover from "./uploadCover";
+import UploadTracks from "./uploadTracks";
+import EditTracklist from "./editTracklist";
+import { useS3Upload } from "next-s3-upload";
+interface Uuid {
+  uuid: string;
 }
 interface ProjectEdit {
   project: Project;
@@ -16,18 +20,16 @@ interface ProjectEdit {
 function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   return (
     <>
-      <h1 className="text-5xl mb-6 ">EDIT {project.projectName}</h1>
-      <h1 className="text-5xl mb-6 ">Artist {artist.artistName}</h1>
-      {tracks.length < 1 && <p>No tracks yet</p>}
+      <h1 className="text-5xl mb-3 ">EDIT {project.projectName}</h1>
+      <h2 className="text-3xl mb-6 ">Artist: {artist.artistName}</h2>
+
+      <UploadCover project={project} artist={artist} />
+      <UploadTracks project={project} artist={artist} />
+
       {tracks && (
-        <ul>
-          {tracks.map((track) => (
-            <li key={track.sk} className="text-xl mb-6 ">
-              {track.track_name}
-            </li>
-          ))}
-        </ul>
+        <EditTracklist tracks={tracks} project={project} artist={artist} />
       )}
+
       {/* <label>
           <span className="text-3xl">Artist Name</span>{" "}
           <input
@@ -41,19 +43,36 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   );
 }
 
-export default function EditProject({ slug }: Slug) {
-  const { data, error, isLoading } = useSWR(`/api/projects/${slug}`, fetcher);
+export default function EditProject({ uuid }: Uuid) {
+  // const [user, setUser] = React.useState(null)
+  // const [project, setProject] = React.useState(null)
+  // const [tracks, setTracks] = React.useState(null)
+
   const { data: session, status } = useSession();
   const {
     data: artist,
     error: artistError,
     isLoading: artistIsLoading,
-  } = useSWR(`/api/users/${session?.user?.email}`, fetcher);
+  } = useSWR(`/api/users/me`, fetcher);
+  // console.log("edit proje data ", artist, artistError, artistIsLoading);
+
+  const {
+    data: project,
+    error: projectError,
+    isLoading: projectIsLoading,
+  } = useSWR(
+    !artistIsLoading && `/api/projects/${artist.uuid}/${uuid}`,
+    fetcher
+  );
+
   const {
     data: tracks,
     error: tracksError,
     isLoading: tracksIsLoading,
-  } = useSWR(`/api/projects/${slug}/tracks`, fetcher);
+  } = useSWR(
+    !artistIsLoading && `/api/projects/${artist.uuid}/${uuid}/tracks`,
+    fetcher
+  );
 
   if (status !== "authenticated") {
     console.log("!session", session);
@@ -61,13 +80,15 @@ export default function EditProject({ slug }: Slug) {
     return <AccessDenied />;
   }
 
-  if (error) return <div>failed to load this project</div>;
+  if (projectError) return <div>failed to load this project</div>;
   if (artistError) return <div>failed to load your artist profile</div>;
-  if (isLoading) return <div>loading project...</div>;
+  if (tracksError) return <div>failed to load your tracks</div>;
+  if (projectIsLoading) return <div>loading project...</div>;
   if (artistIsLoading) return <div>loading artist...</div>;
-  if (data.email === session.user?.email) {
+  if (tracksIsLoading) return <div>loading Tracks...</div>;
+  if (project.email === session.user?.email) {
     return (
-      <ContentEditProject project={data} artist={artist} tracks={tracks} />
+      <ContentEditProject project={project} artist={artist} tracks={tracks} />
     );
   } else {
     throw new Error("You are not the owner of this project");

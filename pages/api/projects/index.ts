@@ -1,8 +1,10 @@
 import { UpdateCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
+import { v4 as uuidv4 } from "uuid";
 
 import { ddbDocClient } from "../../../libs/ddbDocClient";
+import { checkAvaibilityProjectSlug } from "../../../libs/api";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import slugify from "slugify";
@@ -14,38 +16,28 @@ export const paramsAllProjects = {
   ExpressionAttributeValues: {
     ":pk": "PROJECT",
   },
-  ProjectionExpression: "pk, sk, projectName",
+  // ExpressionAttributeNames: {
+  //   "#p_uuid": "uuid",
+  // },
+  // ProjectionExpression: "pk, sk, projectName, #p_uuid",
 };
 
-async function addProjectToUSER(email: string, slug: string) {
-  console.log("addProjectToUSER", email, slug);
+async function createSlug(input: string) {
+  const isProjectSlugAvailable = await checkAvaibilityProjectSlug(input).then(
+    (data) => {
+      console.log("createSlug", data);
+      return data;
+    }
+  );
+  const slug = isProjectSlugAvailable ? input : generateUniqueSlug(input);
 
-  const paramsOwnerOfProject = {
-    TableName: process.env.TABLE,
-    Key: {
-      pk: "ARTIST",
-      sk: email,
-    },
-    // ProjectionExpression: "#r",
-    UpdateExpression: "set #attrName  = list_append(#attrName , :attrValue)",
-    ExpressionAttributeNames: {
-      "#attrName": "projects",
-    },
-    ExpressionAttributeValues: {
-      ":attrValue": [slug],
-    },
-    ReturnValues: "ALL_NEW",
-  };
+  return slug;
+}
 
-  try {
-    const data = await ddbDocClient.send(
-      new UpdateCommand(paramsOwnerOfProject)
-    );
-    console.log("Success - item added or updated", data);
-    return data;
-  } catch (err) {
-    console.log("Error", err);
-  }
+function generateUniqueSlug(slug: string) {
+  const u = uuidv4().slice(0, 5);
+  console.log("generateUniqueSlug", u + "-" + slug);
+  return u + "-" + slug;
 }
 
 export default async function handler(
@@ -56,17 +48,17 @@ export default async function handler(
     const userArtist = await fetch(`${server}/api/users/${email}`, {
       method: "GET",
     });
-    console.log("userArtist", userArtist);
 
     return userArtist.json();
   };
 
   // === GET ========================================
   if (req.method === "GET") {
+    console.log("GET ALL PROJECTS");
+
     // get all PROJECTS
     const data = await ddbDocClient.send(new QueryCommand(paramsAllProjects));
     return res.status(200).json(data.Items);
-    // postMessage;
   }
 
   // === POST ========================================
@@ -81,28 +73,30 @@ export default async function handler(
     if (session && session.user?.email && req.method === "POST") {
       // post new user PROJECT
       const { projectName } = req.body;
+      const uuid = uuidv4();
       const slugProjectName = slugify(projectName, {
         lower: true,
         strict: true,
       });
 
+      const slug = await createSlug(slugProjectName);
+
       const userArtist: any = await getUserArtist(session.user?.email);
-      console.log("userArtist=-==========", userArtist);
 
       const data = await ddbDocClient.send(
         new PutCommand({
           TableName: process.env.TABLE,
           Item: {
             pk: "PROJECT",
-            sk: slugProjectName,
+            sk: userArtist.uuid + "#" + uuid,
             projectName: projectName,
             email: session.user?.email,
             artistSlug: userArtist.slug,
+            slug: slug,
+            uuid: uuid,
           },
         })
       );
-
-      await addProjectToUSER(session.user?.email, slugProjectName);
 
       return res.status(201).json(data);
     }

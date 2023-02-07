@@ -7,9 +7,9 @@ import useSWR from "swr";
 
 export default function ArtistProjects() {
   const { data, error, isLoading } = useSWR("/api/projects/me", fetcher);
-  console.log(data);
-
-  if (error) throw new Error(error);
+  if (error) return <div>failed to load Artist Projects</div>;
+  if (isLoading) return <div>loading Artist Projects...</div>;
+  // if (error) throw new Error(error);
 
   return (
     <div className="pl-5">
@@ -19,7 +19,7 @@ export default function ArtistProjects() {
         data.map((proj: Project) => {
           return (
             <h3 key={proj.sk} className="text-4xl uppercase ">
-              <Link href={`/me/project?slug=${proj.sk}`}>
+              <Link href={`/me/project?uuid=${proj.uuid}`}>
                 {proj.projectName}
               </Link>
             </h3>

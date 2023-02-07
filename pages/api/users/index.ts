@@ -10,7 +10,10 @@ export const paramsAllArtists = {
   ExpressionAttributeValues: {
     ":pk": "ARTIST",
   },
-  ProjectionExpression: "artistName, slug",
+  ExpressionAttributeNames: {
+    "#a_uuid": "uuid",
+  },
+  ProjectionExpression: "artistName, slug, #a_uuid",
 };
 
 export default async function handler(
