@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { useS3Upload, getImageData } from "next-s3-upload";
-import Image from "next/image";
-import { cssInput } from "../../libs/css";
-import Button from "../button";
+import { cssButtonPrimary } from "../../libs/css";
 
 interface TypeeditTracklist {
   tracks: Tracks[];
@@ -14,6 +11,13 @@ interface TypeTrack {
   artist: Artist;
   project: Project;
 }
+interface TypeDeleteTrack {
+  track: Tracks;
+  artist: Artist;
+  project: Project;
+  setLoadingDelete?: Function;
+  setIsDeleted?: Function;
+}
 interface TypeUpdateTrack {
   track: Tracks;
   artist: Artist;
@@ -23,10 +27,10 @@ interface TypeUpdateTrack {
   setRes?: Function;
   setOldTrackName?: Function;
   setOldTrackNumber?: Function;
+  setLoadingSave?: Function;
+  setIsDeleted?: Function;
+  isDeleted?: boolean;
 }
-
-//  todo GERER NUM TRACK + ERRORS
-//  TODO RESFRESH TRACK APRES RES de lupdate
 
 async function updateTrack({
   track,
@@ -36,8 +40,10 @@ async function updateTrack({
   trackNumber,
   setOldTrackName,
   setOldTrackNumber,
+  setLoadingSave,
 }: TypeUpdateTrack) {
   try {
+    if (setLoadingSave) setLoadingSave(true);
     await fetch(
       `/api/projects/${artist.uuid}/${project.uuid}/tracks/${track.uuid}?newTrackName=${trackName}&newTrackNumber=${trackNumber}`,
       {
@@ -46,12 +52,37 @@ async function updateTrack({
         body: JSON.stringify({ trackName: trackName }),
       }
     ).then((res) => {
-      if (setOldTrackName && setOldTrackNumber) {
-        console.log("set oldTrackName to ", trackName);
-
+      if (setOldTrackName && setOldTrackNumber && setLoadingSave) {
         setOldTrackName(trackName);
         setOldTrackNumber(trackNumber);
+        setLoadingSave(false);
       }
+    });
+  } catch (error) {
+    // setVisibleForm(true);
+    console.error(error);
+  }
+}
+
+async function deleteTrack({
+  artist,
+  project,
+  track,
+  setLoadingDelete,
+  setIsDeleted,
+}: TypeDeleteTrack) {
+  try {
+    if (setLoadingDelete) setLoadingDelete(true);
+    await fetch(
+      `/api/projects/${artist.uuid}/${project.uuid}/tracks/${track.uuid}?slug=${track.slug}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ trackName: "trackName" }),
+      }
+    ).then((res) => {
+      if (setLoadingDelete) setLoadingDelete(true);
+      if (setIsDeleted) setIsDeleted(true);
     });
   } catch (error) {
     // setVisibleForm(true);
@@ -62,19 +93,26 @@ async function updateTrack({
 const Track = ({ track, artist, project }: TypeTrack) => {
   const [trackName, setTrackName] = React.useState(track.track_name || "");
   const [trackNumber, setTrackNumber] = React.useState(track.track_id || "");
+  const [isDeleted, setIsDeleted] = React.useState(false);
 
   React.useEffect(() => {
     setTrackName(track.track_name);
   }, [track]);
 
   return (
-    <div className="flex mt-3 ">
-      <div className="">
+    <div className={`flex mt-3 ${isDeleted ? "opacity-10" : ""}`}>
+      <div className="w-20 mr-5">
         <input
           type="text"
           value={trackNumber}
           onChange={(e) => setTrackNumber(e.target.value)}
-          className={` bg-jam-dark-grey w-20 mr-5 p-6 text-3xl`}
+          className={` bg-jam-dark-grey w-20 mr-5 p-3 text-3xl`}
+        />
+        <input
+          type="text"
+          value={track.slug + ".mp3"}
+          disabled
+          className={` bg-jam-dark-purple w-20 mr-5  text-sm font-thin  text-gray-500`}
         />
         {/* <audio
           controls
@@ -95,6 +133,8 @@ const Track = ({ track, artist, project }: TypeTrack) => {
           project={project}
           trackName={trackName}
           trackNumber={trackNumber}
+          setIsDeleted={setIsDeleted}
+          isDeleted={isDeleted}
         />
       </div>
     </div>
@@ -107,22 +147,16 @@ const TrackAction = ({
   project,
   trackName,
   trackNumber,
+  setIsDeleted,
+  isDeleted,
 }: TypeUpdateTrack) => {
   const [oldTrackName, setOldTrackName] = React.useState(track.track_name);
   const [oldTrackNumber, setOldTrackNumber] = React.useState(track.track_id);
   const [displaySave, setDisplaySave] = useState(false);
-  console.log("track", track);
-  console.log("trackName", trackName);
+  const [loadingSave, setLoadingSave] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   React.useEffect(() => {
-    console.log(
-      "oldTrackName,trackName",
-      oldTrackName,
-      trackName,
-      oldTrackNumber,
-      trackNumber
-    );
-
     function displaySavebtn() {
       if (oldTrackName !== trackName || oldTrackNumber !== trackNumber)
         return true;
@@ -136,7 +170,7 @@ const TrackAction = ({
       <div className="flex p-2 items-end justify-end">
         {displaySave && (
           <div
-            onClick={() =>
+            onClick={() => {
               updateTrack({
                 track,
                 artist,
@@ -145,20 +179,35 @@ const TrackAction = ({
                 trackNumber,
                 setOldTrackName,
                 setOldTrackNumber,
-              })
-            }
-            className="inline-block text-md text-white  rounded-md px-4 py-2 leading-none hover:text-white text-sm mr-2
-          bg-jam-purple border-b-4 border-jam-pink cursor-pointer"
+                setLoadingSave,
+              });
+            }}
+            className={`${cssButtonPrimary} ${
+              loadingSave ? " cursor-not-allowed opacity-10" : ""
+            }`}
           >
             Save
           </div>
         )}
-        <div
-          className=" inline-block text-md text-white  rounded-md px-4 py-2 leading-none hover:text-white text-sm mr-2
-        bg-[#323232] border-b-4 border-jam-light-purple cursor-pointer"
-        >
-          Delete
-        </div>
+        {!isDeleted && (
+          <div
+            onClick={() =>
+              deleteTrack({
+                artist,
+                project,
+                track,
+                setLoadingDelete,
+                setIsDeleted,
+              })
+            }
+            className={`${cssButtonPrimary} 
+            bg-[#323232] border-b-4 border-jam-light-purple ${
+              loadingDelete ? " cursor-not-allowed opacity-10" : ""
+            }`}
+          >
+            Delete
+          </div>
+        )}
       </div>
       <div
         className={`h-1 ${
@@ -169,23 +218,25 @@ const TrackAction = ({
   );
 };
 
-// TODO GERER ledition des tracks
-
 export default function editTracklist({
   tracks,
   artist,
   project,
 }: TypeeditTracklist) {
-  const orderedTracks = tracks.sort((a, b) => a.track_id - b.track_id);
-  console.log("orderedTracks", orderedTracks);
+  const orderedTracks = tracks.sort((a, b) => +a.track_id - +b.track_id);
 
   return (
-    <>
-      {tracks && <p className="pt-12">Tracks ready for edition:</p>}
+    <div className="max-w-screen-md">
+      {tracks[0] && <p className="pt-12 ">Tracks ready for edition:</p>}
       {orderedTracks &&
         orderedTracks.map((track, i) => (
-          <Track key={i} track={track} artist={artist} project={project} />
+          <Track
+            key={track.uuid}
+            track={track}
+            artist={artist}
+            project={project}
+          />
         ))}
-    </>
+    </div>
   );
 }

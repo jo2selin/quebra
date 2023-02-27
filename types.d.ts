@@ -6,6 +6,7 @@ interface Project {
   uuid: string;
   slug: string;
   cover: string;
+  status?: string;
 }
 interface Artist {
   pk: "ARTIST";

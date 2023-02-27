@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.231.0",
+    "@aws-sdk/client-s3": "^3.266.1",
     "@aws-sdk/lib-dynamodb": "^3.245.0",
     "@aws-sdk/util-dynamodb": "^3.238.0",
     "@fontsource/passion-one": "^4.5.9",

@@ -94,6 +94,7 @@ export default async function handler(
             artistSlug: userArtist.slug,
             slug: slug,
             uuid: uuid,
+            status: "DRAFT",
           },
         })
       );
