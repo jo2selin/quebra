@@ -8,24 +8,23 @@ import { v4 as uuidv4 } from "uuid";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../../../../auth/[...nextauth]";
 
-// GET /api/projects/:slug
+// GET /api/projects/:a_uuid/:p_uuid/tracks/
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
 
-  const paramsAllTracksFromProject = {
-    TableName: process.env.TABLE,
-    KeyConditionExpression: "pk = :pk and begins_with(sk, :p_uuid)",
-    ExpressionAttributeValues: {
-      ":pk": "TRACK",
-      ":p_uuid": req.query.p_uuid,
-    },
-  };
-
   // === GET ========================================
   if (req.method === "GET") {
+    const paramsAllTracksFromProject = {
+      TableName: process.env.TABLE,
+      KeyConditionExpression: "pk = :pk and begins_with(sk, :p_uuid)",
+      ExpressionAttributeValues: {
+        ":pk": "TRACK",
+        ":p_uuid": req.query.p_uuid,
+      },
+    };
     const data = await ddbDocClient.send(
       new QueryCommand(paramsAllTracksFromProject)
     );

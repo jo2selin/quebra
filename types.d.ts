@@ -1,7 +1,7 @@
 interface Project {
   pk: "PROJECT";
   sk: string;
-  artistSlug: string;
+  // artistSlug: string;
   projectName: string;
   uuid: string;
   slug: string;
@@ -16,8 +16,8 @@ interface Artist {
   slug: string;
   uuid: string;
 }
-interface Tracks {
-  pk: `${"TRACK#"}${string}`;
+interface Track {
+  pk: `${"TRACK"}`;
   sk: string;
   slug: string;
   track_name: string;

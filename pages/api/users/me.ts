@@ -1,4 +1,4 @@
-import { GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand, PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "../../../libs/ddbDocClient";
 
 import { unstable_getServerSession } from "next-auth/next";
@@ -43,22 +43,50 @@ export default async function handler(
     const slugArtistName = slugify(artistName, { lower: true, strict: true });
     const uuid = uuidv4();
 
-    const data = await ddbDocClient.send(
-      new PutCommand({
+    // Define if we're saving or updating  if email allready exist:
+    const artist = await ddbDocClient.send(
+      new GetCommand({
         TableName: process.env.TABLE,
-        Item: {
-          pk: "ARTIST",
-          sk: session.user?.email,
-          artistName: artistName,
-          slug: slugArtistName,
-          projects: [],
-          uuid: uuid,
-        },
+        Key: { pk: "ARTIST", sk: session.user?.email },
       })
     );
+    if (!artist.Item) {
+      // first save
+      const data = await ddbDocClient.send(
+        new PutCommand({
+          TableName: process.env.TABLE,
+          Item: {
+            pk: "ARTIST",
+            sk: session.user?.email,
+            artistName: artistName,
+            slug: slugArtistName,
+            // projects: [],
+            uuid: uuid,
+          },
+        })
+      );
+      return res.status(201).json(data);
+    } else {
+      // Updating Artist name/slug
 
-    return res.status(201).json(data);
+      const params = {
+        TableName: process.env.TABLE,
+        Key: {
+          pk: "ARTIST",
+          sk: session.user?.email,
+        },
+        UpdateExpression: "set artistName = :a, slug = :s",
+        ExpressionAttributeValues: {
+          ":a": artistName,
+          ":s": slugArtistName,
+        },
+        ReturnValues: "ALL_NEW",
+      };
+
+      const data = await ddbDocClient.send(new UpdateCommand(params));
+      return res.status(201).json(data);
+    }
   }
 
-  return res.status(500).json({ "err api/profile ": req.method });
+  return res.status(500).json({ "err api/users/me ": req.method });
 }

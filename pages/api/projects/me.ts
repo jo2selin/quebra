@@ -11,14 +11,18 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
+  console.log("session ME", session);
 
   if (!session) {
     res.send({
-      error: "You must be signed in to access this route.",
+      error: "You must be signed in to access this route: projects/me.",
     });
   }
 
+  //  /projects/me
+
   // === GET ========================================
+  // GET ALL MY PROJECTS
   if (session && session.user?.email && req.method === "GET") {
     const data = await ddbDocClient.send(
       new GetCommand({
@@ -43,6 +47,8 @@ export default async function handler(
       const projects = await ddbDocClient.send(
         new QueryCommand(paramsAllMyProjects)
       );
+      console.log("/projects/me", projects.Items);
+
       return res.status(200).json(projects.Items);
     }
   }

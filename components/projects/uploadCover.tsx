@@ -25,9 +25,10 @@ function checkImageParams(
 interface TypeUpload {
   project: Project;
   artist: Artist;
+  status: String;
 }
 
-export default function UploadCover({ project, artist }: TypeUpload) {
+export default function UploadCover({ project, artist, status }: TypeUpload) {
   let [imageUrl, setImageUrl] = React.useState(
     project.cover &&
       `https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${project.uuid}/cover.${project.cover}`
@@ -85,7 +86,7 @@ export default function UploadCover({ project, artist }: TypeUpload) {
           <Image src={imageUrl} width={width} height={height} alt="" />
         )}
       </div>
-      {imageUrl && (
+      {imageUrl && status === "DRAFT" && (
         <p onClick={openFileDialog} className="cursor-pointer">
           Edit cover
         </p>

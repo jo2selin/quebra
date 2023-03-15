@@ -4,11 +4,14 @@ import { authOptions } from "../auth/[...nextauth]";
 import { v4 as uuidv4 } from "uuid";
 
 import { ddbDocClient } from "../../../libs/ddbDocClient";
-import { checkAvaibilityProjectSlug } from "../../../libs/api";
+import React from "react";
+import { checkProjectSlugAvailable } from "../../../libs/api";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import slugify from "slugify";
 import { server } from "../../../config";
+import useSWR from "swr";
+import { fetcher } from "../../../libs/fetcher";
 
 export const paramsAllProjects = {
   TableName: process.env.TABLE,
@@ -22,13 +25,15 @@ export const paramsAllProjects = {
   // ProjectionExpression: "pk, sk, projectName, #p_uuid",
 };
 
-async function createSlug(input: string) {
-  const isProjectSlugAvailable = await checkAvaibilityProjectSlug(input).then(
-    (data) => {
-      console.log("createSlug", data);
-      return data;
-    }
-  );
+async function createSlug(input: string, a_uuid: string) {
+  const isProjectSlugAvailable = await checkProjectSlugAvailable(
+    input,
+    a_uuid
+  ).then((data) => {
+    return data;
+  });
+  console.log("isProjectSlugAvailable", isProjectSlugAvailable);
+
   const slug = isProjectSlugAvailable ? input : generateUniqueSlug(input);
 
   return slug;
@@ -54,11 +59,14 @@ export default async function handler(
 
   // === GET ========================================
   if (req.method === "GET") {
-    console.log("GET ALL PROJECTS");
+    console.log("GET ALL PUBLISHED PROJECTS");
 
     // get all PROJECTS
     const data = await ddbDocClient.send(new QueryCommand(paramsAllProjects));
-    return res.status(200).json(data.Items);
+    const publishedProjects = data.Items?.filter(
+      (p) => p.status === "PUBLISHED"
+    );
+    return res.status(200).json(publishedProjects);
   }
 
   // === POST ========================================
@@ -67,7 +75,7 @@ export default async function handler(
 
     if (!session) {
       res.send({
-        error: "You must be signed in to access this route.",
+        error: "You must be signed in to access this route POST api/Projects",
       });
     }
     if (session && session.user?.email && req.method === "POST") {
@@ -79,9 +87,8 @@ export default async function handler(
         strict: true,
       });
 
-      const slug = await createSlug(slugProjectName);
-
       const userArtist: any = await getUserArtist(session.user?.email);
+      const slug = await createSlug(slugProjectName, userArtist.uuid);
 
       const data = await ddbDocClient.send(
         new PutCommand({
@@ -90,11 +97,12 @@ export default async function handler(
             pk: "PROJECT",
             sk: userArtist.uuid + "#" + uuid,
             projectName: projectName,
-            email: session.user?.email,
-            artistSlug: userArtist.slug,
+            // email: session.user?.email,
+            // artistSlug: userArtist.slug,
             slug: slug,
             uuid: uuid,
             status: "DRAFT",
+            created_at: new Date().toISOString(),
           },
         })
       );

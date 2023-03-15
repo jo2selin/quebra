@@ -90,11 +90,13 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
             return (
               <div
                 key={index}
-                className="flex mt-3 align-middle justify-center items-center"
+                className="flex mt-3 align-middle justify-left items-center"
               >
-                <div className="w-10 mr-5 p-6 text-3xl">{index}</div>
-                <div className="w-full">
-                  <p className=" bg-jam-dark-grey p-6">{file.file.name}</p>
+                {/* <div className="w-10 mr-5 p-6 text-3xl">{index}</div> */}
+                <div className="w-full md:w-2/6">
+                  <p className=" bg-jam-dark-grey px-6 py-4">
+                    {file.file.name}
+                  </p>
                   <div
                     className="h-1 bg-jam-pink text-center"
                     style={{ width: file.progress + "%" }}

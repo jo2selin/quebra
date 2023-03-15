@@ -27,6 +27,8 @@ export default function CreateProject() {
   };
 
   const { data, error, isLoading } = useSWR("/api/users/me", fetcher);
+  // const { data:myProjects, error:pError} = useSWR("/api/projects/me", fetcher);
+
   if (error) return <div>failed to load Artist Profile</div>;
   if (isLoading) return <div>loading Artist Profile...</div>;
   if (data.artistName && data.sk && data.pk && data.slug) {

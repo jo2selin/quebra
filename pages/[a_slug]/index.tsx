@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps } from "next";
-import { server } from "../config";
-import { getArtists } from "../libs/api";
+import { server } from "../../config";
+import { getArtists } from "../../libs/api";
 
 type typePropsArtist = {
   artistName: string;
@@ -18,7 +18,7 @@ export async function getStaticPaths() {
   const artists = await getAllArtists();
 
   const paths = artists.map((artist: any) => ({
-    params: { artistSlug: artist.slug },
+    params: { a_slug: artist.slug },
   }));
 
   return {
@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const artists = await getAllArtists();
   // find artist matching w actual slug
   const pageArtist = artists.filter(
-    (a: typePropsArtist) => a.slug === params?.artistSlug
+    (a: typePropsArtist) => a.slug === params?.a_slug
   );
   console.log("params", params);
   console.log("pageArtist", pageArtist);

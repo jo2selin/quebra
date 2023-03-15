@@ -16,7 +16,7 @@ interface Uuid {
 interface ProjectEdit {
   project: Project;
   artist: Artist;
-  tracks: Tracks[];
+  tracks: Track[];
 }
 interface ProjectDelete {
   project: Project;
@@ -58,8 +58,10 @@ async function publishProject({
     await fetch(`/api/projects/${artist.uuid}/${project.uuid}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ actualStatus: project.status }),
     }).then((res) => {
+      console.log("res publishProject", res);
+
       if (setLoadingPublish && setStatusLocal) {
         setStatusLocal("PUBLISHED");
         setLoadingPublish(false);
@@ -82,7 +84,7 @@ async function unPublishProject({
       body: JSON.stringify({ unpublish: true }),
     }).then((res) => {
       if (setStatusLocal) {
-        setStatusLocal("DRAFT");
+        setStatusLocal("UNPUBLISHED");
       }
     });
   } catch (error) {
@@ -94,19 +96,27 @@ async function unPublishProject({
 function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   const [loadingPublish, setLoadingPublish] = React.useState(false);
   const [statusLocal, setStatusLocal] = React.useState(project.status);
-  console.log("statusLocal", statusLocal);
 
   return (
     <>
-      <div className="flex align-top justify-between items-center mb-3">
+      <div className="flex align-top justify-between items-center mb-1">
         <div className="flex items-center">
           <h1 className="text-5xl  ">{project.projectName}</h1>
           <span
             className={`ml-5 text-sm ${
-              statusLocal === "DRAFT" ? " bg-[#323232] " : " bg-green-500"
+              statusLocal === "PUBLISHED" ? " bg-green-500 " : "  bg-[#323232] "
             } rounded-sm px-2 `}
           >
-            {statusLocal}
+            {statusLocal === "PUBLISHED" ? (
+              <Link
+                href={`/${artist.slug}/p/${project.slug}`}
+                className="text-white"
+              >
+                {statusLocal}
+              </Link>
+            ) : (
+              statusLocal
+            )}
           </span>
         </div>
         <button
@@ -116,13 +126,24 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
           Delete Project
         </button>
       </div>
-      <h2 className="text-3xl mb-6 ">Artist: {artist.artistName}</h2>
+      <h2 className="text-xl mb-6 ">{artist.artistName}</h2>
 
-      <UploadCover project={project} artist={artist} />
-      <UploadTracks project={project} artist={artist} />
+      <UploadCover
+        project={project}
+        artist={artist}
+        status={project.status as string}
+      />
+      {project.status === "DRAFT" && (
+        <UploadTracks project={project} artist={artist} />
+      )}
 
       {tracks && (
-        <EditTracklist tracks={tracks} project={project} artist={artist} />
+        <EditTracklist
+          tracks={tracks}
+          project={project}
+          artist={artist}
+          statusLocal={statusLocal as string}
+        />
       )}
 
       {tracks[0] && statusLocal !== "PUBLISHED" && (
@@ -218,11 +239,8 @@ export default function EditProject({ uuid }: Uuid) {
   if (projectIsLoading) return <div>loading project...</div>;
   if (artistIsLoading) return <div>loading artist...</div>;
   if (tracksIsLoading) return <div>loading Tracks...</div>;
-  if (project.email === session.user?.email) {
-    return (
-      <ContentEditProject project={project} artist={artist} tracks={tracks} />
-    );
-  } else {
-    throw new Error("You are not the owner of this project");
-  }
+  // if (artist.uuid === session.user?.email) {
+  return (
+    <ContentEditProject project={project} artist={artist} tracks={tracks} />
+  );
 }

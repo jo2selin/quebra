@@ -9,6 +9,9 @@ import { ddbDocClient } from "../../../../../libs/ddbDocClient";
 import { s3Client } from "../../../../../libs/s3Client.js";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../../../auth/[...nextauth]";
+import { server } from "../../../../../config";
+
+// import s3zipper from "./s3/s3-zipper";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -57,7 +60,6 @@ export default async function handler(
     );
 
     if (!project.Item) {
-      // profile does not exist yet
       return res.status(400).json({ error: "no data found" });
     } else {
       return res.status(200).json(project.Item);
@@ -68,7 +70,8 @@ export default async function handler(
   if (req.method === "POST") {
     const session = await unstable_getServerSession(req, res, authOptions);
     console.log(req.body?.unpublished);
-    const status = req.body?.unpublish ? "DRAFT" : "PUBLISHED";
+    const status = req.body?.unpublish ? "UNPUBLISHED" : "PUBLISHED";
+
     // Publishing Project
     if (session && session.user?.email && req.method === "POST") {
       console.log("PUBLISH PROJECT", req.query, status);
@@ -92,6 +95,20 @@ export default async function handler(
 
       const data = await ddbDocClient.send(new UpdateCommand(params));
 
+      if (!req.body?.unpublish && req.body?.actualStatus === "DRAFT") {
+        // create zip only on first publish
+
+        try {
+          await fetch(
+            `${server}/api/projects/${req.query.a_uuid}/${req.query.p_uuid}/s3/s3-zipper`,
+            {
+              method: "GET",
+            }
+          );
+        } catch (error) {
+          throw error;
+        }
+      }
       return res.status(201).json(data);
     }
   }

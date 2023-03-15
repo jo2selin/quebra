@@ -2,24 +2,26 @@ import React, { useState } from "react";
 import { cssButtonPrimary } from "../../libs/css";
 
 interface TypeeditTracklist {
-  tracks: Tracks[];
+  tracks: Track[];
   artist: Artist;
   project: Project;
+  statusLocal: string;
 }
 interface TypeTrack {
-  track: Tracks;
+  track: Track;
   artist: Artist;
   project: Project;
+  statusLocal: string;
 }
 interface TypeDeleteTrack {
-  track: Tracks;
+  track: Track;
   artist: Artist;
   project: Project;
   setLoadingDelete?: Function;
   setIsDeleted?: Function;
 }
 interface TypeUpdateTrack {
-  track: Tracks;
+  track: Track;
   artist: Artist;
   project: Project;
   trackName: string;
@@ -90,7 +92,7 @@ async function deleteTrack({
   }
 }
 
-const Track = ({ track, artist, project }: TypeTrack) => {
+const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
   const [trackName, setTrackName] = React.useState(track.track_name || "");
   const [trackNumber, setTrackNumber] = React.useState(track.track_id || "");
   const [isDeleted, setIsDeleted] = React.useState(false);
@@ -107,6 +109,7 @@ const Track = ({ track, artist, project }: TypeTrack) => {
           value={trackNumber}
           onChange={(e) => setTrackNumber(e.target.value)}
           className={` bg-jam-dark-grey w-20 mr-5 p-3 text-3xl`}
+          disabled={statusLocal === "PUBLISHED" ? true : false}
         />
         <input
           type="text"
@@ -126,16 +129,19 @@ const Track = ({ track, artist, project }: TypeTrack) => {
           onChange={(t) => setTrackName(t.target.value)}
           placeholder="track title"
           className={`w-full h-10 mt-0 pt-0 px-2 bg-jam-dark-grey text-white text-2xl mb-0 `}
+          disabled={statusLocal === "PUBLISHED" ? true : false}
         />
-        <TrackAction
-          track={track}
-          artist={artist}
-          project={project}
-          trackName={trackName}
-          trackNumber={trackNumber}
-          setIsDeleted={setIsDeleted}
-          isDeleted={isDeleted}
-        />
+        {statusLocal !== "PUBLISHED" && (
+          <TrackAction
+            track={track}
+            artist={artist}
+            project={project}
+            trackName={trackName}
+            trackNumber={trackNumber}
+            setIsDeleted={setIsDeleted}
+            isDeleted={isDeleted}
+          />
+        )}
       </div>
     </div>
   );
@@ -222,6 +228,7 @@ export default function editTracklist({
   tracks,
   artist,
   project,
+  statusLocal,
 }: TypeeditTracklist) {
   const orderedTracks = tracks.sort((a, b) => +a.track_id - +b.track_id);
 
@@ -235,6 +242,7 @@ export default function editTracklist({
             track={track}
             artist={artist}
             project={project}
+            statusLocal={statusLocal}
           />
         ))}
     </div>
