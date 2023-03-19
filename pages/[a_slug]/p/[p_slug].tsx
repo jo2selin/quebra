@@ -4,7 +4,10 @@ import { server } from "../../../config";
 import {
   getProjects,
   getArtists,
+  getDynamoProjects,
+  getDynamoArtists,
   getTracksFromProject,
+  getDynamoTracksFromProject,
 } from "../../../libs/api";
 import useSWR from "swr";
 import { fetcher } from "../../../libs/fetcher";
@@ -18,11 +21,11 @@ function matchProjectToArtistSlug(project: Project, artists: Artist[]) {
 
 // Creating static pages with slugs
 export async function getStaticPaths() {
-  const projects = await getProjects();
-  const artists = await getArtists();
+  const projects = await getDynamoProjects();
+  const artists = await getDynamoArtists();
 
-  const paths = projects.map((project: Project) => {
-    const artist = matchProjectToArtistSlug(project, artists);
+  const paths = projects?.map((project: any) => {
+    const artist = matchProjectToArtistSlug(project, artists as Artist[]);
     return {
       params: {
         p_slug: project.slug,
@@ -41,14 +44,17 @@ export async function getStaticPaths() {
 export const getStaticProps = async ({ params }: any) => {
   if (!params?.p_slug) return false;
 
-  const projects = await getProjects();
-  const artists = await getArtists();
+  const projects = await getDynamoProjects();
+  const artists = await getDynamoArtists();
 
-  const project = projects.filter((p: Project) => p.slug === params.p_slug)[0];
-  const artist = matchProjectToArtistSlug(project, artists);
+  const project = projects?.filter((p: any) => p.slug === params.p_slug)[0];
+  const artist = matchProjectToArtistSlug(
+    project as Project,
+    artists as Artist[]
+  );
   console.log("project getStaticProps===", project);
   console.log("artist getStaticProps===", artist);
-  const tracks = await getTracksFromProject(artist.uuid, project.uuid);
+  const tracks = await getDynamoTracksFromProject(artist.uuid, project?.uuid);
   console.log("tracks getStaticProps===", tracks);
 
   return {

@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import { server } from "../../config";
-import { getArtists } from "../../libs/api";
+import { getArtists, getDynamoArtists } from "../../libs/api";
 
 type typePropsArtist = {
   artistName: string;
@@ -9,13 +9,14 @@ type typePropsArtist = {
 };
 
 async function getAllArtists() {
-  const artists = await getArtists();
+  const artists = await getDynamoArtists();
   return artists;
 }
 
 // Creating static pages with slugs
 export async function getStaticPaths() {
   const artists = await getAllArtists();
+  if (!artists) return false;
 
   const paths = artists.map((artist: any) => ({
     params: { a_slug: artist.slug },
@@ -29,18 +30,15 @@ export async function getStaticPaths() {
 
 // `getStaticPaths` requires using `getStaticProps`
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  console.log("getstatocProp params", params);
-
-  const artists = await getAllArtists();
+  const artists = await getDynamoArtists();
   // find artist matching w actual slug
-  const pageArtist = artists.filter(
-    (a: typePropsArtist) => a.slug === params?.a_slug
-  );
+
+  const pageArtist = artists?.filter((a: any) => a.slug === params?.a_slug);
   console.log("params", params);
   console.log("pageArtist", pageArtist);
 
   return {
-    props: pageArtist[0],
+    props: pageArtist ? pageArtist[0] : [],
   };
 };
 

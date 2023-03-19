@@ -1,5 +1,6 @@
 import { server } from "../config";
-
+import { QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { ddbDocClient } from "./ddbDocClient";
 // export async function getMe() {
 //   const res = await fetch(`${server}/api/users/me`);
 //   console.log("get me ", res);
@@ -13,6 +14,25 @@ export async function getArtists() {
   const data = await res.json();
 
   return data;
+}
+
+export async function getDynamoArtists() {
+  const paramsAllArtists = {
+    TableName: process.env.TABLE,
+    KeyConditionExpression: "pk = :pk",
+    ExpressionAttributeValues: {
+      ":pk": "ARTIST",
+    },
+    ExpressionAttributeNames: {
+      "#a_uuid": "uuid",
+    },
+    ProjectionExpression: "artistName, slug, #a_uuid",
+  };
+  const data = await ddbDocClient.send(new QueryCommand(paramsAllArtists));
+  console.log(data.Items);
+  // const artists = data.Items ? data.Items : []: Artist;
+
+  return data.Items;
 }
 
 // export async function getArtistBySlug(artistSlug: string) {
@@ -33,6 +53,18 @@ export async function getProjects() {
 
   return data;
 }
+export async function getDynamoProjects() {
+  const paramsAllProjects = {
+    TableName: process.env.TABLE,
+    KeyConditionExpression: "pk = :pk",
+    ExpressionAttributeValues: {
+      ":pk": "PROJECT",
+    },
+  };
+  const data = await ddbDocClient.send(new QueryCommand(paramsAllProjects));
+  const publishedProjects = data.Items?.filter((p) => p.status === "PUBLISHED");
+  return publishedProjects;
+}
 export async function getMyProjects(a_uuid: string) {
   const res = await fetch(`${server}/api/projects/${a_uuid}?s=slugs`);
   const data = await res.json();
@@ -43,6 +75,24 @@ export async function getTracksFromProject(a_uuid: string, p_uuid: string) {
   const data = await res.json();
 
   return data;
+}
+export async function getDynamoTracksFromProject(
+  a_uuid: string,
+  p_uuid: string
+) {
+  const paramsAllTracksFromProject = {
+    TableName: process.env.TABLE,
+    KeyConditionExpression: "pk = :pk and begins_with(sk, :p_uuid)",
+    ExpressionAttributeValues: {
+      ":pk": "TRACK",
+      ":p_uuid": p_uuid,
+    },
+  };
+  const data = await ddbDocClient.send(
+    new QueryCommand(paramsAllTracksFromProject)
+  );
+
+  return data.Items;
 }
 
 // export async function getArtistFromProject(projectSK: string) {

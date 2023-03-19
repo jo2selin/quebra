@@ -66,6 +66,7 @@ export default async function handler(
     const publishedProjects = data.Items?.filter(
       (p) => p.status === "PUBLISHED"
     );
+
     return res.status(200).json(publishedProjects);
   }
 
