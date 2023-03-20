@@ -10,8 +10,6 @@ import { checkProjectSlugAvailable } from "../../../libs/api";
 import type { NextApiRequest, NextApiResponse } from "next";
 import slugify from "slugify";
 import { server } from "../../../config";
-import useSWR from "swr";
-import { fetcher } from "../../../libs/fetcher";
 
 export const paramsAllProjects = {
   TableName: process.env.TABLE,

@@ -118,6 +118,20 @@ export async function checkProjectSlugAvailable(slug: string, a_uuid: string) {
   return !slugNotAvailable;
 }
 
+export async function checkArtistSlugAvailable(slug: string) {
+  const slugFound = getArtists().then((artists: Artist[]) => {
+    console.log("checkArtistSlugAvailable", artists);
+
+    const res = artists.filter((a: Artist) => a.slug === slug);
+    return res[0] ? true : false;
+  });
+  console.log("checkArtistSlugAvailable, slugFound:", await slugFound);
+
+  const slugNotAvailable = await slugFound;
+
+  return !slugNotAvailable;
+}
+
 // export async function getProjectBySlug(slug: string) {
 //   // Call an external API endpoint to get users
 //   const res = await fetch(`${server}/api/projects/${slug}`);
