@@ -34,7 +34,10 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
       await uploadToS3(file, {
         endpoint: {
           request: {
-            body: { p_uuid: project.uuid, trackName: trackName },
+            body: {
+              path_s3: project.path_s3,
+              trackName: trackName,
+            },
             headers: {},
           },
         },

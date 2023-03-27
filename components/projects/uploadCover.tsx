@@ -31,7 +31,7 @@ interface TypeUpload {
 export default function UploadCover({ project, artist, status }: TypeUpload) {
   let [imageUrl, setImageUrl] = React.useState(
     project.cover &&
-      `https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${project.uuid}/cover.${project.cover}`
+      `https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${project.path_s3}/cover.${project.cover}`
   );
   let [height, setHeight] = React.useState(400);
   let [width, setWidth] = React.useState(400);
@@ -47,7 +47,7 @@ export default function UploadCover({ project, artist, status }: TypeUpload) {
     await uploadToS3(file, {
       endpoint: {
         request: {
-          body: { p_uuid: project.uuid, coverName: "cover" },
+          body: { path_s3: project.path_s3, coverName: "cover" },
           headers: {},
         },
       },

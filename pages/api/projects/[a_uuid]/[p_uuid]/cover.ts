@@ -46,5 +46,7 @@ export default async function handler(
       return res.status(201).json(data);
     }
   }
-  return res.status(500).json({ "err api/profile ": req.method });
+  return res
+    .status(500)
+    .json({ "err api/api/projects/a_uuid/p_uuid/cover ": req.method });
 }

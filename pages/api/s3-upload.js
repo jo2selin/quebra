@@ -8,6 +8,6 @@ export default APIRoute.configure({
     const fileExtension = filename.split(".").slice(-1);
     const fileName = req.body.coverName || req.body.trackName;
     console.log("fileName", fileName);
-    return `projects/${req.body.p_uuid}/${fileName}.${fileExtension}`;
+    return `projects/${req.body.path_s3}/${fileName}.${fileExtension}`;
   },
 });

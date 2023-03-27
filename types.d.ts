@@ -7,6 +7,7 @@ interface Project {
   slug: string;
   cover: string;
   status?: string;
+  path_s3: string;
 }
 interface Artist {
   pk: "ARTIST";

@@ -29,7 +29,7 @@ export async function getDynamoArtists() {
     ProjectionExpression: "artistName, slug, #a_uuid",
   };
   const data = await ddbDocClient.send(new QueryCommand(paramsAllArtists));
-  console.log(data.Items);
+  console.log("getDynamoArtists", data.Items);
   // const artists = data.Items ? data.Items : []: Artist;
 
   return data.Items;

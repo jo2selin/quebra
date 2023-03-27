@@ -34,7 +34,7 @@ async function handleDeleteProject({ artist, project }: ProjectDelete) {
     await fetch(`/api/projects/${artist.uuid}/${project.uuid}/`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ path_s3: project.path_s3 }),
     }).then((res) => {
       Router.push("/me");
       console.log(res);
@@ -58,7 +58,12 @@ async function publishProject({
     await fetch(`/api/projects/${artist.uuid}/${project.uuid}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ actualStatus: project.status }),
+      body: JSON.stringify({
+        actualStatus: project.status,
+        a_slug: artist.slug,
+        p_slug: project.slug,
+        path_s3: project.path_s3,
+      }),
     }).then((res) => {
       console.log("res publishProject", res);
 

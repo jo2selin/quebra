@@ -101,6 +101,7 @@ export default async function handler(
             slug: slug,
             uuid: uuid,
             status: "DRAFT",
+            path_s3: `${userArtist.slug}-${slug}`,
             created_at: new Date().toISOString(),
           },
         })

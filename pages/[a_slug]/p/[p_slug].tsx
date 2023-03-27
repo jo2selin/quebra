@@ -23,9 +23,12 @@ function matchProjectToArtistSlug(project: Project, artists: Artist[]) {
 export async function getStaticPaths() {
   const projects = await getDynamoProjects();
   const artists = await getDynamoArtists();
+  console.log("getStaticPaths artists", artists);
 
   const paths = projects?.map((project: any) => {
     const artist = matchProjectToArtistSlug(project, artists as Artist[]);
+    console.log('"getStaticPaths artist slug ===', artist, project);
+
     return {
       params: {
         p_slug: project.slug,
@@ -72,7 +75,7 @@ export default function Project(props: propsType) {
       <h1 className="text-3xl">{props.project.projectName}</h1>
       <h2 className="text-xl">{props.artist.artistName}</h2>
       <Image
-        src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${props.project.uuid}/cover.jpg`}
+        src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${props.project.path_s3}/cover.jpg`}
         alt={`${props.project.projectName}, ${props.artist.artistName}`}
         width={500}
         height={500}

@@ -1,4 +1,8 @@
 export default function handler(req, res) {
+  console.log("zip handler req.body.path_s3", req.body, req.body.path_s3);
+  const reqBody = JSON.parse(req.body);
+  console.log("reqBody", reqBody);
+
   var S3Zipper = require("aws-s3-zipper");
   // {
   //   accessKeyId: [Your access id],
@@ -25,15 +29,15 @@ export default function handler(req, res) {
   /// if no path is given to S3 zip file then it will be placed in the same folder
   zipper.zipToS3File(
     {
-      s3FolderName: `projects/${req.query.p_uuid}`,
+      s3FolderName: `projects/${reqBody.path_s3}`,
       // , startKey: 'keyOfLastFileIZipped' // optional
-      s3ZipFileName: "quebra.zip",
+      s3ZipFileName: `${reqBody.path_s3}.zip`,
       // , tmpDir: "/tmp" // optional, defaults to node_modules/aws-s3-zipper
     },
     function (err, result) {
       if (err) console.error(err);
       else {
-        console.log("result", result);
+        console.log("result zipToS3File", result);
         // var lastFile = result.zippedFiles[result.zippedFiles.length - 1];
         // if (lastFile) console.log("last key ", lastFile.Key); // next time start from here
         res.status(200).json({ res: "Zip done" });
