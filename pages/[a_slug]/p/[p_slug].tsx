@@ -1,6 +1,8 @@
 import React from "react";
 import { GetStaticProps } from "next";
-import { server } from "../../../config";
+import Player from "../../../components/player";
+import EditProject from "../../../components/projects/editProject";
+
 import {
   getProjects,
   getArtists,
@@ -55,10 +57,7 @@ export const getStaticProps = async ({ params }: any) => {
     project as Project,
     artists as Artist[]
   );
-  console.log("project getStaticProps===", project);
-  console.log("artist getStaticProps===", artist);
   const tracks = await getDynamoTracksFromProject(artist.uuid, project?.uuid);
-  console.log("tracks getStaticProps===", tracks);
 
   return {
     props: { project: project, artist: artist, tracks: tracks },
@@ -68,7 +67,8 @@ export const getStaticProps = async ({ params }: any) => {
 type propsType = { project: Project; artist: Artist; tracks: Track[] };
 
 export default function Project(props: propsType) {
-  console.log("props PAGE ==", props);
+  const [currentTrack, setTrackIndex] = React.useState(0);
+  console.log("props.tracks===========", props.tracks);
 
   return (
     <>
@@ -80,10 +80,21 @@ export default function Project(props: propsType) {
         width={500}
         height={500}
       />
+      <Player
+        tracks={props.tracks}
+        p_slug={props.project.path_s3}
+        currentTrack={currentTrack}
+        setTrackIndex={setTrackIndex}
+      />
       <ol>
-        {props.tracks.map((track: Track) => (
-          <li key={track.uuid}>{track.track_name}</li>
-        ))}
+        {props.tracks
+          .sort((a, b) => a.track_id - b.track_id)
+          .map((track: Track) => (
+            <li key={track.uuid}>
+              {currentTrack + 1 === +track.track_id && <span>Playing - </span>}
+              {track.track_id} -{track.track_name}
+            </li>
+          ))}
       </ol>
     </>
   );

@@ -68,10 +68,12 @@ export default async function handler(
   // === DELETE ========================================
   if (req.method === "DELETE") {
     console.log(
-      "p_uuid, t_uuid, slug",
-      req.query.p_uuid,
-      req.query.t_uuid,
-      req.query.slug
+      "slug,path_s3, body ====",
+      // req.query.p_uuid,
+      // req.query.t_uuid,
+      req.query.slug,
+      req.body.path_s3,
+      req.body
     );
     if (!req.query.slug) {
       throw new Error("Track slug not defined");
@@ -85,7 +87,7 @@ export default async function handler(
     };
     const bucketParams = {
       Bucket: process.env.S3_UPLOAD_BUCKET,
-      Key: `projects/${req.query.p_uuid}/${req.query.slug}.mp3`,
+      Key: `projects/${req.body.path_s3}/${req.query.slug}.mp3`,
     };
     const data = await ddbDocClient.send(new DeleteCommand(params)).then(() => {
       try {

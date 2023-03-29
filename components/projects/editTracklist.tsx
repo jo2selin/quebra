@@ -80,7 +80,10 @@ async function deleteTrack({
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ trackName: "trackName" }),
+        body: JSON.stringify({
+          trackName: "trackName",
+          path_s3: project.path_s3,
+        }),
       }
     ).then((res) => {
       if (setLoadingDelete) setLoadingDelete(true);
@@ -93,8 +96,8 @@ async function deleteTrack({
 }
 
 const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
-  const [trackName, setTrackName] = React.useState(track.track_name || "");
-  const [trackNumber, setTrackNumber] = React.useState(track.track_id || "");
+  const [trackName, setTrackName] = React.useState(track.track_name);
+  const [trackNumber, setTrackNumber] = React.useState(track.track_id);
   const [isDeleted, setIsDeleted] = React.useState(false);
 
   React.useEffect(() => {
@@ -107,7 +110,7 @@ const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
         <input
           type="text"
           value={trackNumber}
-          onChange={(e) => setTrackNumber(e.target.value)}
+          onChange={(e) => setTrackNumber(+e.target.value)}
           className={` bg-jam-dark-grey w-20 mr-5 p-3 text-3xl`}
           disabled={statusLocal === "PUBLISHED" ? true : false}
         />
@@ -137,7 +140,7 @@ const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
             artist={artist}
             project={project}
             trackName={trackName}
-            trackNumber={trackNumber}
+            trackNumber={trackNumber.toString()}
             setIsDeleted={setIsDeleted}
             isDeleted={isDeleted}
           />
@@ -157,12 +160,17 @@ const TrackAction = ({
   isDeleted,
 }: TypeUpdateTrack) => {
   const [oldTrackName, setOldTrackName] = React.useState(track.track_name);
-  const [oldTrackNumber, setOldTrackNumber] = React.useState(track.track_id);
+  const [oldTrackNumber, setOldTrackNumber] = React.useState(
+    track.track_id.toString()
+  );
   const [displaySave, setDisplaySave] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
   React.useEffect(() => {
+    console.log("oldTrackNumber", oldTrackNumber, typeof oldTrackNumber);
+    console.log("trackNumber", trackNumber, typeof trackNumber);
+
     function displaySavebtn() {
       if (oldTrackName !== trackName || oldTrackNumber !== trackNumber)
         return true;

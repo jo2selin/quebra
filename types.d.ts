@@ -23,7 +23,7 @@ interface Track {
   slug: string;
   track_name: string;
   track_url: string;
-  track_id: string;
+  track_id: number;
 
   uuid: string;
 }
