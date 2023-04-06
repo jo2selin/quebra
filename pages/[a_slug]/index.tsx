@@ -34,8 +34,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // find artist matching w actual slug
 
   const pageArtist = artists?.filter((a: any) => a.slug === params?.a_slug);
-  console.log("params", params);
-  console.log("pageArtist", pageArtist);
+  // console.log("params", params);
+  // console.log("pageArtist", pageArtist);
 
   return {
     props: pageArtist ? pageArtist[0] : [],
@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export default function Post(props: typePropsArtist) {
   // Render post...
-  console.log("props PAGE ==", props);
+  // console.log("props PAGE ==", props);
 
   return <h1>{props.artistName}</h1>;
 }

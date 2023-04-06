@@ -29,14 +29,6 @@ export default function Player({
     ] as Playlist[];
   });
 
-  console.log("playlist", playlist);
-
-  // const playlist = [
-  //   { src: 'https://hanzluo.s3-us-west-1.amazonaws.com/music/ziyounvshen.mp3' },
-  //   { src: 'https://hanzluo.s3-us-west-1.amazonaws.com/music/wuyuwuqing.mp3' },
-  //   { src: 'https://hanzluo.s3-us-west-1.amazonaws.com/music/suipian.mp3' },
-  // ]
-
   // const [currentTrack, setTrackIndex] = React.useState(0);
   const handleClickNext = () => {
     console.log("click next");
