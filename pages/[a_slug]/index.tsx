@@ -2,6 +2,7 @@ import React from "react";
 import { GetStaticProps } from "next";
 import { server } from "../../config";
 import { getArtists, getDynamoArtists } from "../../libs/api";
+import Head from "next/head";
 
 type typePropsArtist = {
   artistName: string;
@@ -43,8 +44,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export default function Post(props: typePropsArtist) {
-  // Render post...
-  // console.log("props PAGE ==", props);
-
-  return <h1>{props.artistName}</h1>;
+  return (
+    <>
+      <Head>
+        <title>{props.artistName} | Quebra</title>
+        <meta property="og:title" content={props.artistName} key="title" />
+      </Head>
+      <h1>{props.artistName}</h1>
+    </>
+  );
 }

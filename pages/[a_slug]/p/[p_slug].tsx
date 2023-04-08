@@ -2,6 +2,7 @@ import React from "react";
 import { GetStaticProps } from "next";
 import Player from "../../../components/player";
 import EditProject from "../../../components/projects/editProject";
+import Head from "next/head";
 
 import {
   getProjects,
@@ -25,12 +26,9 @@ function matchProjectToArtistSlug(project: Project, artists: Artist[]) {
 export async function getStaticPaths() {
   const projects = await getDynamoProjects();
   const artists = await getDynamoArtists();
-  console.log("getStaticPaths artists", artists);
-  console.log("getStaticPaths projects", projects);
 
   const paths = projects?.map((project: any) => {
     const artist = matchProjectToArtistSlug(project, artists as Artist[]);
-    console.log('"getStaticPaths artist slug ===', artist, project);
 
     return {
       params: {
@@ -77,10 +75,20 @@ type propsType = { project: Project; artist: Artist; tracks: Track[] };
 
 export default function Project(props: propsType) {
   const [currentTrack, setTrackIndex] = React.useState(0);
-  console.log("props===========", props);
 
   return (
     <>
+      <Head>
+        <title>
+          {props.project.projectName} - {props.artist.artistName} | Quebra
+        </title>
+        <meta
+          property="og:title"
+          content={props.project.projectName}
+          key="title"
+        />
+      </Head>
+
       {props.project && (
         <h1 className="text-3xl">{props.project.projectName}</h1>
       )}
@@ -105,14 +113,23 @@ export default function Project(props: propsType) {
         <ol>
           {props.tracks
             .sort((a, b) => a.track_id - b.track_id)
-            .map((track: Track) => (
-              <li key={track.uuid}>
-                {currentTrack + 1 === +track.track_id && (
-                  <span>Playing - </span>
-                )}
-                {track.track_id} -{track.track_name}
-              </li>
-            ))}
+            .map((track: Track, i) => {
+              const isCurrent = currentTrack + 1 === +track.track_id;
+              return (
+                <li
+                  key={track.uuid}
+                  className={`border-l-4 px-3 py-4  ${
+                    isCurrent
+                      ? " border-jam-pink  bg-jam-light-transparent "
+                      : "border-jam-dark-purple"
+                  } cursor-pointer`}
+                  onClick={() => setTrackIndex(i)}
+                >
+                  <span className="p-3 mr-3">{track.track_id}</span>
+                  {track.track_name}
+                </li>
+              );
+            })}
         </ol>
       )}
     </>

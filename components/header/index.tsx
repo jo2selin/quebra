@@ -9,10 +9,13 @@ export default function Header() {
     <>
       <div className=" sticky top-0 bg-jam-dark-purple/80 backdrop-blur">
         <div className="container mx-auto px-4 py-5 flex justify-between items-center   ">
-          <div className="logo">
+          <div className="logo relative">
             <Link href="/" className="text-4xl text-white">
               Quebra
             </Link>
+            <span className="absolute -bottom-1 right-2 bg-jam-pink rounded-md px-2 py-0 text-xs ">
+              BETA
+            </span>
           </div>
 
           <div className=" flex-1 flex items-end justify-end ">

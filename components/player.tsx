@@ -31,17 +31,18 @@ export default function Player({
 
   // const [currentTrack, setTrackIndex] = React.useState(0);
   const handleClickNext = () => {
-    console.log("click next");
     setTrackIndex((currentTrack: number) =>
       currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
     );
   };
 
   const handleEnd = () => {
-    console.log("end");
-    setTrackIndex((currentTrack: number) =>
-      currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
-    );
+    const playlistEnded = currentTrack >= playlist.length - 1;
+    if (playlistEnded) {
+      return;
+    } else {
+      setTrackIndex((currentTrack: number) => currentTrack + 1);
+    }
   };
 
   return (
