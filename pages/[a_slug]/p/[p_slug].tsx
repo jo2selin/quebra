@@ -79,14 +79,18 @@ export default function Project(props: propsType) {
   return (
     <>
       <Head>
-        <title>
-          {props.project.projectName} - {props.artist.artistName} | Quebra
-        </title>
-        <meta
-          property="og:title"
-          content={props.project.projectName}
-          key="title"
-        />
+        {props.project && (
+          <>
+            <title>
+              {props.project.projectName} - {props.artist.artistName} | Quebra
+            </title>
+            <meta
+              property="og:title"
+              content={props.project.projectName}
+              key="title"
+            />
+          </>
+        )}
       </Head>
 
       {props.project && (
