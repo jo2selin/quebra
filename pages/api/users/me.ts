@@ -71,8 +71,12 @@ export default async function handler(
         Key: { pk: "ARTIST", sk: session.user?.email },
       })
     );
+    console.log("artist", artist);
+
     if (!artist.Item) {
       // first save
+      console.log("first save artist name");
+
       const data = await ddbDocClient.send(
         new PutCommand({
           TableName: process.env.TABLE,
