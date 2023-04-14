@@ -7,7 +7,7 @@ import useSWR from "swr";
 
 export default function ArtistProjects() {
   const { data, error, isLoading } = useSWR("/api/projects/me", fetcher);
-  if (error) return <div>failed to load Artist Projects</div>;
+  // if (error) return <div>failed to load Artist Projects</div>;
   if (isLoading) return <div>loading Artist Projects...</div>;
   // if (error) throw new Error(error);
 

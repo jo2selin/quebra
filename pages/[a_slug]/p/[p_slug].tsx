@@ -68,6 +68,7 @@ export const getStaticProps = async ({ params }: any) => {
 
   return {
     props: { project: project, artist: artist, tracks: tracks },
+    revalidate: 30,
   };
 };
 

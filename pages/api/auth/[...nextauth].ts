@@ -35,8 +35,14 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   adapter: DynamoDBAdapter(client),
+  pages: {
+    signIn: "/auth/signin",
+  },
   theme: {
-    colorScheme: "light",
+    colorScheme: "auto",
+    brandColor: "#62258e", // Hex color code
+    logo: "", // Absolute URL to image
+    buttonText: "red", // Hex color code
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
