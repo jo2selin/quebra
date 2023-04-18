@@ -15,6 +15,7 @@ import {
 import useSWR from "swr";
 import { fetcher } from "../../../libs/fetcher";
 import Image from "next/image";
+import { log } from "console";
 
 function matchProjectToArtistSlug(project: Project, artists: Artist[]) {
   const a_uuid = project.sk.split("#")[0];

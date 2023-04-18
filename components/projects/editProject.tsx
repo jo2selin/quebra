@@ -9,6 +9,7 @@ import UploadCover from "./uploadCover";
 import UploadTracks from "./uploadTracks";
 import EditTracklist from "./editTracklist";
 import { cssButtonPrimary } from "../../libs/css";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface Uuid {
   uuid: string;
@@ -65,7 +66,7 @@ async function publishProject({
         path_s3: project.path_s3,
       }),
     }).then((res) => {
-      console.log("res publishProject", res);
+      // console.log("res publishProject", res);
 
       if (setLoadingPublish && setStatusLocal) {
         setStatusLocal("PUBLISHED");
@@ -101,7 +102,16 @@ async function unPublishProject({
 function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   const [loadingPublish, setLoadingPublish] = React.useState(false);
   const [statusLocal, setStatusLocal] = React.useState(project.status);
+  const [coverIsSet, setCoverIsSet] = React.useState(
+    project.cover ? true : false
+  );
 
+  React.useEffect(() => {
+    setStatusLocal(project.status);
+  }, [project]);
+
+  console.log("project", project.status);
+  console.log("statusLocal", statusLocal);
   return (
     <>
       <div className="flex align-top justify-between items-center mb-1">
@@ -117,7 +127,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
                 href={`/${artist.slug}/p/${project.slug}`}
                 className="text-white"
               >
-                {statusLocal}
+                {statusLocal} - Link
               </Link>
             ) : (
               statusLocal
@@ -132,12 +142,14 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         </button>
       </div>
       <h2 className="text-xl mb-6 ">{artist.artistName}</h2>
-
-      <UploadCover
-        project={project}
-        artist={artist}
-        status={project.status as string}
-      />
+      <ErrorBoundary fallback={<div>Something went wrong</div>}>
+        <UploadCover
+          project={project}
+          artist={artist}
+          status={project.status as string}
+          setCoverIsSet={setCoverIsSet}
+        />
+      </ErrorBoundary>
       {project.status === "DRAFT" && (
         <UploadTracks project={project} artist={artist} />
       )}
@@ -151,7 +163,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         />
       )}
 
-      {tracks[0] && statusLocal !== "PUBLISHED" && (
+      {tracks[0] && statusLocal !== "PUBLISHED" && coverIsSet && (
         <div className="flex justify-center m-16">
           <div
             onClick={() => {
