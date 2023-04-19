@@ -7,6 +7,7 @@ interface Project {
   slug: string;
   cover: string;
   status?: string;
+  validated?: string;
   path_s3: string;
 }
 interface Artist {
