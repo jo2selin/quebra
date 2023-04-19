@@ -46,7 +46,7 @@ export async function getStaticPaths() {
 
 // `getStaticPaths` requires using `getStaticProps`
 export const getStaticProps = async ({ params }: any) => {
-  if (!params?.p_slug) return { notFound: true };
+  if (!params?.p_slug) return false;
 
   const projects = await getDynamoProjects();
   const artists = await getDynamoArtists();
@@ -62,6 +62,7 @@ export const getStaticProps = async ({ params }: any) => {
   if (!project) {
     return {
       notFound: true,
+      revalidate: 10,
     };
   }
 
@@ -79,9 +80,7 @@ export const getStaticProps = async ({ params }: any) => {
     data = { project: project, artist: artist, tracks: tracks };
   } else {
     data = null;
-    return {
-      notFound: true,
-    };
+    return false;
   }
 
   return {
