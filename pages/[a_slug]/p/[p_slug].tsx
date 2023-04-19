@@ -46,7 +46,7 @@ export async function getStaticPaths() {
 
 // `getStaticPaths` requires using `getStaticProps`
 export const getStaticProps = async ({ params }: any) => {
-  if (!params?.p_slug) return false;
+  if (!params?.p_slug) return { notFound: true };
 
   const projects = await getDynamoProjects();
   const artists = await getDynamoArtists();
@@ -59,10 +59,11 @@ export const getStaticProps = async ({ params }: any) => {
     return false;
   }
 
-  // if (!project) {
-  //   console.log("dont exist the project", project);
-  //   return false;
-  // }
+  if (!project) {
+    return {
+      notFound: true,
+    };
+  }
 
   let artist;
   try {
@@ -73,25 +74,19 @@ export const getStaticProps = async ({ params }: any) => {
   }
   const tracks = await getDynamoTracksFromProject(artist?.uuid, project?.uuid);
 
-  console.log(
-    "getStaticProps===>",
-    project,
-    artist,
-    "nbr tracks:",
-    tracks?.length
-  );
-
   let data;
   if (project && artist && tracks) {
     data = { project: project, artist: artist, tracks: tracks };
   } else {
     data = null;
+    return {
+      notFound: true,
+    };
   }
 
   return {
     props: data,
-    revalidate: 5,
-    notFound: data === null ? true : false,
+    revalidate: 10,
   };
 };
 
@@ -106,7 +101,7 @@ export default function Project(props: propsType) {
         {props.project && (
           <>
             <title>
-              {props.project.projectName} - {props.artist.artistName} | Quebra
+              {`${props.project.projectName} - ${props.artist.artistName} | Quebra`}
             </title>
             <meta
               property="og:title"
