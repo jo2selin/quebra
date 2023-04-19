@@ -3,7 +3,6 @@ import { GetStaticProps } from "next";
 import Player from "../../../components/player";
 import EditProject from "../../../components/projects/editProject";
 import Head from "next/head";
-
 import {
   getProjects,
   getArtists,
@@ -52,12 +51,27 @@ export const getStaticProps = async ({ params }: any) => {
   const projects = await getDynamoProjects();
   const artists = await getDynamoArtists();
 
-  const project = projects?.filter((p: any) => p.slug === params.p_slug)[0];
-  const artist = matchProjectToArtistSlug(
-    project as Project,
-    artists as Artist[]
-  );
-  const tracks = await getDynamoTracksFromProject(artist.uuid, project?.uuid);
+  let project;
+  try {
+    project = projects?.filter((p: any) => p.slug === params.p_slug)[0];
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+
+  // if (!project) {
+  //   console.log("dont exist the project", project);
+  //   return false;
+  // }
+
+  let artist;
+  try {
+    artist = matchProjectToArtistSlug(project as Project, artists as Artist[]);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+  const tracks = await getDynamoTracksFromProject(artist?.uuid, project?.uuid);
 
   console.log(
     "getStaticProps===>",
@@ -67,9 +81,17 @@ export const getStaticProps = async ({ params }: any) => {
     tracks?.length
   );
 
+  let data;
+  if (project && artist && tracks) {
+    data = { project: project, artist: artist, tracks: tracks };
+  } else {
+    data = null;
+  }
+
   return {
-    props: { project: project, artist: artist, tracks: tracks },
-    revalidate: 30,
+    props: data,
+    revalidate: 5,
+    notFound: data === null ? true : false,
   };
 };
 
