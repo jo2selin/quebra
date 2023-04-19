@@ -13,7 +13,7 @@ import newTalents from "../public/new_talents.svg";
 const inter = Inter({ subsets: ["latin"] });
 
 const filterProjectsHome = (projects: Project[]) => {
-  return projects.filter((p) => p.validated === "1");
+  return projects.filter((p) => p.validated === "HOMEPAGE");
 };
 
 const matchProjectToArtistSlug = (project: Project, artists: Artist[]) => {

@@ -110,50 +110,53 @@ export default function Project(props: propsType) {
           </>
         )}
       </Head>
-
-      {props.project && (
-        <h1 className="text-3xl">{props.project.projectName}</h1>
-      )}
-      {props.artist && <h2 className="text-xl">{props.artist.artistName}</h2>}
-      {props.artist && props.project && (
-        <>
-          <Image
-            src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${props.project.path_s3}/cover.jpg`}
-            alt={`${props.project.projectName}, ${props.artist.artistName}`}
-            width={500}
-            height={500}
-          />
-          <Player
-            tracks={props.tracks}
-            p_slug={props.project.path_s3}
-            currentTrack={currentTrack}
-            setTrackIndex={setTrackIndex}
-          />
-        </>
-      )}
-      {props.tracks && (
-        <ol>
-          {props.tracks
-            .sort((a, b) => a.track_id - b.track_id)
-            .map((track: Track, i) => {
-              const isCurrent = currentTrack + 1 === +track.track_id;
-              return (
-                <li
-                  key={track.uuid}
-                  className={`border-l-4 px-3 py-4  ${
-                    isCurrent
-                      ? " border-jam-pink  bg-jam-light-transparent "
-                      : "border-jam-dark-purple"
-                  } cursor-pointer`}
-                  onClick={() => setTrackIndex(i)}
-                >
-                  <span className="p-3 mr-3">{track.track_id}</span>
-                  {track.track_name}
-                </li>
-              );
-            })}
-        </ol>
-      )}
+      <div className="pb-10">
+        {props.project && (
+          <h1 className="text-3xl">{props.project.projectName}</h1>
+        )}
+        {props.artist && <h2 className="text-xl">{props.artist.artistName}</h2>}
+        {props.artist && props.project && (
+          <>
+            <Image
+              src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${props.project.path_s3}/cover.jpg`}
+              alt={`${props.project.projectName}, ${props.artist.artistName}`}
+              width={500}
+              height={500}
+            />
+            <div className="max-w-[500px]">
+              <Player
+                tracks={props.tracks}
+                p_slug={props.project.path_s3}
+                currentTrack={currentTrack}
+                setTrackIndex={setTrackIndex}
+              />
+            </div>
+          </>
+        )}
+        {props.tracks && (
+          <ol className="max-w-[500px]">
+            {props.tracks
+              .sort((a, b) => a.track_id - b.track_id)
+              .map((track: Track, i) => {
+                const isCurrent = currentTrack + 1 === +track.track_id;
+                return (
+                  <li
+                    key={track.uuid}
+                    className={`border-l-4 px-3 py-4  ${
+                      isCurrent
+                        ? " border-jam-pink  bg-jam-light-transparent "
+                        : "border-jam-dark-purple"
+                    } cursor-pointer`}
+                    onClick={() => setTrackIndex(i)}
+                  >
+                    <span className="p-3 mr-3">{track.track_id}</span>
+                    {track.track_name}
+                  </li>
+                );
+              })}
+          </ol>
+        )}
+      </div>
     </>
   );
 }
