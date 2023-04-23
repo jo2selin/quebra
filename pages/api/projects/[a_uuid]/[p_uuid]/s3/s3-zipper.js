@@ -1,5 +1,4 @@
 export default function handler(req, res) {
-  console.log("zip handler req.body.path_s3", req.body, req.body.path_s3);
   const reqBody = JSON.parse(req.body);
   console.log("reqBody", reqBody);
 
@@ -19,12 +18,12 @@ export default function handler(req, res) {
   };
   var zipper = new S3Zipper(config);
 
-  zipper.filterOutFiles = function (file) {
-    if (file.Key.indexOf(".tmp") >= 0)
-      // filter out temp files
-      return null;
-    else return file;
-  };
+  // zipper.filterOutFiles = function (file) {
+  //   if (file.Key.indexOf(".tmp") >= 0)
+  //     // filter out temp files
+  //     return null;
+  //   else return file;
+  // };
 
   /// if no path is given to S3 zip file then it will be placed in the same folder
   zipper.zipToS3File(

@@ -1,6 +1,7 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import Player from "../../../components/player";
+import Button from "../../../components/button";
 import EditProject from "../../../components/projects/editProject";
 import Head from "next/head";
 import {
@@ -138,7 +139,7 @@ export default function Project(props: propsType) {
             {props.tracks
               .sort((a, b) => a.track_id - b.track_id)
               .map((track: Track, i) => {
-                const isCurrent = currentTrack + 1 === +track.track_id;
+                const isCurrent = currentTrack + 1 === i + 1;
                 return (
                   <li
                     key={track.uuid}
@@ -149,13 +150,19 @@ export default function Project(props: propsType) {
                     } cursor-pointer`}
                     onClick={() => setTrackIndex(i)}
                   >
-                    <span className="p-3 mr-3">{track.track_id}</span>
+                    <span className="p-3 mr-3">{i + 1}</span>
                     {track.track_name}
                   </li>
                 );
               })}
           </ol>
         )}
+
+        {/* <Button
+          to={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${props.project.path_s3}/${props.project.path_s3}.zip`}
+        >
+          Download
+        </Button> */}
       </div>
     </>
   );

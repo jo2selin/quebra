@@ -16,38 +16,15 @@ import Image from "next/image";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-// async function archiveJam(id: string): Promise<void> {
-//   await fetch(`/api/jam/${id}`, {
-//     method: "DELETE",
-//   });
-//   Router.push("/");
-// }
-
-// type typeCheckNameAvailability = {
-//   name_available: boolean;
-// };
-// async function checkNameAvailability(
-//   newName: string
-// ): Promise<typeCheckNameAvailability> {
-//   const response = await fetch(`/api/user/checkNameAvailability/${newName}`, {
-//     method: "GET",
-//   });
-
-//   return response.json();
-// }
-
-// async function submitFormName(newName: string) {
-
-// }
-
 // type Jams = JamProps[];
 
-function ArtistProfile() {
+function ArtistProfile({ setArtistData }: any) {
   // using an array style key.
   const { data, error, isLoading } = useSWR("/api/users/me/", fetcher);
   if (error) return <div>failed to load Artist Profile</div>;
   if (isLoading) return <div>loading Artist Profile...</div>;
   if (data.artistName && data.sk && data.pk) {
+    setArtistData(data);
     return (
       <div>
         <h1 className="text-5xl uppercase">My Account</h1>
@@ -72,7 +49,7 @@ const Me: React.FC = () => {
   const { data: session, status } = useSession();
   const loading = status === "loading";
 
-  const [artistName, setArtistName] = useState(null);
+  const [artistData, setArtistData] = useState<Artist>();
 
   if (loading) {
     return <p>loading...</p>;
@@ -93,8 +70,8 @@ const Me: React.FC = () => {
             {/* <h2 className="text-5xl ">My Account</h2> */}
           </div>
 
-          <ArtistProfile />
-          <ArtistProjects />
+          <ArtistProfile setArtistData={setArtistData} />
+          {artistData && <ArtistProjects artistData={artistData} />}
         </div>
       </div>
     </>

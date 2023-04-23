@@ -22,7 +22,7 @@ export default function Player({
   let playlist = [] as Playlist[];
 
   tracks.forEach((track: any) => {
-    const fullSlug = `http://quebra-bucket.s3.amazonaws.com/projects/${p_slug}/${track.slug}.mp3`;
+    const fullSlug = `https://quebra-bucket.s3.amazonaws.com/projects/${p_slug}/${track.slug}.mp3`;
     playlist = [
       ...playlist,
       { src: fullSlug, name: track.track_name },

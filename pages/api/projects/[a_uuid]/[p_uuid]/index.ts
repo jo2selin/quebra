@@ -102,6 +102,7 @@ export default async function handler(
 
       if (!req.body?.unpublish && req.body?.actualStatus === "DRAFT") {
         // create zip only on first publish
+        //Todo re-create zip when tracks are edited/deleted
 
         try {
           await fetch(
@@ -117,7 +118,7 @@ export default async function handler(
           throw error;
         }
       }
-      return res.status(201).json(data);
+      return res.status(201).json("data");
     }
   }
 
@@ -163,7 +164,7 @@ export default async function handler(
       .then(async () => {
         const bucketParams = {
           Bucket: process.env.S3_UPLOAD_BUCKET,
-          Key: `projects/${req.body.path_s3}/`,
+          Key: `projects/${req.body.path_s3}/${req.body.slug}.zip`,
         };
         try {
           const data = await s3Client.send(

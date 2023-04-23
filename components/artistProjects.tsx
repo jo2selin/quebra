@@ -5,11 +5,16 @@ import Button from "./button";
 import { fetcher } from "../libs/fetcher";
 import useSWR from "swr";
 
-export default function ArtistProjects() {
+interface typeArtistProjects {
+  artistData: Artist;
+}
+
+export default function ArtistProjects({ artistData }: typeArtistProjects) {
   const { data, error, isLoading } = useSWR("/api/projects/me", fetcher);
   // if (error) return <div>failed to load Artist Projects</div>;
   if (isLoading) return <div>loading Artist Projects...</div>;
   // if (error) throw new Error(error);
+  console.log("artistData", artistData);
 
   return (
     <div className="pl-5">
@@ -26,15 +31,25 @@ export default function ArtistProjects() {
                     {proj.projectName}
                   </Link>
                 </h3>
-                <span
-                  className={`ml-5 text-xs ${
-                    proj.status === "PUBLISHED"
-                      ? " bg-green-500"
-                      : " bg-[#323232] "
-                  } rounded-sm px-2 `}
-                >
-                  {proj.status}
-                </span>
+                {proj.status === "PUBLISHED" && (
+                  <span
+                    className={`ml-5 text-xs  bg-green-500  rounded-sm px-2 `}
+                  >
+                    <Link
+                      href={`/${artistData.slug}/p/${proj.slug}`}
+                      className="text-white hover:text-green-300"
+                    >
+                      {proj.status}
+                    </Link>
+                  </span>
+                )}
+                {proj.status !== "PUBLISHED" && (
+                  <span
+                    className={`ml-5 text-xs bg-[#323232] rounded-sm px-2 `}
+                  >
+                    {proj.status}
+                  </span>
+                )}
               </div>
             );
           })}

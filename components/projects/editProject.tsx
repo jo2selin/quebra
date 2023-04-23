@@ -110,8 +110,8 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
     setStatusLocal(project.status);
   }, [project]);
 
-  console.log("project", project.status);
-  console.log("statusLocal", statusLocal);
+  // console.log("project", project.status);
+  // console.log("statusLocal", statusLocal);
   return (
     <>
       <div className="flex align-top justify-between items-center mb-1">
@@ -150,7 +150,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
           setCoverIsSet={setCoverIsSet}
         />
       </ErrorBoundary>
-      {project.status === "DRAFT" && (
+      {statusLocal === "DRAFT" && (
         <UploadTracks project={project} artist={artist} />
       )}
 
