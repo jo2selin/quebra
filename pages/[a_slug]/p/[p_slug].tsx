@@ -1,7 +1,6 @@
 import React from "react";
 import { GetStaticProps } from "next";
 import Player from "../../../components/player";
-import Button from "../../../components/button";
 import DownloadZip from "../../../components/projects/downloadZip";
 import Head from "next/head";
 import {
@@ -12,10 +11,7 @@ import {
   getTracksFromProject,
   getDynamoTracksFromProject,
 } from "../../../libs/api";
-import useSWR from "swr";
-import { fetcher } from "../../../libs/fetcher";
 import Image from "next/image";
-import { log } from "console";
 
 function matchProjectToArtistSlug(project: Project, artists: Artist[]) {
   const a_uuid = project.sk.split("#")[0];
@@ -94,6 +90,13 @@ type propsType = { project: Project; artist: Artist; tracks: Track[] };
 
 export default function Project(props: propsType) {
   const [currentTrack, setTrackIndex] = React.useState(0);
+  // console.log("props.project", props);
+
+  if (!props.project) {
+    console.error("ERROR ON ", props);
+    return false;
+  }
+  const { projectName, path_s3, slug, allow_download = false } = props.project;
 
   return (
     <>
@@ -101,33 +104,27 @@ export default function Project(props: propsType) {
         {props.project && (
           <>
             <title>
-              {`${props.project.projectName} - ${props.artist.artistName} | Quebra`}
+              {`${projectName} - ${props.artist.artistName} | Quebra`}
             </title>
-            <meta
-              property="og:title"
-              content={props.project.projectName}
-              key="title"
-            />
+            <meta property="og:title" content={projectName} key="title" />
           </>
         )}
       </Head>
       <div className="pb-10">
-        {props.project && (
-          <h1 className="text-3xl">{props.project.projectName}</h1>
-        )}
+        {props.project && <h1 className="text-3xl">{projectName}</h1>}
         {props.artist && <h2 className="text-xl">{props.artist.artistName}</h2>}
         {props.artist && props.project && (
           <>
             <Image
-              src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${props.project.path_s3}/cover.jpg`}
-              alt={`${props.project.projectName}, ${props.artist.artistName}`}
+              src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${path_s3}/cover.jpg`}
+              alt={`${projectName}, ${props.artist.artistName}`}
               width={500}
               height={500}
             />
             <div className="max-w-[500px]">
               <Player
                 tracks={props.tracks}
-                p_slug={props.project.path_s3}
+                p_slug={path_s3}
                 currentTrack={currentTrack}
                 setTrackIndex={setTrackIndex}
               />
@@ -158,11 +155,9 @@ export default function Project(props: propsType) {
           </ol>
         )}
 
-        {props.project.allow_download && (
+        {allow_download && (
           <div className="max-w-[500px]">
-            <DownloadZip
-              path={`/api/projects/${props.artist.slug}/${props.project.slug}`}
-            ></DownloadZip>
+            <DownloadZip path={`/api/projects/${props.artist.slug}/${slug}`} />
           </div>
         )}
       </div>

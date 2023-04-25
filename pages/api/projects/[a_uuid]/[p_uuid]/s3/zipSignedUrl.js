@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   });
 
   const url = await getSignedUrl(s3client, command, {
-    expiresIn: 20,
+    expiresIn: 1200,
   });
   console.log("preSignedUrl", url);
   return res.status(200).json({ url });
