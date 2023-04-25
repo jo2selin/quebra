@@ -106,7 +106,28 @@ export default function Project(props: propsType) {
             <title>
               {`${projectName} - ${props.artist.artistName} | Quebra`}
             </title>
+
             <meta property="og:title" content={projectName} key="title" />
+
+            <meta
+              property="og:description"
+              content={`${projectName}, ${props.artist.artistName}'s project is available on Quebra.co`}
+              key="ogdesc"
+            />
+            {/* <meta property="og:url" content={currentURL} key="ogurl" />
+             */}
+            <meta
+              property="og:image"
+              content={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${path_s3}/cover.jpg`}
+              key="ogimage"
+            />
+            <meta
+              property="og:site_name"
+              content={"Quebra.co"}
+              key="ogsitename"
+            />
+            <meta name="twitter:card" content="summary" key="twcard" />
+            {/* <meta name="twitter:creator" content={twitterHandle} key="twhandle" /> */}
           </>
         )}
       </Head>
