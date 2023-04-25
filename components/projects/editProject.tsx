@@ -28,6 +28,7 @@ interface TypePublishProject {
   artist: Artist;
   setLoadingPublish?: Function;
   setStatusLocal?: Function;
+  allowedDownload?: boolean;
 }
 
 async function handleDeleteProject({ artist, project }: ProjectDelete) {
@@ -53,6 +54,7 @@ async function publishProject({
   project,
   setLoadingPublish,
   setStatusLocal,
+  allowedDownload,
 }: TypePublishProject) {
   try {
     if (setLoadingPublish) setLoadingPublish(true);
@@ -64,6 +66,7 @@ async function publishProject({
         a_slug: artist.slug,
         p_slug: project.slug,
         path_s3: project.path_s3,
+        allow_download: allowedDownload,
       }),
     }).then((res) => {
       // console.log("res publishProject", res);
@@ -104,6 +107,9 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   const [statusLocal, setStatusLocal] = React.useState(project.status);
   const [coverIsSet, setCoverIsSet] = React.useState(
     project.cover ? true : false
+  );
+  const [allowedDownload, setAllowedDownload] = React.useState(
+    project.allow_download || false
   );
 
   React.useEffect(() => {
@@ -163,6 +169,28 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         />
       )}
 
+      {statusLocal !== "PUBLISHED" && (
+        <div className="flex my-6">
+          <div className="flex items-center justify-center pl-4 border border-jam-purple rounded ">
+            <input
+              id="allowDownload"
+              type="checkbox"
+              value=""
+              defaultChecked={allowedDownload}
+              name="bordered-checkbox"
+              className="w-4 h-4  bg-gray-100 border-gray-300 rounded focus:ring-purple-500  "
+              onChange={() => setAllowedDownload(!allowedDownload)}
+            />
+            <label
+              htmlFor="allowDownload"
+              className="px-4 py-4 ml-2 text-sm font-medium text-white cursor-pointer"
+            >
+              Allow project download (.zip)
+            </label>
+          </div>
+        </div>
+      )}
+
       {tracks[0] && statusLocal !== "PUBLISHED" && coverIsSet && (
         <div className="flex justify-center m-16">
           <div
@@ -172,6 +200,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
                 project,
                 setLoadingPublish,
                 setStatusLocal,
+                allowedDownload,
               });
             }}
             className={`${cssButtonPrimary} ${

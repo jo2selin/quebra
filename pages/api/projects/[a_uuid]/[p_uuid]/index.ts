@@ -76,6 +76,7 @@ export default async function handler(
     const session = await unstable_getServerSession(req, res, authOptions);
     console.log(req.body?.unpublished);
     const status = req.body?.unpublish ? "UNPUBLISHED" : "PUBLISHED";
+    const allow_download = req.body?.allow_download;
 
     // Publishing Project
     if (session && session.user?.email && req.method === "POST") {
@@ -91,9 +92,10 @@ export default async function handler(
         ExpressionAttributeNames: {
           "#status": "status",
         },
-        UpdateExpression: "set #status = :s", // For example, "'set Title = :t, Subtitle = :s'"
+        UpdateExpression: "set #status = :s, allow_download = :a", // For example, "'set Title = :t, Subtitle = :s'"
         ExpressionAttributeValues: {
           ":s": status,
+          ":a": allow_download,
         },
         ReturnValues: "ALL_NEW",
       };
@@ -118,7 +120,7 @@ export default async function handler(
           throw error;
         }
       }
-      return res.status(201).json("data");
+      return res.status(201).json(data);
     }
   }
 

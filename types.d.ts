@@ -9,6 +9,7 @@ interface Project {
   status?: string;
   validated?: string;
   path_s3: string;
+  allow_download: boolean;
 }
 interface Artist {
   pk: "ARTIST";

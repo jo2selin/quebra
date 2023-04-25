@@ -2,7 +2,7 @@ import React from "react";
 import { GetStaticProps } from "next";
 import Player from "../../../components/player";
 import Button from "../../../components/button";
-import EditProject from "../../../components/projects/editProject";
+import DownloadZip from "../../../components/projects/downloadZip";
 import Head from "next/head";
 import {
   getProjects,
@@ -158,11 +158,13 @@ export default function Project(props: propsType) {
           </ol>
         )}
 
-        {/* <Button
-          to={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${props.project.path_s3}/${props.project.path_s3}.zip`}
-        >
-          Download
-        </Button> */}
+        {props.project.allow_download && (
+          <div className="max-w-[500px]">
+            <DownloadZip
+              path={`/api/projects/${props.artist.slug}/${props.project.slug}`}
+            ></DownloadZip>
+          </div>
+        )}
       </div>
     </>
   );
