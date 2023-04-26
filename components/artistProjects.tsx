@@ -14,7 +14,6 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
   // if (error) return <div>failed to load Artist Projects</div>;
   if (isLoading) return <div>loading Artist Projects...</div>;
   // if (error) throw new Error(error);
-  console.log("artistData", artistData);
 
   return (
     <div className="pl-5">

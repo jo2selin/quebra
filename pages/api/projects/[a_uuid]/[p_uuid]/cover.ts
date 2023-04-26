@@ -22,8 +22,6 @@ export default async function handler(
       });
     }
     if (session && session.user?.email && req.method === "POST") {
-      console.log("POST COVER", req.query);
-
       const extension = (req.query.key as string).split(".").slice(-1);
 
       const params = {

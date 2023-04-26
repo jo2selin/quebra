@@ -1,6 +1,5 @@
 export default function handler(req, res) {
   const reqBody = JSON.parse(req.body);
-  console.log("reqBody", reqBody);
 
   var S3Zipper = require("aws-s3-zipper");
   // {
@@ -36,7 +35,7 @@ export default function handler(req, res) {
     function (err, result) {
       if (err) console.error(err);
       else {
-        console.log("result zipToS3File", result);
+        // console.log("result zipToS3File", result);
         // var lastFile = result.zippedFiles[result.zippedFiles.length - 1];
         // if (lastFile) console.log("last key ", lastFile.Key); // next time start from here
         res.status(200).json({ res: "Zip done" });

@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log("callbacks signin", user, account, profile);
+      // console.log("callbacks signin", user, account, profile);
 
       const isAllowedToSignIn = true;
       if (isAllowedToSignIn) {

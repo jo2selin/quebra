@@ -22,7 +22,6 @@ function checkImageParams(
   }
 
   // throw new Error("Image error");
-  console.log("checkImageParams");
 
   if (width >= 1100) {
     setErrorImage("Image is too big, use squoosh.app");
@@ -37,7 +36,7 @@ function checkImageParams(
     return false;
   }
 
-  console.log("errorImage", errorImage);
+  // console.log("errorImage", errorImage);
   if (errorImage) {
     return false;
   } else {
@@ -96,9 +95,6 @@ export default function UploadCover({
 
     try {
       uploadImage(file).then(async (image) => {
-        console.log("prject", project);
-        console.log("image", image);
-
         setImageUrl(image.url + "?" + Date.now());
         setCoverIsSet(true);
 

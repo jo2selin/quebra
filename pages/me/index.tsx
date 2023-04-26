@@ -57,8 +57,6 @@ const Me: React.FC = () => {
 
   // If no session exists, display access denied message
   if (status !== "authenticated") {
-    console.log("!session", session);
-
     return <AccessDenied />;
   }
 

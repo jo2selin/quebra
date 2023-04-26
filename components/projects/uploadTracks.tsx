@@ -24,12 +24,12 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
 
   const handleFilesChange = async ({ target }: any) => {
     const files = Array.from(target.files);
-    console.log("target", target);
+    // console.log("target", target);
 
     for (let index = 0; index < files.length; index++) {
       const file = files[index] as File;
       const trackName = cleanTrackName(file.name);
-      console.log("final trackName track", trackName);
+      // console.log("final trackName track", trackName);
 
       await uploadToS3(file, {
         endpoint: {
@@ -42,7 +42,6 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
           },
         },
       }).then(async (track) => {
-        console.log("track", track);
         const url = track.url;
         setUrls((current): any => [...current, url]);
         // setImageUrl(image.url + "?" + Date.now());
@@ -78,7 +77,6 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
         />
         <div>
           {/* {urls.map((url, index) => {
-            console.log(url, index);
 
             return (
               <div key={url}>

@@ -5,16 +5,20 @@ import { useRouter } from "next/navigation";
 
 interface TypeDownloadZip {
   path: string;
+  path_s3: string;
 }
 
-export default function DownloadZip({ path }: TypeDownloadZip) {
+export default function DownloadZip({ path, path_s3 }: TypeDownloadZip) {
   const { push } = useRouter();
 
   const handleDownload = async () => {
-    console.log("handleDownload");
-
     try {
-      const response = await fetch(`${path}/s3/zipSignedUrl`);
+      const response = await fetch(`${path}/s3/zipSignedUrl`, {
+        method: "POST",
+        body: JSON.stringify({
+          path_s3: path_s3,
+        }),
+      });
       const urlZip = await response.json();
       urlZip && push(urlZip.url as string);
     } catch (error) {

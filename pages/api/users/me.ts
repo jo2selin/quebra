@@ -15,7 +15,6 @@ async function createSlug(input: string) {
       return data;
     }
   );
-  console.log("isArtistSlugAvailable", isArtistSlugAvailable);
 
   const slug = isArtistSlugAvailable ? input : generateUniqueSlug(input);
 
@@ -23,7 +22,6 @@ async function createSlug(input: string) {
 }
 function generateUniqueSlug(slug: string) {
   const u = uuidv4().slice(0, 5);
-  console.log("generateUniqueSlug", u + "-" + slug);
   return u + "-" + slug;
 }
 
@@ -71,11 +69,9 @@ export default async function handler(
         Key: { pk: "ARTIST", sk: session.user?.email },
       })
     );
-    console.log("artist", artist);
 
     if (!artist.Item) {
       // first save
-      console.log("first save artist name");
 
       const data = await ddbDocClient.send(
         new PutCommand({

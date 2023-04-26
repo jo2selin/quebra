@@ -46,7 +46,6 @@ type propsType = {
 };
 
 export default function Home(props: propsType) {
-  console.log(props);
   const { projectsWithArtistsData } = props;
 
   return (

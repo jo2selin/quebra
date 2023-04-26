@@ -171,9 +171,6 @@ const TrackAction = ({
   const [loadingDelete, setLoadingDelete] = useState(false);
 
   React.useEffect(() => {
-    console.log("oldTrackNumber", oldTrackNumber, typeof oldTrackNumber);
-    console.log("trackNumber", trackNumber, typeof trackNumber);
-
     function displaySavebtn() {
       if (oldTrackName !== trackName || oldTrackNumber !== trackNumber)
         return true;

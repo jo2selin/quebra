@@ -21,7 +21,6 @@ async function deleteTrack(
   slug: string,
   path_s3: string
 ) {
-  console.log("p_uuid, t_uuid, slug", p_uuid, t_uuid, slug);
   if (!slug) {
     throw new Error("Track slug not defined");
   }
@@ -39,7 +38,7 @@ async function deleteTrack(
   await ddbDocClient.send(new DeleteCommand(params)).then(() => {
     try {
       const data = s3Client.send(new DeleteObjectCommand(bucketParams));
-      console.log("Success. Object deleted.", data);
+      // console.log("Success. Object deleted.", data);
       return data; // For unit tests.
     } catch (err) {
       console.error("Error DeleteCommand deleteTrack", err);
@@ -54,8 +53,6 @@ export default async function handler(
 ) {
   // === GET ========================================
   if (req.method === "GET") {
-    console.log("req.query", req.query);
-
     const project = await ddbDocClient.send(
       // new QueryCommand(paramsProjectFromUuid)
       new GetCommand({
@@ -74,13 +71,12 @@ export default async function handler(
   // === POST ========================================
   if (req.method === "POST") {
     const session = await unstable_getServerSession(req, res, authOptions);
-    console.log(req.body?.unpublished);
     const status = req.body?.unpublish ? "UNPUBLISHED" : "PUBLISHED";
     const allow_download = req.body?.allow_download;
 
     // Publishing Project
     if (session && session.user?.email && req.method === "POST") {
-      console.log("PUBLISH PROJECT", req.query, status);
+      // console.log("PUBLISH PROJECT", req.query, status);
 
       const params = {
         TableName: process.env.TABLE,
@@ -172,7 +168,6 @@ export default async function handler(
           const data = await s3Client.send(
             new DeleteObjectCommand(bucketParams)
           );
-          console.log("Success. Project deleted.", req.body.path_s3, data);
           return data;
         } catch (err) {
           console.log("Error DeleteObjectCommand", err);

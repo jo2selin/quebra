@@ -30,7 +30,6 @@ async function createSlug(input: string, a_uuid: string) {
   ).then((data) => {
     return data;
   });
-  console.log("isProjectSlugAvailable", isProjectSlugAvailable);
 
   const slug = isProjectSlugAvailable ? input : generateUniqueSlug(input);
 
@@ -39,7 +38,6 @@ async function createSlug(input: string, a_uuid: string) {
 
 function generateUniqueSlug(slug: string) {
   const u = uuidv4().slice(0, 5);
-  console.log("generateUniqueSlug", u + "-" + slug);
   return u + "-" + slug;
 }
 
@@ -57,8 +55,6 @@ export default async function handler(
 
   // === GET ========================================
   if (req.method === "GET") {
-    console.log("GET ALL PUBLISHED PROJECTS");
-
     // get all PROJECTS
     const data = await ddbDocClient.send(new QueryCommand(paramsAllProjects));
     const publishedProjects = data.Items?.filter(

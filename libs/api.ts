@@ -106,12 +106,12 @@ export async function getDynamoTracksFromProject(
 
 export async function checkProjectSlugAvailable(slug: string, a_uuid: string) {
   const slugFound = getMyProjects(a_uuid).then((projects: Array<Project>) => {
-    console.log("projects checkProjectSlugAvailable", projects);
+    // console.log("projects checkProjectSlugAvailable", projects);
 
     const res = projects.filter((p: Project) => p.slug === slug);
     return res[0] ? true : false;
   });
-  console.log("checkProjectSlugAvailable, slugFound:", await slugFound);
+  // console.log("checkProjectSlugAvailable, slugFound:", await slugFound);
 
   const slugNotAvailable = await slugFound;
 
@@ -120,12 +120,12 @@ export async function checkProjectSlugAvailable(slug: string, a_uuid: string) {
 
 export async function checkArtistSlugAvailable(slug: string) {
   const slugFound = getArtists().then((artists: Artist[]) => {
-    console.log("checkArtistSlugAvailable", artists);
+    // console.log("checkArtistSlugAvailable", artists);
 
     const res = artists.filter((a: Artist) => a.slug === slug);
     return res[0] ? true : false;
   });
-  console.log("checkArtistSlugAvailable, slugFound:", await slugFound);
+  // console.log("checkArtistSlugAvailable, slugFound:", await slugFound);
 
   const slugNotAvailable = await slugFound;
 

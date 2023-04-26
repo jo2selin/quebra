@@ -178,7 +178,10 @@ export default function Project(props: propsType) {
 
         {allow_download && (
           <div className="max-w-[500px]">
-            <DownloadZip path={`/api/projects/${props.artist.slug}/${slug}`} />
+            <DownloadZip
+              path={`/api/projects/${props.artist.slug}/${slug}`}
+              path_s3={props.project.path_s3}
+            />
           </div>
         )}
       </div>

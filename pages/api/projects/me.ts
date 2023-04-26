@@ -11,7 +11,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  console.log("session ME", session);
 
   if (!session) {
     res.send({
@@ -47,7 +46,6 @@ export default async function handler(
       const projects = await ddbDocClient.send(
         new QueryCommand(paramsAllMyProjects)
       );
-      console.log("/projects/me", projects.Items);
 
       return res.status(200).json(projects.Items);
     }

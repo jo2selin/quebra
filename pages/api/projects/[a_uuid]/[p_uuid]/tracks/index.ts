@@ -46,8 +46,6 @@ export default async function handler(
   }
 
   if (session && session.user?.email && req.method === "POST") {
-    console.log("req POST /tracks", req.body);
-
     const { trackName, p_uuid, track_id } = req.body;
     const uuid = uuidv4();
 

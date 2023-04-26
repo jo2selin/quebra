@@ -39,7 +39,6 @@ async function handleDeleteProject({ artist, project }: ProjectDelete) {
       body: JSON.stringify({ path_s3: project.path_s3 }),
     }).then((res) => {
       Router.push("/me");
-      console.log(res);
       return;
     });
   } catch (error) {
@@ -274,8 +273,6 @@ export default function EditProject({ uuid }: Uuid) {
   );
 
   if (status !== "authenticated") {
-    console.log("!session", session);
-
     return <AccessDenied />;
   }
 

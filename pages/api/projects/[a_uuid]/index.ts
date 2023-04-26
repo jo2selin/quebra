@@ -21,8 +21,6 @@ export default async function handler(
   const session = await unstable_getServerSession(req, res, authOptions);
 
   if (req.method === "GET") {
-    console.log("req.query", req.query);
-
     const paramsProjectByArtist = {
       TableName: process.env.TABLE,
       KeyConditionExpression: "pk = :pk and begins_with(sk, :a_uuid)",
@@ -50,7 +48,6 @@ export default async function handler(
         default:
           break;
       }
-      console.log("req.query.s", req.query.s);
 
       // todo remove ? (not used yet): NOT WORKING : headers login via functions?
       if (session && session.user?.email === projects.Items[0].email) {
