@@ -1,6 +1,7 @@
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "../../../libs/ddbDocClient";
-
+import { unstable_getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 // GET /api/users/:userEmail
@@ -8,6 +9,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await unstable_getServerSession(req, res, authOptions);
+  if (!session) {
+    res.send({
+      error: "You must be signed in to access this route.",
+    });
+  }
   // === GET ========================================
   if (req.method === "GET") {
     const data = await ddbDocClient.send(

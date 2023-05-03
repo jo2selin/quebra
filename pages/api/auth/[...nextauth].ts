@@ -1,5 +1,4 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
@@ -25,10 +24,10 @@ const client = DynamoDBDocument.from(new DynamoDB(config), {
 export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-    }),
+    // GithubProvider({
+    //   clientId: process.env.GITHUB_ID as string,
+    //   clientSecret: process.env.GITHUB_SECRET as string,
+    // }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -42,7 +41,7 @@ export const authOptions: NextAuthOptions = {
     colorScheme: "auto",
     brandColor: "#62258e", // Hex color code
     logo: "", // Absolute URL to image
-    buttonText: "red", // Hex color code
+    buttonText: "white", // Hex color code
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {

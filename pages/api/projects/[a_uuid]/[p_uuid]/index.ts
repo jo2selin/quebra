@@ -14,6 +14,7 @@ import { server } from "../../../../../config";
 // import s3zipper from "./s3/s3-zipper";
 
 import type { NextApiRequest, NextApiResponse } from "next";
+import { log } from "console";
 
 async function deleteTrack(
   p_uuid: string,
@@ -127,6 +128,19 @@ export default async function handler(
       res.send({
         error: "You must be signed in to access this route.",
       });
+      return false;
+    }
+
+    const artistSession = await ddbDocClient.send(
+      new GetCommand({
+        TableName: process.env.TABLE,
+        Key: { pk: "ARTIST", sk: session.user?.email },
+      })
+    );
+
+    if (artistSession.Item?.uuid !== req.query.a_uuid) {
+      console.error("artistSession does not match artist project");
+      return false;
     }
 
     const paramsAllTracksFromProject = {
@@ -170,7 +184,7 @@ export default async function handler(
           );
           return data;
         } catch (err) {
-          console.log("Error DeleteObjectCommand", err);
+          console.error("Error DeleteObjectCommand", err);
         }
       })
       .then(async () => {
