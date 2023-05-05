@@ -83,9 +83,9 @@ export default function Home(props: propsType) {
             your music <br />
             with the world!
           </h1>
-          <Button to={"/auth/signin"} className="mt-5">
+          {/* <Button to={"/auth/signin"} className="mt-5">
             Get started
-          </Button>
+          </Button> */}
         </div>
         <Image
           priority
