@@ -10,8 +10,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
-  if (!session) {
-    res.send({
+  if (!session || session.user?.email !== req.query.userEmail) {
+    return res.send({
       error: "You must be signed in to access this route.",
     });
   }

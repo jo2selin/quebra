@@ -14,7 +14,6 @@ import { server } from "../../../../../config";
 // import s3zipper from "./s3/s3-zipper";
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { log } from "console";
 
 async function deleteTrack(
   p_uuid: string,
@@ -79,6 +78,7 @@ export default async function handler(
     if (session && session.user?.email && req.method === "POST") {
       // console.log("PUBLISH PROJECT", req.query, status);
 
+      console.log("POST UPDATE puuid =========================", req.query);
       const params = {
         TableName: process.env.TABLE,
 
@@ -96,8 +96,10 @@ export default async function handler(
         },
         ReturnValues: "ALL_NEW",
       };
+      console.log(params);
 
       const data = await ddbDocClient.send(new UpdateCommand(params));
+      console.log("data", data);
 
       if (!req.body?.unpublish && req.body?.actualStatus === "DRAFT") {
         // create zip only on first publish

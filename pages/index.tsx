@@ -111,13 +111,13 @@ export default function Home(props: propsType) {
         <div className="flex flex-col md:flex-row mb-5">
           <Image priority src={newTalents} alt="" />
           <p className="md:pl-5">
-            Whether you’re a seasoned musician or just starting out, we believe
-            that everyone should have the opportunity to showcase their work and
-            connect with others who share their passion for music.
+            We believe that everyone should have the opportunity to showcase
+            their work and connect with others who share their passion for
+            music.
           </p>
         </div>
       </div>
-      <h2 className="text-2xl">Latest releases</h2>
+      {/* <h2 className="text-2xl">Latest releases</h2>
       <div className="flex flex-wrap -mx-4 justify-center">
         {projectsWithArtistsData.map((p: any) => (
           <div
@@ -137,14 +137,12 @@ export default function Home(props: propsType) {
                 <h2 className="text-xl font-bold text-white ">
                   {p.project.projectName} - {p.artist.artistName}
                 </h2>
-                {/* <p className="text-gray-700">
-                  Lorem
-                </p> */}
+               
               </div>
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </>
   );
 }

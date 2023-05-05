@@ -84,12 +84,16 @@ async function unPublishProject({
   artist,
   project,
   setStatusLocal,
+  allowedDownload,
 }: TypePublishProject) {
   try {
     await fetch(`/api/projects/${artist.uuid}/${project.uuid}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ unpublish: true }),
+      body: JSON.stringify({
+        unpublish: true,
+        allow_download: allowedDownload,
+      }),
     }).then((res) => {
       if (setStatusLocal) {
         setStatusLocal("UNPUBLISHED");
@@ -219,6 +223,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
                 artist,
                 project,
                 setStatusLocal,
+                allowedDownload,
               });
             }}
             className={`${cssButtonPrimary}  bg-[#323232]`}
