@@ -29,3 +29,8 @@ interface Track {
 
   uuid: string;
 }
+
+interface ProjectsWithArtistsData {
+  project: Project;
+  artist: Artist;
+}

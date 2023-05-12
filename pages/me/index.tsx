@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Head from "next/head";
 
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
@@ -62,6 +63,9 @@ const Me: React.FC = () => {
 
   return (
     <>
+      <Head>
+        <title key="title">Me | Quebra</title>
+      </Head>
       <div className="md:flex">
         <div className="md:flex-1 mb-20 md:mr-32">
           <div className="flex justify-between items-center pb-5">

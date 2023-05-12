@@ -103,11 +103,14 @@ export default function Project(props: propsType) {
       <Head>
         {props.project && (
           <>
-            <title>
+            <title key="title">
               {`${projectName} - ${props.artist.artistName} | Quebra`}
             </title>
-
-            <meta property="og:title" content={projectName} key="title" />
+            <meta
+              property="og:title"
+              content={`${projectName} - ${props.artist.artistName} | Quebra`}
+              key="og:title"
+            />
 
             <meta
               property="og:description"

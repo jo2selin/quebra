@@ -48,8 +48,8 @@ export default function Post(props: typePropsArtist) {
   return (
     <>
       <Head>
-        <title>{`${props.artistName} | Quebra`}</title>
-        <meta property="og:title" content={props.artistName} key="title" />
+        <title key="title">{`${props.artistName} | Quebra`}</title>
+        <meta property="og:title" content={props.artistName} key="og:title" />
       </Head>
       <h1>{props.artistName}</h1>
     </>
