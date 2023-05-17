@@ -119,10 +119,9 @@ export async function checkProjectSlugAvailable(slug: string, a_uuid: string) {
 }
 
 export async function checkArtistSlugAvailable(slug: string) {
-  const slugFound = getArtists().then((artists: Artist[]) => {
-    // console.log("checkArtistSlugAvailable", artists);
-
-    const res = artists.filter((a: Artist) => a.slug === slug);
+  const slugFound = getDynamoArtists().then((artists) => {
+    const res = artists?.filter((a) => a.slug === slug);
+    if (!res) return false;
     return res[0] ? true : false;
   });
   // console.log("checkArtistSlugAvailable, slugFound:", await slugFound);
