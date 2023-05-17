@@ -1,5 +1,5 @@
 import { server } from "../config";
-import { QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import { ddbDocClient } from "./ddbDocClient";
 // export async function getMe() {
 //   const res = await fetch(`${server}/api/users/me`);

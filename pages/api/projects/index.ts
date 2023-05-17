@@ -1,4 +1,4 @@
-import { UpdateCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { v4 as uuidv4 } from "uuid";
@@ -45,13 +45,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const getUserArtist = async (email: string) => {
-    const userArtist = await fetch(`${server}/api/users/${email}`, {
-      method: "GET",
-    });
-
-    return userArtist.json();
-  };
+  const getUserArtist = async () => {};
 
   // === GET ========================================
   if (req.method === "GET") {
@@ -82,15 +76,29 @@ export default async function handler(
         strict: true,
       });
 
-      const userArtist: any = await getUserArtist(session.user?.email);
-      const slug = await createSlug(slugProjectName, userArtist.uuid);
+      // const userArtist: Artist = await getUserArtist();
+
+      const userArtist = await ddbDocClient.send(
+        new GetCommand({
+          TableName: process.env.TABLE,
+          Key: { pk: "ARTIST", sk: session.user?.email },
+        })
+      );
+
+      if (!userArtist.Item) {
+        console.error("error post /project");
+        return false;
+      }
+      const slug = await createSlug(slugProjectName, userArtist.Item.uuid);
+
+      console.log("userArtist, /projects", userArtist);
 
       const data = await ddbDocClient.send(
         new PutCommand({
           TableName: process.env.TABLE,
           Item: {
             pk: "PROJECT",
-            sk: userArtist.uuid + "#" + uuid,
+            sk: userArtist.Item.uuid + "#" + uuid,
             projectName: projectName,
             // email: session.user?.email,
             // artistSlug: userArtist.slug,
@@ -98,7 +106,8 @@ export default async function handler(
             uuid: uuid,
             status: "DRAFT",
             validated: "",
-            path_s3: `${userArtist.slug}-${slug}`,
+            views: 0,
+            path_s3: `${userArtist.Item.slug}-${slug}`,
             created_at: new Date().toISOString(),
           },
         })

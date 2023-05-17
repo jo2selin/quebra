@@ -2,7 +2,9 @@ import React from "react";
 import { GetStaticProps } from "next";
 import Player from "../../../components/player";
 import DownloadZip from "../../../components/projects/downloadZip";
+import Counter from "../../../components/projects/counter";
 import Head from "next/head";
+import Image from "next/image";
 import {
   getProjects,
   getArtists,
@@ -11,7 +13,6 @@ import {
   getTracksFromProject,
   getDynamoTracksFromProject,
 } from "../../../libs/api";
-import Image from "next/image";
 
 function matchProjectToArtistSlug(project: Project, artists: Artist[]) {
   const a_uuid = project.sk.split("#")[0];
@@ -144,6 +145,7 @@ export default function Project(props: propsType) {
               alt={`${projectName}, ${props.artist.artistName}`}
               width={500}
               height={500}
+              priority={true}
             />
             <div className="max-w-[500px]">
               <Player
@@ -178,6 +180,8 @@ export default function Project(props: propsType) {
               })}
           </ol>
         )}
+
+        <Counter project={props.project} artist={props.artist} />
 
         {allow_download && (
           <div className="max-w-[500px]">
