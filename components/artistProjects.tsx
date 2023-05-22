@@ -45,21 +45,35 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                 </span>
               )}
               {proj.status !== "PUBLISHED" && (
-                <span className={`ml-5 text-xs bg-[#323232] rounded-sm px-2 `}>
-                  {proj.status}
-                </span>
+                <>
+                  <span
+                    className={`ml-5 text-xs bg-jam-purple rounded-sm px-2 `}
+                  >
+                    <Link
+                      href={`/me/project?uuid=${proj.uuid}`}
+                      className="text-white hover:text-green-300"
+                    >
+                      edit
+                    </Link>
+                  </span>
+                  <span
+                    className={`ml-5 text-xs bg-[#323232] rounded-sm px-2 `}
+                  >
+                    {proj.status}
+                  </span>
+                </>
               )}
             </div>
           );
         })}
       {allButDeletedProjects.length < 3 && (
-        <Button to={"/me/project"} className="text-sm">
+        <Button to={"/me/project"} className="text-sm mt-4">
           Create a new project
         </Button>
       )}
       {allButDeletedProjects.length >= 3 && (
         <>
-          <Button to={"#"} className="text-sm">
+          <Button to={"#"} className="text-sm mt-4">
             Max projects limit reached ({allButDeletedProjects.length}/2).
           </Button>
           <p>Project are limited to 2, contact us to add more</p>

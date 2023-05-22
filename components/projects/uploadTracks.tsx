@@ -26,43 +26,56 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
     const files = Array.from(target.files);
     // console.log("target", target);
 
-    for (let index = 0; index < files.length; index++) {
-      const file = files[index] as File;
-      const trackName = cleanTrackName(file.name);
-      // console.log("final trackName track", trackName);
+    try {
+      for (let index = 0; index < files.length; index++) {
+        const file = files[index] as File;
 
-      await uploadToS3(file, {
-        endpoint: {
-          request: {
-            body: {
-              path_s3: project.path_s3,
-              trackName: trackName,
-            },
-            headers: {},
-          },
-        },
-      }).then(async (track) => {
-        const url = track.url;
-        setUrls((current): any => [...current, url]);
-        // setImageUrl(image.url + "?" + Date.now());
-
-        try {
-          const body = {
-            track: track,
-            trackName: trackName,
-            track_id: index + 1,
-            a_uuid: artist.uuid,
-            p_uuid: project.uuid,
-          };
-          await fetch(`/api/projects/${artist.uuid}/${project.uuid}/tracks`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          });
-        } catch (error) {
-          console.error(error);
+        if (file.type !== "audio/mpeg") {
+          throw new Error(`must be an mp3 : ${file.name}`);
+          // console.error(`must be an mp3 : ${file.name}`);
         }
-      });
+
+        const trackName = cleanTrackName(file.name);
+        console.log("final trackName track", trackName);
+        console.log(files[index]);
+
+        await uploadToS3(file, {
+          endpoint: {
+            request: {
+              body: {
+                path_s3: project.path_s3,
+                trackName: trackName,
+              },
+              headers: {},
+            },
+          },
+        }).then(async (track) => {
+          const url = track.url;
+          setUrls((current): any => [...current, url]);
+          // setImageUrl(image.url + "?" + Date.now());
+
+          try {
+            const body = {
+              track: track,
+              trackName: trackName,
+              track_id: index + 1,
+              a_uuid: artist.uuid,
+              p_uuid: project.uuid,
+            };
+            await fetch(`/api/projects/${artist.uuid}/${project.uuid}/tracks`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        });
+      }
+    } catch (e) {
+      // console.error(e);
+
+      throw new Error(`${e}`);
     }
   };
 

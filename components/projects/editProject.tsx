@@ -160,7 +160,9 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         />
       </ErrorBoundary>
       {statusLocal === "DRAFT" && (
-        <UploadTracks project={project} artist={artist} />
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <UploadTracks project={project} artist={artist} />
+        </ErrorBoundary>
       )}
 
       {tracks && (

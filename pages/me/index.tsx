@@ -34,7 +34,7 @@ function ArtistProfile({ setArtistData }: any) {
           <h3 className="text-4xl uppercase ">
             <Link href={`/${data.slug}`}>{data.artistName}</Link>
           </h3>
-          <Button to={"/me/artistProfile"} className="text-sm">
+          <Button to={"/me/artistProfile"} className="text-sm mt-4">
             Edit Artist Infos
           </Button>
         </div>
