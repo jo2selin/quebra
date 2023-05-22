@@ -63,10 +63,12 @@ export default function UploadCover({
   );
   let [height, setHeight] = React.useState(400);
   let [width, setWidth] = React.useState(400);
+  // let [progress, setProgress] = React.useState();
   let [errorImage, setErrorImage] = React.useState(false) as any;
-  let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+  let { FileInput, openFileDialog, uploadToS3, files } = useS3Upload();
 
   const uploadImage = async (file: any) => {
+    // setProgress(file.progress)
     return await uploadToS3(file, {
       endpoint: {
         request: {
@@ -117,6 +119,7 @@ export default function UploadCover({
     <>
       <div className="flex items-center justify-center w-48 h-48 bg-jam-light-transparent">
         <FileInput onChange={handleFileChange} />
+
         {!imageUrl && (
           <button onClick={openFileDialog}>
             <p className="text-8xl">+</p>
@@ -133,12 +136,12 @@ export default function UploadCover({
       </div>
       {!imageUrl && <p>Add a cover</p>}
       {errorImage && <p className="text-red-600">{errorImage}</p>}
-      {(imageUrl && status === "DRAFT") ||
-        (status === "UNPUBLISHED" && (
-          <p onClick={openFileDialog} className="cursor-pointer">
-            Edit cover
-          </p>
-        ))}
+      {files[0] && <p>cover: {files[0]?.progress} %</p>}
+      {imageUrl && status === "DRAFT" && (
+        <p onClick={openFileDialog} className="cursor-pointer">
+          Edit cover
+        </p>
+      )}
     </>
   );
 }
