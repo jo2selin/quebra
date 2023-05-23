@@ -240,9 +240,13 @@ export default function editTracklist({
 }: TypeeditTracklist) {
   const orderedTracks = tracks.sort((a, b) => +a.track_id - +b.track_id);
 
+  const statusEdition =
+    statusLocal === "DRAFT" || statusLocal === "UNPUBLISHED";
   return (
     <div className="max-w-screen-md">
-      {tracks[0] && <p className="pt-12 ">Tracks ready for edition:</p>}
+      {tracks[0] && statusEdition && (
+        <p className="pt-12 ">Tracks ready for edition:</p>
+      )}
       {orderedTracks &&
         orderedTracks.map((track, i) => (
           <Track

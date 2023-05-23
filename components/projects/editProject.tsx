@@ -218,21 +218,29 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
       )}
 
       {tracks[0] && statusLocal === "PUBLISHED" && (
-        <div className="flex justify-center m-16">
-          <div
-            onClick={() => {
-              unPublishProject({
-                artist,
-                project,
-                setStatusLocal,
-                allowedDownload,
-              });
-            }}
-            className={`${cssButtonPrimary}  bg-[#323232]`}
-          >
-            Unpublish Project
+        <>
+          <div className="flex justify-center m-4">
+            <div
+              onClick={() => {
+                unPublishProject({
+                  artist,
+                  project,
+                  setStatusLocal,
+                  allowedDownload,
+                });
+              }}
+              className={`${cssButtonPrimary}  bg-[#323232]`}
+            >
+              Unpublish Project
+            </div>
           </div>
-        </div>
+          <div className="font-sans md:w-1/2 md:m-auto md:mb-16  bg-jam-light-transparent text-jam-light-purple lowercase text-sm p-2 border-2 border-jam-purple rounded-md ">
+            <p>
+              Unpublish Project to edit the track&apos;s names.
+              <br /> Unpublished projects are not visible to visitors
+            </p>
+          </div>
+        </>
       )}
 
       {/* <label>
