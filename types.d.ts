@@ -7,6 +7,9 @@ interface Project {
   slug: string;
   cover: string;
   status?: string;
+  validated?: string;
+  path_s3: string;
+  allow_download: boolean;
 }
 interface Artist {
   pk: "ARTIST";
@@ -22,7 +25,12 @@ interface Track {
   slug: string;
   track_name: string;
   track_url: string;
-  track_id: string;
+  track_id: number;
 
   uuid: string;
+}
+
+interface ProjectsWithArtistsData {
+  project: Project;
+  artist: Artist;
 }

@@ -7,6 +7,23 @@ import { v4 as uuidv4 } from "uuid";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import slugify from "slugify";
+import { checkArtistSlugAvailable } from "../../../libs/api";
+
+async function createSlug(input: string) {
+  const isArtistSlugAvailable = await checkArtistSlugAvailable(input).then(
+    (data) => {
+      return data;
+    }
+  );
+
+  const slug = isArtistSlugAvailable ? input : generateUniqueSlug(input);
+
+  return slug;
+}
+function generateUniqueSlug(slug: string) {
+  const u = uuidv4().slice(0, 5);
+  return u + "-" + slug;
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -43,6 +60,8 @@ export default async function handler(
     const slugArtistName = slugify(artistName, { lower: true, strict: true });
     const uuid = uuidv4();
 
+    const slug = await createSlug(slugArtistName);
+
     // Define if we're saving or updating  if email allready exist:
     const artist = await ddbDocClient.send(
       new GetCommand({
@@ -50,8 +69,10 @@ export default async function handler(
         Key: { pk: "ARTIST", sk: session.user?.email },
       })
     );
+
     if (!artist.Item) {
       // first save
+
       const data = await ddbDocClient.send(
         new PutCommand({
           TableName: process.env.TABLE,
@@ -59,7 +80,7 @@ export default async function handler(
             pk: "ARTIST",
             sk: session.user?.email,
             artistName: artistName,
-            slug: slugArtistName,
+            slug: slug,
             // projects: [],
             uuid: uuid,
           },
@@ -78,7 +99,7 @@ export default async function handler(
         UpdateExpression: "set artistName = :a, slug = :s",
         ExpressionAttributeValues: {
           ":a": artistName,
-          ":s": slugArtistName,
+          ":s": slug,
         },
         ReturnValues: "ALL_NEW",
       };

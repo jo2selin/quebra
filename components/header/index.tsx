@@ -7,12 +7,15 @@ export default function Header() {
 
   return (
     <>
-      <div className=" sticky top-0 bg-jam-dark-purple/80 backdrop-blur">
+      <div className=" sticky top-0 bg-jam-dark-purple/80 backdrop-blur z-30">
         <div className="container mx-auto px-4 py-5 flex justify-between items-center   ">
-          <div className="logo">
+          <div className="logo relative">
             <Link href="/" className="text-4xl text-white">
               Quebra
             </Link>
+            <span className="absolute -bottom-1 right-2 bg-jam-pink rounded-md px-2 py-0 text-xs ">
+              BETA
+            </span>
           </div>
 
           <div className=" flex-1 flex items-end justify-end ">
@@ -29,17 +32,18 @@ export default function Header() {
 
             {!session && (
               <>
-                {/* <Button to={`/api/auth/signin`} >Log In</Button> */}
-                <a
-                  href={`/api/auth/signin`}
-                  className={"px-3 py-1 mx-5 bg-cyan-600 text-white rounded"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    signIn();
-                  }}
+                <Button to={`/api/auth/signin`}>Log In</Button>
+                {/* 
+                <Button
+                  to={`/api/auth/signin`}
+                  // className={"px-3 py-1 mx-5 bg-cyan-600 text-white rounded"}
+                  // onClick={(e) => {
+                  //   e.preventDefault();
+                  //   signIn();
+                  // }}
                 >
                   Sign in
-                </a>
+                </Button> */}
               </>
             )}
           </div>

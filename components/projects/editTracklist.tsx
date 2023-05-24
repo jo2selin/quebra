@@ -26,6 +26,7 @@ interface TypeUpdateTrack {
   project: Project;
   trackName: string;
   trackNumber: string;
+  statusLocal?: string;
   setRes?: Function;
   setOldTrackName?: Function;
   setOldTrackNumber?: Function;
@@ -80,7 +81,10 @@ async function deleteTrack({
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ trackName: "trackName" }),
+        body: JSON.stringify({
+          trackName: "trackName",
+          path_s3: project.path_s3,
+        }),
       }
     ).then((res) => {
       if (setLoadingDelete) setLoadingDelete(true);
@@ -93,8 +97,8 @@ async function deleteTrack({
 }
 
 const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
-  const [trackName, setTrackName] = React.useState(track.track_name || "");
-  const [trackNumber, setTrackNumber] = React.useState(track.track_id || "");
+  const [trackName, setTrackName] = React.useState(track.track_name);
+  const [trackNumber, setTrackNumber] = React.useState(track.track_id);
   const [isDeleted, setIsDeleted] = React.useState(false);
 
   React.useEffect(() => {
@@ -107,7 +111,7 @@ const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
         <input
           type="text"
           value={trackNumber}
-          onChange={(e) => setTrackNumber(e.target.value)}
+          onChange={(e) => setTrackNumber(+e.target.value)}
           className={` bg-jam-dark-grey w-20 mr-5 p-3 text-3xl`}
           disabled={statusLocal === "PUBLISHED" ? true : false}
         />
@@ -122,7 +126,7 @@ const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
           src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${project.uuid}/${track.slug}.mp3`}
         /> */}
       </div>
-      <div className="w-full bg-jam-dark-grey">
+      <div className="w-full bg-jam-dark-grey relative">
         <input
           type="text"
           value={trackName}
@@ -137,9 +141,10 @@ const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
             artist={artist}
             project={project}
             trackName={trackName}
-            trackNumber={trackNumber}
+            trackNumber={trackNumber.toString()}
             setIsDeleted={setIsDeleted}
             isDeleted={isDeleted}
+            statusLocal={statusLocal}
           />
         )}
       </div>
@@ -155,9 +160,12 @@ const TrackAction = ({
   trackNumber,
   setIsDeleted,
   isDeleted,
+  statusLocal,
 }: TypeUpdateTrack) => {
   const [oldTrackName, setOldTrackName] = React.useState(track.track_name);
-  const [oldTrackNumber, setOldTrackNumber] = React.useState(track.track_id);
+  const [oldTrackNumber, setOldTrackNumber] = React.useState(
+    track.track_id.toString()
+  );
   const [displaySave, setDisplaySave] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -195,7 +203,7 @@ const TrackAction = ({
             Save
           </div>
         )}
-        {!isDeleted && (
+        {!isDeleted && statusLocal === "DRAFT" && (
           <div
             onClick={() =>
               deleteTrack({
@@ -216,9 +224,9 @@ const TrackAction = ({
         )}
       </div>
       <div
-        className={`h-1 ${
+        className={`${
           displaySave ? "bg-red-400" : "bg-green-400"
-        }  text-center`}
+        }  text-center h-1 w-full absolute bottom-0 z-10`}
       />
     </>
   );
@@ -232,9 +240,13 @@ export default function editTracklist({
 }: TypeeditTracklist) {
   const orderedTracks = tracks.sort((a, b) => +a.track_id - +b.track_id);
 
+  const statusEdition =
+    statusLocal === "DRAFT" || statusLocal === "UNPUBLISHED";
   return (
     <div className="max-w-screen-md">
-      {tracks[0] && <p className="pt-12 ">Tracks ready for edition:</p>}
+      {tracks[0] && statusEdition && (
+        <p className="pt-12 ">Tracks ready for edition:</p>
+      )}
       {orderedTracks &&
         orderedTracks.map((track, i) => (
           <Track

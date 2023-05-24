@@ -41,8 +41,6 @@ export default async function handler(
   // === POST ========================================
   if (req.method === "POST") {
     if (session && session.user?.email && req.method === "POST") {
-      console.log("POST TRACK", req.query);
-
       const params = {
         TableName: process.env.TABLE,
 
@@ -67,12 +65,6 @@ export default async function handler(
 
   // === DELETE ========================================
   if (req.method === "DELETE") {
-    console.log(
-      "p_uuid, t_uuid, slug",
-      req.query.p_uuid,
-      req.query.t_uuid,
-      req.query.slug
-    );
     if (!req.query.slug) {
       throw new Error("Track slug not defined");
     }
@@ -85,15 +77,15 @@ export default async function handler(
     };
     const bucketParams = {
       Bucket: process.env.S3_UPLOAD_BUCKET,
-      Key: `projects/${req.query.p_uuid}/${req.query.slug}.mp3`,
+      Key: `projects/${req.body.path_s3}/${req.query.slug}.mp3`,
     };
     const data = await ddbDocClient.send(new DeleteCommand(params)).then(() => {
       try {
         const data = s3Client.send(new DeleteObjectCommand(bucketParams));
-        console.log("Success. Object deleted.", data);
+        // console.log("Success. Object deleted.", data);
         return data; // For unit tests.
       } catch (err) {
-        console.log("Error", err);
+        console.error("Error", err);
       }
     });
     return res.status(201).json(data);

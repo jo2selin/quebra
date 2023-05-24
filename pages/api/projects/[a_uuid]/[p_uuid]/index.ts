@@ -15,8 +15,12 @@ import { server } from "../../../../../config";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-async function deleteTrack(p_uuid: string, t_uuid: string, slug: string) {
-  console.log("p_uuid, t_uuid, slug", p_uuid, t_uuid, slug);
+async function deleteTrack(
+  p_uuid: string,
+  t_uuid: string,
+  slug: string,
+  path_s3: string
+) {
   if (!slug) {
     throw new Error("Track slug not defined");
   }
@@ -29,15 +33,15 @@ async function deleteTrack(p_uuid: string, t_uuid: string, slug: string) {
   };
   const bucketParams = {
     Bucket: process.env.S3_UPLOAD_BUCKET,
-    Key: `projects/${p_uuid}/${slug}.mp3`,
+    Key: `projects/${path_s3}/${slug}.mp3`,
   };
   await ddbDocClient.send(new DeleteCommand(params)).then(() => {
     try {
       const data = s3Client.send(new DeleteObjectCommand(bucketParams));
-      console.log("Success. Object deleted.", data);
+      // console.log("Success. Object deleted.", data);
       return data; // For unit tests.
     } catch (err) {
-      console.log("Error", err);
+      console.error("Error DeleteCommand deleteTrack", err);
     }
   });
 }
@@ -49,8 +53,6 @@ export default async function handler(
 ) {
   // === GET ========================================
   if (req.method === "GET") {
-    console.log("req.query", req.query);
-
     const project = await ddbDocClient.send(
       // new QueryCommand(paramsProjectFromUuid)
       new GetCommand({
@@ -69,13 +71,14 @@ export default async function handler(
   // === POST ========================================
   if (req.method === "POST") {
     const session = await unstable_getServerSession(req, res, authOptions);
-    console.log(req.body?.unpublished);
     const status = req.body?.unpublish ? "UNPUBLISHED" : "PUBLISHED";
+    const allow_download = req.body?.allow_download;
 
     // Publishing Project
     if (session && session.user?.email && req.method === "POST") {
-      console.log("PUBLISH PROJECT", req.query, status);
+      // console.log("PUBLISH PROJECT", req.query, status);
 
+      console.log("POST UPDATE puuid =========================", req.query);
       const params = {
         TableName: process.env.TABLE,
 
@@ -86,23 +89,30 @@ export default async function handler(
         ExpressionAttributeNames: {
           "#status": "status",
         },
-        UpdateExpression: "set #status = :s", // For example, "'set Title = :t, Subtitle = :s'"
+        UpdateExpression: "set #status = :s, allow_download = :a", // For example, "'set Title = :t, Subtitle = :s'"
         ExpressionAttributeValues: {
           ":s": status,
+          ":a": allow_download,
         },
         ReturnValues: "ALL_NEW",
       };
+      console.log(params);
 
       const data = await ddbDocClient.send(new UpdateCommand(params));
+      console.log("data", data);
 
       if (!req.body?.unpublish && req.body?.actualStatus === "DRAFT") {
         // create zip only on first publish
+        //Todo re-create zip when tracks are edited/deleted
 
         try {
           await fetch(
             `${server}/api/projects/${req.query.a_uuid}/${req.query.p_uuid}/s3/s3-zipper`,
             {
-              method: "GET",
+              method: "POST",
+              body: JSON.stringify({
+                path_s3: req.body.path_s3,
+              }),
             }
           );
         } catch (error) {
@@ -120,6 +130,19 @@ export default async function handler(
       res.send({
         error: "You must be signed in to access this route.",
       });
+      return false;
+    }
+
+    const artistSession = await ddbDocClient.send(
+      new GetCommand({
+        TableName: process.env.TABLE,
+        Key: { pk: "ARTIST", sk: session.user?.email },
+      })
+    );
+
+    if (artistSession.Item?.uuid !== req.query.a_uuid) {
+      console.error("artistSession does not match artist project");
+      return false;
     }
 
     const paramsAllTracksFromProject = {
@@ -130,6 +153,8 @@ export default async function handler(
         ":p_uuid": req.query.p_uuid,
       },
     };
+
+    //  TODO check que lemail correspond a la tape avant de supprimer ?!
 
     const data = await ddbDocClient
       .send(new QueryCommand(paramsAllTracksFromProject))
@@ -142,22 +167,26 @@ export default async function handler(
           throw new Error("p_uuid not defined");
         }
         tracks.Items.forEach((track) => {
-          deleteTrack(req.query.p_uuid as string, track.uuid, track.slug);
+          deleteTrack(
+            req.query.p_uuid as string,
+            track.uuid,
+            track.slug,
+            req.body.path_s3
+          );
         });
       })
       .then(async () => {
         const bucketParams = {
           Bucket: process.env.S3_UPLOAD_BUCKET,
-          Key: `projects/${req.query.p_uuid}/`,
+          Key: `projects/${req.body.path_s3}/${req.body.slug}.zip`,
         };
         try {
           const data = await s3Client.send(
             new DeleteObjectCommand(bucketParams)
           );
-          console.log("Success. Project deleted.", data);
           return data;
         } catch (err) {
-          console.log("Error", err);
+          console.error("Error DeleteObjectCommand", err);
         }
       })
       .then(async () => {
@@ -186,6 +215,6 @@ export default async function handler(
           throw new Error("err set Project status to DELETE");
         }
       });
-    return res.status(204).json(data);
+    return res.status(200).json(data);
   }
 }

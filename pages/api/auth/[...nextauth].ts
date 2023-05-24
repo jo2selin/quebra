@@ -1,5 +1,4 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
@@ -8,10 +7,10 @@ import { DynamoDBAdapter } from "@next-auth/dynamodb-adapter";
 
 const config: any = {
   credentials: {
-    accessKeyId: process.env.NEXT_AUTH_AWS_ACCESS_KEY as string,
-    secretAccessKey: process.env.NEXT_AUTH_AWS_SECRET_KEY as string,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
   },
-  region: process.env.NEXT_AUTH_AWS_REGION,
+  region: process.env.AWS_REGION,
 };
 
 const client = DynamoDBDocument.from(new DynamoDB(config), {
@@ -25,22 +24,28 @@ const client = DynamoDBDocument.from(new DynamoDB(config), {
 export const authOptions: NextAuthOptions = {
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-    }),
+    // GithubProvider({
+    //   clientId: process.env.GITHUB_ID as string,
+    //   clientSecret: process.env.GITHUB_SECRET as string,
+    // }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
   adapter: DynamoDBAdapter(client),
+  pages: {
+    signIn: "/auth/signin",
+  },
   theme: {
-    colorScheme: "light",
+    colorScheme: "auto",
+    brandColor: "#62258e", // Hex color code
+    logo: "", // Absolute URL to image
+    buttonText: "white", // Hex color code
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log("callbacks signin", user, account, profile);
+      // console.log("callbacks signin", user, account, profile);
 
       const isAllowedToSignIn = true;
       if (isAllowedToSignIn) {

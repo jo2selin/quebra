@@ -9,6 +9,7 @@ import UploadCover from "./uploadCover";
 import UploadTracks from "./uploadTracks";
 import EditTracklist from "./editTracklist";
 import { cssButtonPrimary } from "../../libs/css";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface Uuid {
   uuid: string;
@@ -27,6 +28,7 @@ interface TypePublishProject {
   artist: Artist;
   setLoadingPublish?: Function;
   setStatusLocal?: Function;
+  allowedDownload?: boolean;
 }
 
 async function handleDeleteProject({ artist, project }: ProjectDelete) {
@@ -34,10 +36,9 @@ async function handleDeleteProject({ artist, project }: ProjectDelete) {
     await fetch(`/api/projects/${artist.uuid}/${project.uuid}/`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ path_s3: project.path_s3 }),
     }).then((res) => {
       Router.push("/me");
-      console.log(res);
       return;
     });
   } catch (error) {
@@ -52,15 +53,22 @@ async function publishProject({
   project,
   setLoadingPublish,
   setStatusLocal,
+  allowedDownload,
 }: TypePublishProject) {
   try {
     if (setLoadingPublish) setLoadingPublish(true);
     await fetch(`/api/projects/${artist.uuid}/${project.uuid}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ actualStatus: project.status }),
+      body: JSON.stringify({
+        actualStatus: project.status,
+        a_slug: artist.slug,
+        p_slug: project.slug,
+        path_s3: project.path_s3,
+        allow_download: allowedDownload,
+      }),
     }).then((res) => {
-      console.log("res publishProject", res);
+      // console.log("res publishProject", res);
 
       if (setLoadingPublish && setStatusLocal) {
         setStatusLocal("PUBLISHED");
@@ -76,12 +84,16 @@ async function unPublishProject({
   artist,
   project,
   setStatusLocal,
+  allowedDownload,
 }: TypePublishProject) {
   try {
     await fetch(`/api/projects/${artist.uuid}/${project.uuid}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ unpublish: true }),
+      body: JSON.stringify({
+        unpublish: true,
+        allow_download: allowedDownload,
+      }),
     }).then((res) => {
       if (setStatusLocal) {
         setStatusLocal("UNPUBLISHED");
@@ -96,7 +108,19 @@ async function unPublishProject({
 function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   const [loadingPublish, setLoadingPublish] = React.useState(false);
   const [statusLocal, setStatusLocal] = React.useState(project.status);
+  const [coverIsSet, setCoverIsSet] = React.useState(
+    project.cover ? true : false
+  );
+  const [allowedDownload, setAllowedDownload] = React.useState(
+    project.allow_download || false
+  );
 
+  React.useEffect(() => {
+    setStatusLocal(project.status);
+  }, [project]);
+
+  // console.log("project", project.status);
+  // console.log("statusLocal", statusLocal);
   return (
     <>
       <div className="flex align-top justify-between items-center mb-1">
@@ -112,7 +136,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
                 href={`/${artist.slug}/p/${project.slug}`}
                 className="text-white"
               >
-                {statusLocal}
+                {statusLocal} - Link
               </Link>
             ) : (
               statusLocal
@@ -127,14 +151,18 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         </button>
       </div>
       <h2 className="text-xl mb-6 ">{artist.artistName}</h2>
-
-      <UploadCover
-        project={project}
-        artist={artist}
-        status={project.status as string}
-      />
-      {project.status === "DRAFT" && (
-        <UploadTracks project={project} artist={artist} />
+      <ErrorBoundary fallback={<div>Something went wrong</div>}>
+        <UploadCover
+          project={project}
+          artist={artist}
+          status={project.status as string}
+          setCoverIsSet={setCoverIsSet}
+        />
+      </ErrorBoundary>
+      {statusLocal === "DRAFT" && (
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <UploadTracks project={project} artist={artist} />
+        </ErrorBoundary>
       )}
 
       {tracks && (
@@ -146,7 +174,29 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         />
       )}
 
-      {tracks[0] && statusLocal !== "PUBLISHED" && (
+      {statusLocal !== "PUBLISHED" && (
+        <div className="flex my-6">
+          <div className="flex items-center justify-center pl-4 border border-jam-purple rounded ">
+            <input
+              id="allowDownload"
+              type="checkbox"
+              value=""
+              defaultChecked={allowedDownload}
+              name="bordered-checkbox"
+              className="w-4 h-4  bg-gray-100 border-gray-300 rounded focus:ring-purple-500  "
+              onChange={() => setAllowedDownload(!allowedDownload)}
+            />
+            <label
+              htmlFor="allowDownload"
+              className="px-4 py-4 ml-2 text-sm font-medium text-white cursor-pointer"
+            >
+              Allow project download (.zip)
+            </label>
+          </div>
+        </div>
+      )}
+
+      {tracks[0] && statusLocal !== "PUBLISHED" && coverIsSet && (
         <div className="flex justify-center m-16">
           <div
             onClick={() => {
@@ -155,6 +205,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
                 project,
                 setLoadingPublish,
                 setStatusLocal,
+                allowedDownload,
               });
             }}
             className={`${cssButtonPrimary} ${
@@ -167,20 +218,29 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
       )}
 
       {tracks[0] && statusLocal === "PUBLISHED" && (
-        <div className="flex justify-center m-16">
-          <div
-            onClick={() => {
-              unPublishProject({
-                artist,
-                project,
-                setStatusLocal,
-              });
-            }}
-            className={`${cssButtonPrimary}  bg-[#323232]`}
-          >
-            Unpublish Project
+        <>
+          <div className="flex justify-center m-4">
+            <div
+              onClick={() => {
+                unPublishProject({
+                  artist,
+                  project,
+                  setStatusLocal,
+                  allowedDownload,
+                });
+              }}
+              className={`${cssButtonPrimary}  bg-[#323232]`}
+            >
+              Unpublish Project
+            </div>
           </div>
-        </div>
+          <div className="font-sans md:w-1/2 md:m-auto md:mb-16  bg-jam-light-transparent text-jam-light-purple lowercase text-sm p-2 border-2 border-jam-purple rounded-md ">
+            <p>
+              Unpublish Project to edit the track&apos;s names.
+              <br /> Unpublished projects are not visible to visitors
+            </p>
+          </div>
+        </>
       )}
 
       {/* <label>
@@ -228,8 +288,6 @@ export default function EditProject({ uuid }: Uuid) {
   );
 
   if (status !== "authenticated") {
-    console.log("!session", session);
-
     return <AccessDenied />;
   }
 
