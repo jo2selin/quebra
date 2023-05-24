@@ -22,11 +22,13 @@ function matchProjectToArtistSlug(project: Project, artists: Artist[]) {
 
 // Creating static pages with slugs
 export async function getStaticPaths() {
-  const projects = await getDynamoProjects();
+  const projects = (await getDynamoProjects()) as Project[];
   const artists = await getDynamoArtists();
 
-  const paths = projects?.map((project: any) => {
+  const paths = projects?.map((project: Project) => {
     const artist = matchProjectToArtistSlug(project, artists as Artist[]);
+
+    if (!artist || !project) return {}; // return empty object if project does not match artist
 
     return {
       params: {
@@ -36,8 +38,10 @@ export async function getStaticPaths() {
     };
   });
 
+  const pathsWithParams = paths.filter((p) => p.params);
+
   return {
-    paths: paths,
+    paths: pathsWithParams,
     fallback: true, // can also be true or 'blocking'
   };
 }
@@ -91,7 +95,6 @@ type propsType = { project: Project; artist: Artist; tracks: Track[] };
 
 export default function Project(props: propsType) {
   const [currentTrack, setTrackIndex] = React.useState(0);
-  // console.log("props.project", props);
 
   if (!props.project) {
     console.error("ERROR ON ", props);
