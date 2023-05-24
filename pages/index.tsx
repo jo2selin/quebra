@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import Button from "../components/button";
 
@@ -47,6 +47,8 @@ type propsType = {
 
 export default function Home(props: propsType) {
   const { projectsWithArtistsData } = props;
+  const { data: session, status } = useSession();
+  console.log("status======", status);
 
   return (
     <>
@@ -60,9 +62,12 @@ export default function Home(props: propsType) {
             your music <br />
             with the world!
           </h1>
-          {/* <Button to={"/auth/signin"} className="mt-5">
+          <Button
+            to={status !== "authenticated" ? "/auth/signin" : "/me"}
+            className="mt-5"
+          >
             Get started
-          </Button> */}
+          </Button>
         </div>
         <Image
           priority

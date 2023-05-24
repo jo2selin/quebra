@@ -32,7 +32,8 @@ export default function Header() {
 
             {!session && (
               <>
-                {/* <Button to={`/api/auth/signin`} >Log In</Button>
+                <Button to={`/api/auth/signin`}>Log In</Button>
+                {/* 
                 <Button
                   to={`/api/auth/signin`}
                   // className={"px-3 py-1 mx-5 bg-cyan-600 text-white rounded"}
