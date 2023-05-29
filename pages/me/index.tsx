@@ -22,7 +22,10 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 function ArtistProfile({ setArtistData }: any) {
   // using an array style key.
   const { data, error, isLoading } = useSWR("/api/users/me/", fetcher);
-  if (error) return <div>failed to load Artist Profile</div>;
+  if (error) {
+    console.log(error);
+    return <div>failed to load Artist Profile </div>;
+  }
   if (isLoading) return <div>loading Artist Profile...</div>;
   if (data.artistName && data.sk && data.pk) {
     setArtistData(data);
