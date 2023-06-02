@@ -41,9 +41,9 @@ export default function CreateProject() {
   if (data.artistName && data.sk && data.pk && data.slug) {
     return (
       <>
-        <h1 className="text-xl mb-6 ">Infos about your project</h1>
+        <h1 className="text-xl mb-6 ">Infos de votre projet</h1>
         <label>
-          <span className="text-3xl">Artist Name</span>{" "}
+          <span className="text-3xl">Nom artiste</span>{" "}
           <input
             disabled
             type="text"
@@ -53,7 +53,7 @@ export default function CreateProject() {
         </label>
         <form onSubmit={submitData}>
           <label>
-            <span className="text-3xl">Project Name</span>{" "}
+            <span className="text-3xl">Nom project</span>{" "}
             <span className="text-3xl  text-jam-pink">*</span>
             <input
               autoFocus
