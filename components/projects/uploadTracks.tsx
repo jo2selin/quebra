@@ -99,7 +99,7 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
           })} */}
         </div>
         <div>
-          {files[0] && <p className="pt-12">Files just added :</p>}
+          {files[0] && <p className="pt-12">Fichiers récemment ajoutés :</p>}
           {files.map((file, index) => {
             return (
               <div

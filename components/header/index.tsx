@@ -22,17 +22,17 @@ export default function Header() {
             {session?.user && (
               <div className="flex justify-end flex-wrap">
                 <Button to={`/me`} className="mr-2 text-sm" style="secondary">
-                  My account
+                  Mon compte
                 </Button>
                 <Button to={"/api/auth/signout"} className="text-sm">
-                  Log out
+                  Se déconnecter
                 </Button>
               </div>
             )}
 
             {!session && (
               <>
-                <Button to={`/api/auth/signin`}>Log In</Button>
+                <Button to={`/api/auth/signin`}>Se Connecter</Button>
                 {/* 
                 <Button
                   to={`/api/auth/signin`}

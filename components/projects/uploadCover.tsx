@@ -134,7 +134,11 @@ export default function UploadCover({
           />
         )}
       </div>
-      {!imageUrl && <p>Add a cover</p>}
+      {!imageUrl && (
+        <p>
+          Ajouter une cover <span>*</span>{" "}
+        </p>
+      )}
       {errorImage && <p className="text-red-600">{errorImage}</p>}
       {files[0] && <p>cover: {files[0]?.progress} %</p>}
       {imageUrl && status === "DRAFT" && (

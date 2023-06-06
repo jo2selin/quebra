@@ -66,12 +66,12 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
             </div>
           );
         })}
-      {allButDeletedProjects.length < 3 && (
+      {allButDeletedProjects.length < 2 && (
         <Button to={"/me/project"} className="text-sm mt-4">
-          Create a new project
+          Creer nouveau projet
         </Button>
       )}
-      {allButDeletedProjects.length >= 3 && (
+      {allButDeletedProjects.length >= 2 && (
         <>
           <Button to={"#"} className="text-sm mt-4">
             Max projects limit reached ({allButDeletedProjects.length}/2).

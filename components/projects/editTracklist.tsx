@@ -245,7 +245,7 @@ export default function editTracklist({
   return (
     <div className="max-w-screen-md">
       {tracks[0] && statusEdition && (
-        <p className="pt-12 ">Tracks ready for edition:</p>
+        <p className="pt-12 ">Prêt pour l&apos;edition:</p>
       )}
       {orderedTracks &&
         orderedTracks.map((track, i) => (

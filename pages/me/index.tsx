@@ -28,14 +28,14 @@ function ArtistProfile({ setArtistData }: any) {
     setArtistData(data);
     return (
       <div>
-        <h1 className="text-5xl uppercase">My Account</h1>
+        <h1 className="text-5xl uppercase">Mon Compte</h1>
         <div className="mt-12 pl-5">
-          <h2 className="text-5xl uppercase">Artist</h2>
+          <h2 className="text-5xl uppercase">Artiste</h2>
           <h3 className="text-4xl uppercase ">
             <Link href={`/${data.slug}`}>{data.artistName}</Link>
           </h3>
           <Button to={"/me/artistProfile"} className="text-sm mt-4">
-            Edit Artist Infos
+            Modifier mes infos artiste
           </Button>
         </div>
         <div className="mt-12 pl-5"></div>
