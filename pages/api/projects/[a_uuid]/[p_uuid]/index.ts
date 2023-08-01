@@ -11,8 +11,6 @@ import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../../../auth/[...nextauth]";
 import { server } from "../../../../../config";
 
-// import s3zipper from "./s3/s3-zipper";
-
 import type { NextApiRequest, NextApiResponse } from "next";
 
 async function deleteTrack(
