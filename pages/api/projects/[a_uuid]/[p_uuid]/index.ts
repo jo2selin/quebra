@@ -96,18 +96,16 @@ export default async function handler(
         },
         ReturnValues: "ALL_NEW",
       };
-      console.log(params);
-
-      const data = await ddbDocClient.send(new UpdateCommand(params));
-      console.log("data", data);
+      // console.log(params);
 
       if (!req.body?.unpublish && req.body?.actualStatus === "DRAFT") {
         // create zip only on first publish
         //Todo re-create zip when tracks are edited/deleted
 
         try {
-          await fetch(
-            `${server}/api/projects/${req.query.a_uuid}/${req.query.p_uuid}/s3/s3-zipper`,
+          // fetch files in the s3
+          const response = await fetch(
+            `${server}/api/projects/${req.query.a_uuid}/${req.query.p_uuid}/s3/s3-content`,
             {
               method: "POST",
               body: JSON.stringify({
@@ -115,11 +113,34 @@ export default async function handler(
               }),
             }
           );
-        } catch (error) {
-          throw error;
+          if (!response.ok) {
+            throw new Error("No content found in folder");
+          }
+          const { res: filesToZip } = await response.json();
+
+          // zip the files
+          const responseZip = await fetch(
+            `${server}/api/projects/${req.query.a_uuid}/${req.query.p_uuid}/s3/zipaws`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                path_s3: req.body.path_s3,
+                filesToZip,
+              }),
+            }
+          );
+          if (!responseZip.ok) {
+            throw new Error("Error creating zip file");
+          }
+
+          const data = await ddbDocClient.send(new UpdateCommand(params));
+          if (!data) throw new Error("Error publishing status");
+        } catch (error: any) {
+          // throw error;
+          return res.status(500).json({ error: error.message });
         }
       }
-      return res.status(201).json(data);
+      return res.status(201).json(req.body.path_s3);
     }
   }
 

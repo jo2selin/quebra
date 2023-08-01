@@ -20,7 +20,8 @@
     "**/*.ts",
     "**/*.tsx",
     "config/index.js",
-    "libs/zipS3Lamba.js"
+    "libs/zipS3Lamba.js",
+    "pages/api/zipaws.js"
   ],
   "exclude": ["node_modules"]
 }
