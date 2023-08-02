@@ -159,20 +159,23 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
           setCoverIsSet={setCoverIsSet}
         />
       </ErrorBoundary>
-      {statusLocal === "DRAFT" && (
-        <ErrorBoundary fallback={<div>Something went wrong</div>}>
-          <UploadTracks project={project} artist={artist} />
-        </ErrorBoundary>
-      )}
+      <div className="mt-12 p-8 border border-jam-purple rounded">
+        <h2 className="text-xl mb-6 ">Vos .mp3</h2>
+        {statusLocal === "DRAFT" && (
+          <ErrorBoundary fallback={<div>Something went wrong</div>}>
+            <UploadTracks project={project} artist={artist} />
+          </ErrorBoundary>
+        )}
 
-      {tracks && (
-        <EditTracklist
-          tracks={tracks}
-          project={project}
-          artist={artist}
-          statusLocal={statusLocal as string}
-        />
-      )}
+        {tracks && (
+          <EditTracklist
+            tracks={tracks}
+            project={project}
+            artist={artist}
+            statusLocal={statusLocal as string}
+          />
+        )}
+      </div>
 
       {statusLocal !== "PUBLISHED" && (
         <div className="flex my-6">
@@ -190,7 +193,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
               htmlFor="allowDownload"
               className="px-4 py-4 ml-2 text-sm font-medium text-white cursor-pointer"
             >
-              Allow project download (.zip)
+              Autoriser le téléchargement direct (.zip)
             </label>
           </div>
         </div>
