@@ -1,0 +1,3 @@
+{"_id":{"$oid":"5da0d55c423741375098bdd8"},"name":"video","createdAt":{"$date":{"$numberLong":"1570821468976"}},"updatedAt":{"$date":{"$numberLong":"1570821469326"}},"__v":{"$numberInt":"0"},"id":"5da0d55c423741375098bdd8"}
+{"_id":{"$oid":"5da0d562423741375098bdd9"},"name":"track","createdAt":{"$date":{"$numberLong":"1570821474836"}},"updatedAt":{"$date":{"$numberLong":"1570821475151"}},"__v":{"$numberInt":"0"},"id":"5da0d562423741375098bdd9"}
+{"_id":{"$oid":"5da0d555423741375098bdd7"},"name":"news","createdAt":{"$date":{"$numberLong":"1570821461156"}},"updatedAt":{"$date":{"$numberLong":"1570821461593"}},"__v":{"$numberInt":"0"},"id":"5da0d555423741375098bdd7"}

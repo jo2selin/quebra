@@ -8,6 +8,7 @@ import Router from "next/router";
 import UploadCover from "./uploadCover";
 import UploadTracks from "./uploadTracks";
 import EditTracklist from "./editTracklist";
+import PublishProject from "./publishProject";
 import { cssButtonPrimary } from "../../libs/css";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -48,38 +49,37 @@ async function handleDeleteProject({ artist, project }: ProjectDelete) {
   return;
 }
 
-async function publishProject({
-  artist,
-  project,
-  setLoadingPublish,
-  setStatusLocal,
-  allowedDownload,
-}: TypePublishProject) {
-  try {
-    if (setLoadingPublish) setLoadingPublish(true);
-    await fetch(`/api/projects/${artist.uuid}/${project.uuid}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        actualStatus: project.status,
-        a_slug: artist.slug,
-        p_slug: project.slug,
-        path_s3: project.path_s3,
-        allow_download: allowedDownload,
-      }),
-    }).then((res) => {
-      // console.log("res publishProject", res);
+// const PublishProject = ({ publishingProject }: any) => {
+//   const {
+//     artist,
+//     project,
+//     setLoadingPublish,
+//     setStatusLocal,
+//     allowedDownload,
+//     loadingPublish,
+//   } = publishingProject;
+//   return (
+//     <div className="flex justify-center m-16">
+//       <div
+//         onClick={() => {
+//           publishProject({
+//             artist,
+//             project,
+//             setLoadingPublish,
+//             setStatusLocal,
+//             allowedDownload,
+//           });
+//         }}
+//         className={`${cssButtonPrimary} ${
+//           loadingPublish ? " cursor-not-allowed opacity-10" : ""
+//         }`}
+//       >
+//         Publish Project
+//       </div>
+//     </div>
+//   );
+// };
 
-      if (setLoadingPublish && setStatusLocal) {
-        setStatusLocal("PUBLISHED");
-        setLoadingPublish(false);
-      }
-    });
-  } catch (error) {
-    // setVisibleForm(true);
-    console.error(error);
-  }
-}
 async function unPublishProject({
   artist,
   project,
@@ -200,24 +200,15 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
       )}
 
       {tracks[0] && statusLocal !== "PUBLISHED" && coverIsSet && (
-        <div className="flex justify-center m-16">
-          <div
-            onClick={() => {
-              publishProject({
-                artist,
-                project,
-                setLoadingPublish,
-                setStatusLocal,
-                allowedDownload,
-              });
-            }}
-            className={`${cssButtonPrimary} ${
-              loadingPublish ? " cursor-not-allowed opacity-10" : ""
-            }`}
-          >
-            Publish Project
-          </div>
-        </div>
+        <PublishProject
+          publishingProject={{
+            artist,
+            project,
+            setLoadingPublish,
+            setStatusLocal,
+            allowedDownload,
+          }}
+        />
       )}
 
       {tracks[0] && statusLocal === "PUBLISHED" && (
