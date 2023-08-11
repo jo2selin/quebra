@@ -5,7 +5,7 @@ import { NextSeo } from "next-seo";
 
 let blogPosts = require("../../../../../data/hc2Posts.json");
 export async function getStaticPaths() {
-  const paths = blogPosts.slice(0, 10).map((post: any) => {
+  const paths = blogPosts.map((post: any) => {
     return {
       params: {
         hcType: post.hcType as string,

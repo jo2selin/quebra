@@ -63,23 +63,15 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
       "utf-8"
     );
     const { data: frontmatter } = matter(markdownWithMeta);
-    const frontMatterMatchSlug = frontmatter.slug === fullSlug;
-    if (frontMatterMatchSlug) {
-      console.log("- YES match : ", frontmatter.slug, fullSlug);
-
-      return frontMatterMatchSlug;
-    } else {
-      // console.error("- no match: ", frontmatter.slug, fullSlug);
-    }
+    return frontmatter.slug === fullSlug;
   });
-  // if (findPost[0] === undefined) {
-  //   console.log("findPost[0] is  undefined");
-  //   return;
-  // }
-  // console.log("getStaticProps typeof findPost[0] ", typeof findPost[0]);
+
   // Reading inside specific file for the frontmatter
   const markdownWithMeta = fs.readFileSync(
-    path.join("data/hc-old-news", findPost[0] ? findPost[0] : ""),
+    path.join(
+      "data/hc-old-news",
+      findPost[0] ? findPost[0] : "/2017-09-03-n-429.md"
+    ),
     "utf-8"
   );
 
