@@ -1,23 +1,11 @@
 import Head from "next/head";
 import { remark } from "remark";
 import html from "remark-html";
+import { NextSeo } from "next-seo";
 
-let blogPosts = require("../../../../data/hc2Posts.json");
+let blogPosts = require("../../../../../data/hc2Posts.json");
 export async function getStaticPaths() {
-  console.log("getStaticPaths");
-
-  // Call an external API endpoint to get posts
-  // const res = await fetch("api/staticData");
-  // const staticData = await res.json();
-
-  // Get the paths we want to pre-render based on posts
-  // const slug = slugify(post.title);
-  // const logg = JSON.parse(blogPosts);
-  // console.log(logg);
-
-  const paths = blogPosts.map((post: any) => {
-    // console.log(post.hcType, post.hcDate, post.hcSlug);
-
+  const paths = blogPosts.slice(0, 10).map((post: any) => {
     return {
       params: {
         hcType: post.hcType as string,
@@ -27,23 +15,10 @@ export async function getStaticPaths() {
     };
   });
 
-  // console.log("creating paths:", paths.params?.fullSlug);
-
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
   return { paths: paths, fallback: false };
 }
 
 export async function getStaticProps({ params }: any) {
-  console.log("getStaticProps========", params);
-
-  // const { fullSlug } = params;
-  // params contains the post `id`.
-  // If the route is like /posts/1, then params.id is 1
-  // const res = await fetch("api/staticData");
-  // const post = await res.json()
-  // console.log("params.fullSlug[1],", `${params.fullSlug[1]}}`);
-
   let post = blogPosts.find((post: any) => post.hcSlug === `${params.hcSlug}`);
 
   const processedContent = await remark().use(html).process(post.content);
@@ -55,17 +30,26 @@ export async function getStaticProps({ params }: any) {
 }
 
 export default function Post(post: any) {
-  console.log(process.env.QUEBRA_META_TITLE_SUFFIX);
-
   return (
     <>
-      <Head>
-        <title key="title">
-          {(post.bait === "" ? post.title : post.bait) +
+      <NextSeo
+        title={
+          (post.bait === "" ? post.title : post.bait) +
+          " " +
+          process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX
+        }
+        description={"Read about " + post.title + ", on Quebra.co"}
+        canonical={`https://quebra.co/hc/posts/${post.hcType}/${post.hcDate}/${post.hcSlug}`}
+        openGraph={{
+          url: `https://quebra.co/hc/posts/${post.hcType}/${post.hcDate}/${post.hcSlug}`,
+          title:
+            (post.bait === "" ? post.title : post.bait) +
             " " +
-            process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX}
-        </title>
-      </Head>
+            process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX,
+          description: "Read about " + post.title + ", on Quebra.co",
+        }}
+      />
+
       {post.title && <h1 className="text-4xl pb-10">{post.title}</h1>}
       <div className="flex">
         {post.emoji && <span className="text-3xl mr-3">{post.emoji}</span>}
@@ -73,7 +57,7 @@ export default function Post(post: any) {
       </div>
       {post.contentHtml && (
         <div
-          className=" text-base font-serif lowercase mb-12"
+          className=" text-base font-serif  normal-case  mb-12"
           dangerouslySetInnerHTML={{ __html: post.contentHtml }}
         />
       )}
