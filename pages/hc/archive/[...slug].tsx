@@ -108,6 +108,12 @@ function News({ params }: ArchiveBlog) {
               type: "image/jpeg",
             },
           ],
+          type: "article",
+          article: {
+            tags: [
+              params.frontmatter.category ? params.frontmatter.category[0] : "",
+            ],
+          },
         }}
       />
 

@@ -47,6 +47,7 @@ export default function Post(post: any) {
             " " +
             process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX,
           description: "Read about " + post.title + ", on Quebra.co",
+          type: "article",
         }}
       />
 
