@@ -32,16 +32,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
   // Get slug and frontmatter from posts
   const tempPosts = hcArchiveFiles.map((filename) => {
     // Get frontmatter
-
     const markdownWithMeta = fs.readFileSync(
       path.join("data/hc-old-news", filename),
       "utf-8"
     );
     //convert data in json format
     const { data: frontmatter } = matter(markdownWithMeta);
-    const slug = frontmatter.slug;
+    // passing slug as an array
+    const splittedSlug = frontmatter.slug.split("/").slice(1);
 
-    return { params: { slug: [slug] } };
+    return { params: { slug: splittedSlug } };
   });
 
   return {
@@ -51,9 +51,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
-  console.log("=================================getStaticProps params", params);
   const fullSlug = params.slug.join("/");
-  console.log("fullSlug", fullSlug);
 
   // Get slug from the slug params then match it with slug from .md and return post data
   const findPost = hcArchiveFiles.filter((filename) => {
