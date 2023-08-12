@@ -2,6 +2,8 @@ import Head from "next/head";
 import Link from "next/link";
 import Header from "./header";
 import Script from "next/script";
+import { DefaultSeo } from "next-seo";
+
 interface Props {
   children: React.ReactNode;
 }
@@ -10,12 +12,6 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <Head>
-        <title key="title">Quebra</title>
-        <meta
-          name="description"
-          content="Quebra - Share your musical projects"
-          key="description"
-        />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1"
@@ -43,6 +39,22 @@ export default function Layout({ children }: Props) {
           href="/favicon-16x16.png"
         />
       </Head>
+
+      <DefaultSeo
+        title={"Quebra.co"}
+        description={"Quebra - Share your musical projects"}
+        openGraph={{
+          type: "website",
+          locale: "fr_FR",
+          url: "https://www.quebra.co/",
+          siteName: "Quebra.co",
+        }}
+        twitter={{
+          handle: "@quebra_co",
+          site: "@site",
+          cardType: "summary_large_image",
+        }}
+      />
       {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-0TB54F3BGL"
