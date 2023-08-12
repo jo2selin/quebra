@@ -61,15 +61,13 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
       "utf-8"
     );
     const { data: frontmatter } = matter(markdownWithMeta);
-    return frontmatter.slug === fullSlug;
+    return frontmatter.slug === "/" + fullSlug;
   });
+  console.log("findPost[0]", findPost[0]);
 
   // Reading inside specific file for the frontmatter
   const markdownWithMeta = fs.readFileSync(
-    path.join(
-      "data/hc-old-news",
-      findPost[0] ? findPost[0] : "/2017-09-03-n-429.md"
-    ),
+    path.join("data/hc-old-news", findPost[0]),
     "utf-8"
   );
 
