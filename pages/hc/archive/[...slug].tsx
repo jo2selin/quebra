@@ -46,7 +46,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: tempPosts,
-    fallback: true, // false or "blocking"
+    fallback: false, // false or "blocking"
   };
 };
 
