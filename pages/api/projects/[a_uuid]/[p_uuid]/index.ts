@@ -95,6 +95,7 @@ export default async function handler(
         ReturnValues: "ALL_NEW",
       };
       // console.log(params);
+      const data = await ddbDocClient.send(new UpdateCommand(params));
 
       if (!req.body?.unpublish && req.body?.actualStatus === "DRAFT") {
         // create zip only on first publish
@@ -138,7 +139,7 @@ export default async function handler(
           return res.status(500).json({ error: error.message });
         }
       }
-      return res.status(201).json(req.body.path_s3);
+      return res.status(201).json(data);
     }
   }
 

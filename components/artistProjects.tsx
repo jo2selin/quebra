@@ -33,19 +33,28 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                 </Link>
               </h3>
               {proj.status === "PUBLISHED" && (
-                <span
-                  className={`ml-5 text-xs  bg-green-500  rounded-sm px-2 `}
-                >
-                  <Link
-                    href={`/${artistData.slug}/p/${proj.slug}`}
-                    className="text-white hover:text-green-300"
+                <>
+                  <span
+                    className={`ml-5 text-xs  bg-[#323232]   rounded-sm px-2 `}
                   >
                     {proj.status}
+                  </span>
+
+                  <Link
+                    href={`/${artistData.slug}/p/${proj.slug}`}
+                    className="ml-5 text-xs rounded-sm px-2  bg-green-500 text-white hover:text-green-900"
+                  >
+                    Lien projet
                   </Link>
-                </span>
+                </>
               )}
               {proj.status !== "PUBLISHED" && (
                 <>
+                  <span
+                    className={`ml-5 text-xs bg-[#323232] rounded-sm px-2 `}
+                  >
+                    {proj.status}
+                  </span>
                   <span
                     className={`ml-5 text-xs bg-jam-purple rounded-sm px-2 `}
                   >
@@ -55,11 +64,6 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                     >
                       edit
                     </Link>
-                  </span>
-                  <span
-                    className={`ml-5 text-xs bg-[#323232] rounded-sm px-2 `}
-                  >
-                    {proj.status}
                   </span>
                 </>
               )}
