@@ -126,31 +126,30 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
       <div className="flex align-top justify-between items-center mb-1">
         <div className="flex items-center">
           <h1 className="text-5xl  ">{project.projectName}</h1>
-          <span
-            className={`ml-5 text-sm ${
-              statusLocal === "PUBLISHED" ? " bg-green-500 " : "  bg-[#323232] "
-            } rounded-sm px-2 `}
-          >
-            {statusLocal === "PUBLISHED" ? (
-              <Link
-                href={`/${artist.slug}/p/${project.slug}`}
-                className="text-white"
-              >
-                {statusLocal} - Link
-              </Link>
-            ) : (
-              statusLocal
-            )}
-          </span>
         </div>
-        <button
-          onClick={() => handleDeleteProject({ artist, project })}
-          className={`${cssButtonPrimary} bg-[#323232] border-b-4 border-jam-light-purple h-auto ml-6`}
-        >
-          Delete Project
-        </button>
       </div>
       <h2 className="text-xl mb-6 ">{artist.artistName}</h2>
+      <div className="flex items-center mb-6 h-14">
+        <div className={` px-3 py-1 rounded-md text-md mr-3 bg-[#323232]  `}>
+          {statusLocal}
+        </div>
+
+        {statusLocal === "PUBLISHED" && (
+          <Link href={`/${artist.slug}/p/${project.slug}`}>
+            <div className="px-3 py-1 rounded-md border-b-4 text-white border-green-900  bg-green-500 hover:text-green-900 hover:border-b-2 ">
+              Lien projet
+            </div>
+          </Link>
+        )}
+        <div className="flex flex-1 justify-end items-end">
+          <button
+            onClick={() => handleDeleteProject({ artist, project })}
+            className={`${cssButtonPrimary} bg-[#323232] border-b-4 border-jam-light-purple h-auto ml-6`}
+          >
+            Delete Project
+          </button>
+        </div>
+      </div>
       <ErrorBoundary fallback={<div>Something went wrong</div>}>
         <UploadCover
           project={project}

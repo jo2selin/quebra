@@ -69,6 +69,18 @@ export default function Layout({ children }: Props) {
           gtag('config', 'G-0TB54F3BGL');
         `}
       </Script>
+      <Script id="brevo-chat" strategy="afterInteractive">
+        {`(function(d, w, c) {
+        w.BrevoConversationsID = '5e1356d9a4718d551e137ba9';
+        w[c] = w[c] || function() {
+            (w[c].q = w[c].q || []).push(arguments);
+        };
+        var s = d.createElement('script');
+        s.async = true;
+        s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
+        if (d.head) d.head.appendChild(s);
+    })(document, window, 'BrevoConversations');`}
+      </Script>
       <div className=" bg-jam-dark-purple">
         <Header />
 

@@ -24,9 +24,9 @@ export default function Header() {
                 <Button to={`/me`} className="mr-2 text-sm" style="secondary">
                   Mon compte
                 </Button>
-                <Button to={"/api/auth/signout"} className="text-sm">
+                {/* <Button to={"/api/auth/signout"} className="text-sm">
                   Se déconnecter
-                </Button>
+                </Button> */}
               </div>
             )}
 
