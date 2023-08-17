@@ -5,10 +5,16 @@ const date = require("date-and-time");
 function convertTimestampToReadableDate(timestamp) {
   const date = new Date(parseInt(timestamp));
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
+  const month = String(date.getMonth() + 1);
+  const day = String(date.getDate());
+  console.log(
+    "\n" +
+      "Pacific/Midway " +
+      date.toLocaleString({ timeZone: "Pacific/Midway" })
+  );
+  const fullDay = day <= 9 ? "0" + day : day;
+  const fullMonth = month <= 9 ? "0" + month : month;
+  return `${year}-${fullMonth}-${fullDay}`;
 }
 
 const types = {
@@ -41,18 +47,23 @@ function addElementToEntries(inputFile, slug, type_, date_, outputFile) {
         .sort(
           (a, b) => a.createdAt.date.numberLong - b.createdAt.date.numberLong
         )
+        // .slice(0, 50)
         .map((entry) => {
           const readableDate = convertTimestampToReadableDate(
             entry.createdAt.date.numberLong
           );
           const type = types[entry.type.oid];
-          slugify.extend({ "?": "-", ",": "-", "'": "-" });
-          const slug = slugify(entry.title, {
-            // remove: /[*+~.,()'"!:@]/g,
-            // strict:true
-            trim: false,
-          });
-          // console.log(readableDate);
+
+          const slug = entry.title
+            .toString()
+            .trim()
+            // .toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[ãàáäâ]/g, "a")
+            .replace(/[ẽèéëê]/g, "e")
+            .replace(/[^\w\-]+/g, "-");
+
+          console.log(readableDate, slug);
           // console.log(
           //   " entry.createdAt._date.numberLong",
           //   entry.createdAt._date.numberLong * 1000

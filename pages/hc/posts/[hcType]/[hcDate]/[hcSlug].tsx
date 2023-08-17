@@ -34,7 +34,9 @@ export default function Post(post: any) {
     <>
       <NextSeo
         title={
-          (post.bait === "" ? post.title : post.bait) +
+          (post.bait === "" || post.bait === undefined
+            ? post.title
+            : post.bait) +
           " " +
           process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX
         }
