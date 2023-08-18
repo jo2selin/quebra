@@ -3,6 +3,7 @@ import { Inter } from "@next/font/google";
 import Cards from "../components/projects/cards";
 
 import { getDynamoProjects, getDynamoArtists } from "../libs/api";
+import Link from "next/link";
 
 const filterProjectsHome = (projects: Project[]) => {
   return projects.filter(
@@ -18,6 +19,7 @@ const matchProjectToArtistSlug = (project: Project, artists: Artist[]) => {
 
 export async function getStaticProps() {
   const projects = await getDynamoProjects();
+
   const artists = (await getDynamoArtists()) as Artist[];
 
   const filteredProjects = filterProjectsHome(projects as Project[]);
@@ -44,8 +46,13 @@ export default function Projects(props: propsType) {
   return (
     <>
       <Head>
-        <title key="title">Projects | Quebra</title>
+        <title key="title">Projets | Quebra</title>
       </Head>
+      <h1 className="text-4xl pb-8">Projets</h1>
+      <p className="mb-5 text-lg">
+        Faites partie des premiers à uploader vos projets sur Quebra ! <br />
+        <Link href="auth/signin">inscrivez-vous</Link>, c&apos;est gratuit
+      </p>
       <div className="flex flex-wrap -mx-4 justify-center">
         <Cards projects={projectsWithArtistsData} />
       </div>

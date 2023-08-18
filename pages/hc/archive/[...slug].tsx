@@ -63,7 +63,6 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
     const { data: frontmatter } = matter(markdownWithMeta);
     return frontmatter.slug === "/" + fullSlug;
   });
-  console.log("findPost[0]", findPost[0]);
 
   // Reading inside specific file for the frontmatter
   const markdownWithMeta = fs.readFileSync(
