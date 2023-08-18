@@ -26,37 +26,40 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
         !data.error &&
         allButDeletedProjects.map((proj: Project) => {
           return (
-            <div key={proj.sk} className="flex items-center ">
+            <div
+              key={proj.sk}
+              className="flex flex-col mt-10 md:items-center md:flex-row "
+            >
               <h3 className="text-4xl uppercase ">
                 <Link href={`/me/project?uuid=${proj.uuid}`}>
                   {proj.projectName}
                 </Link>
               </h3>
               {proj.status === "PUBLISHED" && (
-                <>
+                <div className="flex">
                   <span
-                    className={`ml-5 text-xs  bg-[#323232]   rounded-sm px-2 `}
+                    className={`md:ml-5 text-xs  bg-[#323232]   rounded-sm px-4 py-2  md:px-2 md:py-0 `}
                   >
                     {proj.status}
                   </span>
 
                   <Link
                     href={`/${artistData.slug}/p/${proj.slug}`}
-                    className="ml-5 text-xs rounded-sm px-2  bg-green-500 text-white hover:text-green-900"
+                    className="ml-5 text-xs rounded-sm px-2  bg-green-500 text-white hover:text-green-900 px-4 py-2  md:px-2 md:py-0"
                   >
                     Lien projet
                   </Link>
-                </>
+                </div>
               )}
               {proj.status !== "PUBLISHED" && (
-                <>
+                <div className="flex">
                   <span
-                    className={`ml-5 text-xs bg-[#323232] rounded-sm px-2 `}
+                    className={`md:ml-5 text-xs bg-[#323232] rounded-sm px-4 py-2  md:px-2 md:py-0 `}
                   >
                     {proj.status}
                   </span>
                   <span
-                    className={`ml-5 text-xs bg-jam-purple rounded-sm px-2 `}
+                    className={`ml-5 text-xs bg-jam-purple rounded-sm px-4 py-2  md:px-2 md:py-0`}
                   >
                     <Link
                       href={`/me/project?uuid=${proj.uuid}`}
@@ -65,23 +68,28 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                       edit
                     </Link>
                   </span>
-                </>
+                </div>
               )}
             </div>
           );
         })}
       {allButDeletedProjects.length < 2 && (
-        <Button to={"/me/project"} className="text-sm mt-4">
+        <Button to={"/me/project"} className="text-sm mt-12">
           Creer nouveau projet
         </Button>
       )}
       {allButDeletedProjects.length >= 2 && (
-        <>
-          <Button to={"#"} className="text-sm mt-4">
+        <div
+          className={`mt-5  basis-0 text-md bg-[#323232] text-white rounded-sm px-4 py-2   `}
+        >
+          <a href="#openBrevoChat" className={`mt-5 text-md  text-white    `}>
             Max projects limit reached ({allButDeletedProjects.length}/2).
-          </Button>
-          <p>Project are limited to 2, contact us to add more</p>
-        </>
+          </a>
+          <p className="">
+            Project are limited to 2,{" "}
+            <a href="#openBrevoChat">contact us via chat</a> to add more
+          </p>
+        </div>
       )}
     </div>
   );

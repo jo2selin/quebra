@@ -116,7 +116,7 @@ export default function UploadCover({
   };
 
   return (
-    <>
+    <div className="flex flex-col">
       <div className="flex items-center justify-center w-48 h-48 bg-jam-light-transparent">
         <FileInput onChange={handleFileChange} />
 
@@ -146,6 +146,6 @@ export default function UploadCover({
           Edit cover
         </p>
       )}
-    </>
+    </div>
   );
 }
