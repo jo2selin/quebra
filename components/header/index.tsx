@@ -51,6 +51,18 @@ export default function Header() {
   return (
     <>
       <div className=" sticky top-0 bg-jam-dark-purple/80 backdrop-blur z-30">
+        <div className="bg-gradient-to-r from-jam-purple to-jam-pink text-white font-mono normal-case border-b-2 border-jam-purple">
+          <div className="container mx-auto py-2 px-3">
+            Pré-inscriptions ouvertes! <br />
+            Faites partie des premiers à{" "}
+            <span className="font-bold"> publier votre projet musical</span> sur
+            Quebra (tracks/mixtapes...) 💿🔥🔥
+            <br />
+            <Link href="/auth/signin" className="text-white font-bold">
+              Inscrivez-vous dès maintenant. ⬅️
+            </Link>
+          </div>
+        </div>
         <div className="container mx-auto px-4 py-5 flex justify-between items-center   ">
           <div className="logo relative" onClick={() => setmenuIsOpen(false)}>
             <Link href="/" className="text-4xl text-white">
@@ -97,7 +109,7 @@ export default function Header() {
           className={` md:hidden transition-all  ${
             menuIsOpen
               ? "w-full translate-y-5 opacity-100 py-10 px-10 -mt-5"
-              : " h-0 -translate-y-20 opacity-0 p-0 m-0"
+              : " h-0 -translate-y-72 opacity-0 p-0 m-0"
           }`}
         >
           <Nav
