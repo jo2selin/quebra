@@ -31,14 +31,19 @@ function ArtistProfile({ setArtistData }: any) {
     setArtistData(data);
     return (
       <div>
-        <h1 className="text-5xl uppercase">My Account</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-5xl uppercase">Mon Compte</h1>
+          <Button to={"/api/auth/signout"} className="text-sm" style={"dark"}>
+            Se déconnecter
+          </Button>
+        </div>
         <div className="mt-12 pl-5">
-          <h2 className="text-5xl uppercase">Artist</h2>
+          <h2 className="text-5xl uppercase">Artiste</h2>
           <h3 className="text-4xl uppercase ">
             <Link href={`/${data.slug}`}>{data.artistName}</Link>
           </h3>
           <Button to={"/me/artistProfile"} className="text-sm mt-4">
-            Edit Artist Infos
+            Modifier mes infos artiste
           </Button>
         </div>
         <div className="mt-12 pl-5"></div>
@@ -70,11 +75,7 @@ const Me: React.FC = () => {
         <title key="title">Me | Quebra</title>
       </Head>
       <div className="md:flex">
-        <div className="md:flex-1 mb-20 md:mr-32">
-          <div className="flex justify-between items-center pb-5">
-            {/* <h2 className="text-5xl ">My Account</h2> */}
-          </div>
-
+        <div className="md:flex-1 mb-20 ">
           <ArtistProfile setArtistData={setArtistData} />
           {artistData && <ArtistProjects artistData={artistData} />}
         </div>

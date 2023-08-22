@@ -57,15 +57,15 @@ export default function Home(props: propsType) {
       <div className="max-w-sm mx-auto relative mb-24">
         <div className="relative z-10">
           <h1 className="text-3xl">
-            Upload and Share <br />
-            your music <br />
-            with the world!
+            Uploadez et Partagez <br />
+            votre musique <br />
+            sur Quebra!
           </h1>
           <Button
             to={status !== "authenticated" ? "/auth/signin" : "/me"}
             className="mt-5"
           >
-            Get started
+            Commencer
           </Button>
         </div>
         <Image
@@ -79,8 +79,8 @@ export default function Home(props: propsType) {
       <div className="w-3/4 m-auto">
         <div className="flex flex-col md:flex-row mb-8">
           <p className="md:pr-5 order-2 md:order-1">
-            We provide a platform where Artists can upload and share their
-            musical projects with others.
+            Nous fournissons une plate-forme où les artistes peuvent partager
+            leurs projets musicaux.
           </p>
           <Image
             priority
@@ -92,9 +92,9 @@ export default function Home(props: propsType) {
         <div className="flex flex-col md:flex-row mb-5">
           <Image priority src={newTalents} alt="" />
           <p className="md:pl-5">
-            We believe that everyone should have the opportunity to showcase
-            their work and connect with others who share their passion for
-            music.
+            Nous croyons que chacun devrait avoir la possibilité de présenter
+            son travail et de se connecter avec d&apos;autres personnes
+            partageant une passion pour la musique.
           </p>
         </div>
       </div>

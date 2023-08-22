@@ -116,7 +116,7 @@ export default function UploadCover({
   };
 
   return (
-    <>
+    <div className="flex flex-col">
       <div className="flex items-center justify-center w-48 h-48 bg-jam-light-transparent">
         <FileInput onChange={handleFileChange} />
 
@@ -134,7 +134,11 @@ export default function UploadCover({
           />
         )}
       </div>
-      {!imageUrl && <p>Add a cover</p>}
+      {!imageUrl && (
+        <p>
+          Ajouter une cover <span>*</span>{" "}
+        </p>
+      )}
       {errorImage && <p className="text-red-600">{errorImage}</p>}
       {files[0] && <p>cover: {files[0]?.progress} %</p>}
       {imageUrl && status === "DRAFT" && (
@@ -142,6 +146,6 @@ export default function UploadCover({
           Edit cover
         </p>
       )}
-    </>
+    </div>
   );
 }

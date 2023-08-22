@@ -243,9 +243,9 @@ export default function editTracklist({
   const statusEdition =
     statusLocal === "DRAFT" || statusLocal === "UNPUBLISHED";
   return (
-    <div className="max-w-screen-md">
+    <div className="max-w-screen-md ">
       {tracks[0] && statusEdition && (
-        <p className="pt-12 ">Tracks ready for edition:</p>
+        <p className="pt-12 ">Pistes prête pour l&apos;édition:</p>
       )}
       {orderedTracks &&
         orderedTracks.map((track, i) => (

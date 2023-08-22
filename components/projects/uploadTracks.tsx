@@ -81,7 +81,7 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
 
   return (
     <>
-      <div className="mt-12">
+      <div className="mt-4">
         <input
           type="file"
           name="file"
@@ -98,27 +98,45 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
             );
           })} */}
         </div>
-        <div>
-          {files[0] && <p className="pt-12">Files just added :</p>}
-          {files.map((file, index) => {
-            return (
-              <div
-                key={index}
-                className="flex mt-3 align-middle justify-left items-center"
-              >
-                {/* <div className="w-10 mr-5 p-6 text-3xl">{index}</div> */}
-                <div className="w-full md:w-2/6">
-                  <p className=" bg-jam-dark-grey px-6 py-4">
-                    {file.file.name}
-                  </p>
-                  <div
-                    className="h-1 bg-jam-pink text-center"
-                    style={{ width: file.progress + "%" }}
-                  ></div>
+        <div className="flex flex-wrap">
+          <div className=" w-full md:flex-1 md:w-2/4">
+            {files[0] && <p className="pt-12">Fichiers récemment ajoutés :</p>}
+            {files.map((file, index) => {
+              return (
+                <div
+                  key={index}
+                  className="flex mt-3 align-middle justify-left items-center"
+                >
+                  {/* <div className="w-10 mr-5 p-6 text-3xl">{index}</div> */}
+                  <div className="w-full">
+                    <p className=" bg-jam-dark-grey px-6 py-4">
+                      {file.file.name}
+                    </p>
+                    <div
+                      className="h-1 bg-jam-pink text-center"
+                      style={{ width: file.progress + "%" }}
+                    ></div>
+                  </div>
                 </div>
+              );
+            })}
+          </div>
+          {files[0] && (
+            <div className=" w-full   mt-12 md:flex-1 md:ml-10 ">
+              <div className=" p-4 border-4 pl-6 border-jam-purple bg-jam-light-grey text-jam-dark-purple font-serif lowercase rounded-xl">
+                <ul className="list-disc">
+                  <li className="pb-4">
+                    Il est impossible de rajouter des mp3 ou d&apos;editer la
+                    cover apres avoir publié le projet
+                  </li>
+                  <li>
+                    Une fois tous vos mp3 envoyés, retounez sur &quot;mon
+                    compte&quot; pour editer votre tracklist
+                  </li>
+                </ul>
               </div>
-            );
-          })}
+            </div>
+          )}
         </div>
       </div>
     </>

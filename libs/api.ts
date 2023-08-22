@@ -62,7 +62,9 @@ export async function getDynamoProjects() {
     },
   };
   const data = await ddbDocClient.send(new QueryCommand(paramsAllProjects));
-  const publishedProjects = data.Items?.filter((p) => p.status === "PUBLISHED");
+  const publishedProjects = data.Items?.filter(
+    (p) => p.status === "PUBLISHED"
+  ).sort((a: any, b: any) => (a.created_at > b.created_at ? -1 : 1));
   return publishedProjects;
 }
 export async function getMyProjects(a_uuid: string) {

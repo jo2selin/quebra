@@ -8,6 +8,7 @@ import Router from "next/router";
 import UploadCover from "./uploadCover";
 import UploadTracks from "./uploadTracks";
 import EditTracklist from "./editTracklist";
+import PublishProject from "./publishProject";
 import { cssButtonPrimary } from "../../libs/css";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -48,38 +49,37 @@ async function handleDeleteProject({ artist, project }: ProjectDelete) {
   return;
 }
 
-async function publishProject({
-  artist,
-  project,
-  setLoadingPublish,
-  setStatusLocal,
-  allowedDownload,
-}: TypePublishProject) {
-  try {
-    if (setLoadingPublish) setLoadingPublish(true);
-    await fetch(`/api/projects/${artist.uuid}/${project.uuid}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        actualStatus: project.status,
-        a_slug: artist.slug,
-        p_slug: project.slug,
-        path_s3: project.path_s3,
-        allow_download: allowedDownload,
-      }),
-    }).then((res) => {
-      // console.log("res publishProject", res);
+// const PublishProject = ({ publishingProject }: any) => {
+//   const {
+//     artist,
+//     project,
+//     setLoadingPublish,
+//     setStatusLocal,
+//     allowedDownload,
+//     loadingPublish,
+//   } = publishingProject;
+//   return (
+//     <div className="flex justify-center m-16">
+//       <div
+//         onClick={() => {
+//           publishProject({
+//             artist,
+//             project,
+//             setLoadingPublish,
+//             setStatusLocal,
+//             allowedDownload,
+//           });
+//         }}
+//         className={`${cssButtonPrimary} ${
+//           loadingPublish ? " cursor-not-allowed opacity-10" : ""
+//         }`}
+//       >
+//         Publish Project
+//       </div>
+//     </div>
+//   );
+// };
 
-      if (setLoadingPublish && setStatusLocal) {
-        setStatusLocal("PUBLISHED");
-        setLoadingPublish(false);
-      }
-    });
-  } catch (error) {
-    // setVisibleForm(true);
-    console.error(error);
-  }
-}
 async function unPublishProject({
   artist,
   project,
@@ -123,56 +123,72 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   // console.log("statusLocal", statusLocal);
   return (
     <>
-      <div className="flex align-top justify-between items-center mb-1">
-        <div className="flex items-center">
-          <h1 className="text-5xl  ">{project.projectName}</h1>
-          <span
-            className={`ml-5 text-sm ${
-              statusLocal === "PUBLISHED" ? " bg-green-500 " : "  bg-[#323232] "
-            } rounded-sm px-2 `}
-          >
-            {statusLocal === "PUBLISHED" ? (
-              <Link
-                href={`/${artist.slug}/p/${project.slug}`}
-                className="text-white"
-              >
-                {statusLocal} - Link
-              </Link>
-            ) : (
-              statusLocal
-            )}
-          </span>
-        </div>
-        <button
-          onClick={() => handleDeleteProject({ artist, project })}
-          className={`${cssButtonPrimary} bg-[#323232] border-b-4 border-jam-light-purple h-auto ml-6`}
-        >
-          Delete Project
-        </button>
-      </div>
-      <h2 className="text-xl mb-6 ">{artist.artistName}</h2>
-      <ErrorBoundary fallback={<div>Something went wrong</div>}>
-        <UploadCover
-          project={project}
-          artist={artist}
-          status={project.status as string}
-          setCoverIsSet={setCoverIsSet}
-        />
-      </ErrorBoundary>
-      {statusLocal === "DRAFT" && (
-        <ErrorBoundary fallback={<div>Something went wrong</div>}>
-          <UploadTracks project={project} artist={artist} />
-        </ErrorBoundary>
-      )}
+      <div className="flex flex-col md:flex-row">
+        <div className=" md:order-2 flex-1">
+          <div className="flex align-top justify-between items-center mb-1">
+            <div className="flex items-center">
+              <h1 className="text-5xl  ">{project.projectName}</h1>
+            </div>
+          </div>
+          <h2 className="text-xl mb-6 ">{artist.artistName}</h2>
 
-      {tracks && (
-        <EditTracklist
-          tracks={tracks}
-          project={project}
-          artist={artist}
-          statusLocal={statusLocal as string}
-        />
-      )}
+          <div className="md:order-2 flex items-center mb-6 h-14">
+            <div
+              className={` px-3 py-1 rounded-md text-md mr-3 bg-[#323232]  `}
+            >
+              {statusLocal}
+            </div>
+
+            {statusLocal === "PUBLISHED" && (
+              <Link href={`/${artist.slug}/p/${project.slug}`}>
+                <div className="px-3 py-1 mr-3 rounded-md border-b-4 text-white border-green-900  bg-green-500 hover:text-green-900 hover:border-b-2 ">
+                  Lien projet
+                </div>
+              </Link>
+            )}
+            <div className="flex md:flex-1 justify-end items-end">
+              {/* <button
+                onClick={() => handleDeleteProject({ artist, project })}
+                className={`${cssButtonPrimary} bg-[#323232] border-b-4 border-jam-light-purple h-auto ml-6`}
+              >
+                Delete Project
+              </button> */}
+              <div
+                onClick={() => handleDeleteProject({ artist, project })}
+                className="px-3 py-1 rounded-md border-b-4 text-white cursor-pointer border-red-900  bg-red-500 hover:text-red-900 hover:border-b-2 "
+              >
+                Supprimer projet
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="md:order-1 md:ml-10"></div>
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <UploadCover
+            project={project}
+            artist={artist}
+            status={project.status as string}
+            setCoverIsSet={setCoverIsSet}
+          />
+        </ErrorBoundary>
+      </div>
+      <div className="mt-12 p-8 border border-jam-purple rounded">
+        <h2 className="text-xl mb-6 ">Vos .mp3</h2>
+        {statusLocal === "DRAFT" && (
+          <ErrorBoundary fallback={<div>Something went wrong</div>}>
+            <UploadTracks project={project} artist={artist} />
+          </ErrorBoundary>
+        )}
+
+        {tracks && (
+          <EditTracklist
+            tracks={tracks}
+            project={project}
+            artist={artist}
+            statusLocal={statusLocal as string}
+          />
+        )}
+      </div>
 
       {statusLocal !== "PUBLISHED" && (
         <div className="flex my-6">
@@ -190,31 +206,22 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
               htmlFor="allowDownload"
               className="px-4 py-4 ml-2 text-sm font-medium text-white cursor-pointer"
             >
-              Allow project download (.zip)
+              Autoriser le téléchargement direct (.zip)
             </label>
           </div>
         </div>
       )}
 
       {tracks[0] && statusLocal !== "PUBLISHED" && coverIsSet && (
-        <div className="flex justify-center m-16">
-          <div
-            onClick={() => {
-              publishProject({
-                artist,
-                project,
-                setLoadingPublish,
-                setStatusLocal,
-                allowedDownload,
-              });
-            }}
-            className={`${cssButtonPrimary} ${
-              loadingPublish ? " cursor-not-allowed opacity-10" : ""
-            }`}
-          >
-            Publish Project
-          </div>
-        </div>
+        <PublishProject
+          publishingProject={{
+            artist,
+            project,
+            setLoadingPublish,
+            setStatusLocal,
+            allowedDownload,
+          }}
+        />
       )}
 
       {tracks[0] && statusLocal === "PUBLISHED" && (
