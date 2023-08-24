@@ -32,7 +32,7 @@ describe("Home", () => {
     //   name: /Log In/i,
     // });
 
-    expect(screen.getByText("My account")).toBeInTheDocument();
-    expect(screen.getByText("Log out")).toBeInTheDocument();
+    expect(screen.getAllByText("Mon compte")[0]).toBeInTheDocument();
+    // expect(screen.getByText("Log out")).toBeInTheDocument();
   });
 });

@@ -14,6 +14,7 @@ export default function Button({
   className,
   children,
   style = "primary",
+  ...props
 }: Props) {
   const stylePrimary = "bg-jam-purple border-b-4 border-jam-pink";
   const styleSecondary = "bg-jam-pink border-b-4 border-jam-purple";
@@ -37,11 +38,12 @@ export default function Button({
     return (
       <div className={className}>
         <div
-          className={`inline-block text-md text-white  rounded-md px-4 py-2 leading-none hover:text-white ${
+          className={`inline-block text-md text-white cursor-pointer rounded-md px-4 py-2 leading-none hover:text-white ${
             style === "primary" && stylePrimary
           } ${style === "secondary" && styleSecondary}  ${
             style === "dark" && styleDark
           }`}
+          {...props}
         >
           {children}
         </div>

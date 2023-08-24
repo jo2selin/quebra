@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Router from "next/router";
+import Button from "../button";
 
-const New: React.FC = () => {
+type PropsSetArtistProfile = {
+  setShowsetArtist: (active: boolean) => void;
+};
+
+const SetArtistProfile = ({ setShowsetArtist }: PropsSetArtistProfile) => {
   const [artistName, setArtistName] = useState("");
   const [visibleForm, setVisibleForm] = useState(true);
 
@@ -31,12 +36,15 @@ const New: React.FC = () => {
 
       setVisibleForm(false);
       const body = { artistName };
+
       await fetch("/api/users/me", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      await Router.push("/me");
+      // close form
+      setShowsetArtist(false);
+      // await Router.push("/me");
     } catch (error) {
       setVisibleForm(true);
       console.error(error);
@@ -50,7 +58,14 @@ const New: React.FC = () => {
     <>
       <div>
         <form onSubmit={submitData}>
-          <h1 className="text-5xl mb-6 ">My Artist Profile</h1>
+          <div className="flex items-center  mb-6">
+            <span onClick={() => setShowsetArtist(false)}>
+              <Button className="text-sm min-w-max " style={"dark"}>
+                {"< Retour"}
+              </Button>
+            </span>
+          </div>
+
           <label>
             <span className="text-3xl">Artist Name</span>{" "}
             <span className="text-3xl  text-jam-pink">*</span>
@@ -90,4 +105,4 @@ const New: React.FC = () => {
   );
 };
 
-export default New;
+export default SetArtistProfile;

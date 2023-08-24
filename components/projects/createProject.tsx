@@ -1,6 +1,6 @@
 import React from "react";
 import Router from "next/router";
-import SetYourArtistProfile from "../../components/setYourArtistProfile";
+import SetYourArtistProfile from "../me/welcome";
 import useSWR from "swr";
 import { fetcher } from "../../libs/fetcher";
 import { cssInput } from "../../libs/css";

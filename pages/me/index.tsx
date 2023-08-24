@@ -6,67 +6,49 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
 // import JamListItem, { JamProps } from "../../components/jam";
-import Button from "../../components/button";
-import SetYourArtistProfile from "../../components/setYourArtistProfile";
-import ArtistProjects from "../../components/artistProjects";
-import Router from "next/router";
-import slugify from "slugify";
+
+import ArtistProjects from "../../components/me/artistProjects";
+import ArtistProfile from "../../components/me/artistProfile";
+import Welcome from "../../components/me/welcome";
+import SetArtistProfile from "../../components/me/setArtistProfile";
 
 import AccessDenied from "../../components/access-denied";
-import Image from "next/image";
+import Button from "../../components/button";
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
 
-// type Jams = JamProps[];
-
-function ArtistProfile({ setArtistData }: any) {
-  // using an array style key.
-  const { data, error, isLoading } = useSWR("/api/users/me/", fetcher);
-  if (error) {
-    console.log(error);
-    return <div>failed to load Artist Profile </div>;
+  // If the status code is not in the range 200-299,
+  // we still try to parse and throw it.
+  if (!res.ok) {
+    const error = new Error("An error occurred while fetching the data.");
+    // Attach extra info to the error object.
+    throw error;
   }
-  if (isLoading) return <div>loading Artist Profile...</div>;
-  if (data.artistName && data.sk && data.pk) {
-    setArtistData(data);
-    return (
-      <div>
-        <div className="flex justify-between items-center">
-          <h1 className="text-5xl uppercase">Mon Compte</h1>
-          <Button to={"/api/auth/signout"} className="text-sm" style={"dark"}>
-            Se déconnecter
-          </Button>
-        </div>
-        <div className="mt-12 pl-5">
-          <h2 className="text-5xl uppercase">Artiste</h2>
-          <h3 className="text-4xl uppercase ">
-            <Link href={`/${data.slug}`}>{data.artistName}</Link>
-          </h3>
-          <Button to={"/me/artistProfile"} className="text-sm mt-4">
-            Modifier mes infos artiste
-          </Button>
-        </div>
-        <div className="mt-12 pl-5"></div>
-      </div>
-    );
-  } else {
-    return <SetYourArtistProfile />;
-  }
+
+  return res.json();
+};
+export function useUser() {
+  const { data, error, isLoading } = useSWR(`/api/users/me`, fetcher);
+
+  return {
+    user: data,
+    isLoading,
+    isError: error,
+  };
 }
 
 const Me: React.FC = () => {
   const { data: session, status } = useSession();
-  const loading = status === "loading";
-
+  const { user, isLoading, isError } = useUser();
   const [artistData, setArtistData] = useState<Artist>();
-
-  if (loading) {
-    return <p>loading...</p>;
-  }
-
+  const [showsetArtist, setShowsetArtist] = useState<boolean>(false);
   // If no session exists, display access denied message
   if (status !== "authenticated") {
     return <AccessDenied />;
+  }
+  if (isLoading) {
+    return <p data-testid="loading">loading...</p>;
   }
 
   return (
@@ -76,8 +58,31 @@ const Me: React.FC = () => {
       </Head>
       <div className="md:flex">
         <div className="md:flex-1 mb-20 ">
-          <ArtistProfile setArtistData={setArtistData} />
-          {artistData && <ArtistProjects artistData={artistData} />}
+          <div className="flex justify-between items-center">
+            <h1 className="text-5xl uppercase">Mon Compte</h1>
+            <Button to={"/api/auth/signout"} className="text-sm" style={"dark"}>
+              Se déconnecter
+            </Button>
+          </div>
+          {!showsetArtist && (
+            <>
+              {!user?.artistName && (
+                <Welcome setShowsetArtist={setShowsetArtist} />
+              )}
+              {user?.artistName && (
+                <ArtistProfile
+                  setArtistData={setArtistData}
+                  setShowsetArtist={setShowsetArtist}
+                />
+              )}
+              {user?.artistName && artistData && (
+                <ArtistProjects artistData={artistData} />
+              )}
+            </>
+          )}
+          {showsetArtist && (
+            <SetArtistProfile setShowsetArtist={setShowsetArtist} />
+          )}
         </div>
       </div>
     </>
