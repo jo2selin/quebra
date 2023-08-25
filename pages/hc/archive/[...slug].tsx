@@ -28,6 +28,10 @@ interface ArchiveBlog {
 const hcArchiveFiles = fs.readdirSync(path.join("data/hc-old-news"));
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  if (process.env.NEXTAUTH_URL === "http://localhost:3000") {
+    // do not build blog on local
+    return { paths: [], fallback: false };
+  }
   // Creating pages with slug from fonrtmatter
   // Get slug and frontmatter from posts
   const tempPosts = hcArchiveFiles.map((filename) => {

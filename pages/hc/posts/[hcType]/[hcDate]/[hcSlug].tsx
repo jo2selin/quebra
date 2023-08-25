@@ -5,6 +5,10 @@ import { NextSeo } from "next-seo";
 
 let blogPosts = require("../../../../../data/hc2Posts.json");
 export async function getStaticPaths() {
+  if (process.env.NEXTAUTH_URL === "http://localhost:3000") {
+    // do not build blog on local
+    return { paths: [], fallback: false };
+  }
   const paths = blogPosts.map((post: any) => {
     return {
       params: {
