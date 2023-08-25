@@ -1,6 +1,6 @@
 // __tests__/index.test.jsx
 
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "test/test-utils";
 import "@testing-library/jest-dom";
 
 import Header from "../components/header";

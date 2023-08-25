@@ -14,6 +14,7 @@ import SetArtistProfile from "../../components/me/setArtistProfile";
 
 import AccessDenied from "../../components/access-denied";
 import Button from "../../components/button";
+import { log } from "console";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -50,6 +51,7 @@ const Me: React.FC = () => {
   if (isLoading) {
     return <p data-testid="loading">loading...</p>;
   }
+  console.log("session", session);
 
   return (
     <>

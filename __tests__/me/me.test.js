@@ -6,25 +6,26 @@ import {
   waitForElementToBeRemoved,
   waitFor,
   toHaveBeenCalledTimes,
-} from "@testing-library/react";
+} from "test/test-utils";
 import "@testing-library/jest-dom";
 
-import MeIndex from "../../pages/me/index";
+import MeIndex from "pages/me/index";
+//  todo utiliser msw
 
-jest.mock("next-auth/react", () => {
-  const originalModule = jest.requireActual("next-auth/react");
-  const mockSession = {
-    expires: new Date(Date.now() + 2 * 86400).toISOString(),
-    user: { username: "admin" },
-  };
-  return {
-    __esModule: true,
-    ...originalModule,
-    useSession: jest.fn(() => {
-      return { data: mockSession, status: "authenticated" }; // return type is [] in v3 but changed to {} in v4
-    }),
-  };
-});
+// jest.mock("next-auth/react", () => {
+//   const originalModule = jest.requireActual("next-auth/react");
+//   const mockSession = {
+//     expires: new Date(Date.now() + 2 * 86400).toISOString(),
+//     user: { username: "admin" },
+//   };
+//   return {
+//     __esModule: true,
+//     ...originalModule,
+//     useSession: jest.fn(() => {
+//       return { data: mockSession, status: "authenticated" }; // return type is [] in v3 but changed to {} in v4
+//     }),
+//   };
+// });
 
 const customRender = (ui, { providerProps, ...renderOptions }) => {
   return render(ui, renderOptions);
