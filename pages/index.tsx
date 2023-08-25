@@ -48,7 +48,6 @@ type propsType = {
 export default function Home(props: propsType) {
   const { projectsWithArtistsData } = props;
   const { data: session, status } = useSession();
-  console.log("status======", status);
 
   return (
     <>

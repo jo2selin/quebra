@@ -1,6 +1,5 @@
 import React from "react";
 import Router from "next/router";
-import SetYourArtistProfile from "../../components/setYourArtistProfile";
 import useSWR from "swr";
 import { fetcher } from "../../libs/fetcher";
 import { cssInput } from "../../libs/css";
@@ -38,54 +37,51 @@ export default function CreateProject() {
 
   if (error) return <div>failed to load Artist Profile</div>;
   if (isLoading) return <div>loading Artist Profile...</div>;
-  if (data.artistName && data.sk && data.pk && data.slug) {
-    return (
-      <>
-        <h1 className="text-xl mb-6 ">Infos de votre projet</h1>
+  if (!isLoading && !data.artistName) return <div>No artist name found</div>;
+  return (
+    <>
+      <h1 className="text-xl mb-6 ">Infos de votre projet</h1>
+      <label>
+        <span className="text-3xl">Nom artiste</span>{" "}
+        <input
+          disabled
+          type="text"
+          value={data.artistName}
+          className={cssInput + " opacity-50 cursor-not-allowed"}
+        />
+      </label>
+      <form onSubmit={submitData}>
         <label>
-          <span className="text-3xl">Nom artiste</span>{" "}
+          <span className="text-3xl">Nom project</span>{" "}
+          <span className="text-3xl  text-jam-pink">*</span>
           <input
-            disabled
+            autoFocus
+            onChange={(e) => setProjectName(e.target.value)}
             type="text"
-            value={data.artistName}
-            className={cssInput + " opacity-50 cursor-not-allowed"}
+            value={projectName}
+            className={cssInput}
           />
         </label>
-        <form onSubmit={submitData}>
-          <label>
-            <span className="text-3xl">Nom project</span>{" "}
-            <span className="text-3xl  text-jam-pink">*</span>
-            <input
-              autoFocus
-              onChange={(e) => setProjectName(e.target.value)}
-              type="text"
-              value={projectName}
-              className={cssInput}
-            />
-          </label>
 
-          <div className="w-full ">
-            {projectName && projectName.replace(regex, "").length <= 3 && (
-              <p className="text-sm text-red-500">project name too short</p>
-            )}
-            <input
-              className={`text-xl mx-auto block text-white rounded-md px-4 py-2 leading-none  bg-jam-purple border-b-4 border-jam-pink cursor-pointer disabled:opacity-50 disabled:border-none disabled:cursor-not-allowed ${
-                !visibleForm && "opacity-10"
-              }
+        <div className="w-full ">
+          {projectName && projectName.replace(regex, "").length <= 3 && (
+            <p className="text-sm text-red-500">project name too short</p>
+          )}
+          <input
+            className={`text-xl mx-auto block text-white rounded-md px-4 py-2 leading-none  bg-jam-purple border-b-4 border-jam-pink cursor-pointer disabled:opacity-50 disabled:border-none disabled:cursor-not-allowed ${
+              !visibleForm && "opacity-10"
+            }
         `}
-              disabled={
-                !projectName ||
-                !visibleForm ||
-                projectName.replace(regex, "").length <= 3
-              }
-              type="submit"
-              value="Create a project"
-            />
-          </div>
-        </form>
-      </>
-    );
-  } else {
-    return <SetYourArtistProfile />;
-  }
+            disabled={
+              !projectName ||
+              !visibleForm ||
+              projectName.replace(regex, "").length <= 3
+            }
+            type="submit"
+            value="Create a project"
+          />
+        </div>
+      </form>
+    </>
+  );
 }
