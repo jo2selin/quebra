@@ -10,8 +10,8 @@ type propsType = {
 export default function Card({ project: p }: propsType) {
   return (
     <>
-      <div className="bg-jam-dark-grey shadow-lg overflow-hidden rounded-b-xl border-b-jam-purple border-b-4">
-        <Link href={`/${p.artist.slug}/p/${p.project.slug}`}>
+      <div className="flex w-full shadow-lg bg-slate-100 overflow-hidden rounded-xl border-b-jam-dark-grey border-b-4">
+        <Link href={`/${p.artist.slug}/p/${p.project.slug}`} className="w-2/5">
           <Image
             src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${p.project.path_s3}/cover.jpg`}
             alt={`${p.project.projectName}, ${p.artist.artistName}`}
@@ -19,10 +19,13 @@ export default function Card({ project: p }: propsType) {
             height={450}
           />
         </Link>
-        <div className="p-4">
-          <h2 className="text-xl font-bold text-white ">
-            {p.project.projectName} - {p.artist.artistName}
-          </h2>
+        <div className="p-4 flex-1">
+          <Link href={`/${p.artist.slug}/p/${p.project.slug}`}>
+            <h2 className="text-2xl text-jam-purple ">
+              {p.project.projectName}
+            </h2>
+            <h3 className="text-jam-purple">par {p.artist.artistName}</h3>
+          </Link>
         </div>
       </div>
     </>
