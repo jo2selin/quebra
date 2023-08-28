@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import { useSession } from "next-auth/react";
+import { NextSeo } from "next-seo";
 
 import Button from "../components/button";
 
@@ -51,6 +52,19 @@ export default function Home(props: propsType) {
 
   return (
     <>
+      <NextSeo
+        title={
+          "Accueil" + " " + process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX
+        }
+        description={"Bienvenue sur Quebra.co"}
+        canonical={`https://www.quebra.co/`}
+        openGraph={{
+          url: `https://www.quebra.co/`,
+          title:
+            "Accueil" + " " + process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX,
+          description: "Bienvenue sur Quebra.co",
+        }}
+      />
       <Head>
         <title key="title">Homepage | Quebra</title>
       </Head>
