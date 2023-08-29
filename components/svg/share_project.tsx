@@ -10,14 +10,14 @@ function Share_project() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g clip-path="url(#clip0_401_37)">
+        <g clipPath="url(#clip0_401_37)">
           <path
             className="animate-pulse"
             style={{ animationDelay: "0.5s" }}
             d="M96.4601 106.925L71.4351 111.93L78.2601 141.05L96.4601 106.925Z"
             fill="#421C61"
             stroke="#421C61"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -25,7 +25,7 @@ function Share_project() {
             d="M78.26 141.05L96.915 143.325L96.46 106.925L78.26 141.05Z"
             fill="#512177"
             stroke="#512177"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -33,7 +33,7 @@ function Share_project() {
             d="M96.915 143.325L132.405 116.935L96.46 106.925L96.915 143.325Z"
             fill="#1E102D"
             stroke="#1E102D"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -41,7 +41,7 @@ function Share_project() {
             d="M60.0601 65.9751L38.675 114.205L71.4351 111.93L60.0601 65.9751Z"
             fill="#491F6C"
             stroke="#491F6C"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -49,7 +49,7 @@ function Share_project() {
             d="M71.4351 111.93L38.675 114.205L78.2601 141.05L71.4351 111.93Z"
             fill="#421C61"
             stroke="#421C61"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -57,7 +57,7 @@ function Share_project() {
             d="M132.405 116.935L104.65 75.53L96.46 106.925L132.405 116.935Z"
             fill="#1E102D"
             stroke="#1E102D"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -65,7 +65,7 @@ function Share_project() {
             d="M96.4601 106.925L104.65 75.53L71.4351 111.93L96.4601 106.925Z"
             fill="#62258E"
             stroke="#62258E"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -73,7 +73,7 @@ function Share_project() {
             d="M96.915 143.325L140.14 135.135L132.405 116.935L96.915 143.325Z"
             fill="#421C61"
             stroke="#421C61"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -81,7 +81,7 @@ function Share_project() {
             d="M71.4351 182L96.9151 143.325L78.2601 141.05L71.4351 182Z"
             fill="#33184B"
             stroke="#33184B"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -89,7 +89,7 @@ function Share_project() {
             d="M71.4351 182H101.92L96.9151 143.325L71.4351 182Z"
             fill="#421C61"
             stroke="#421C61"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -97,7 +97,7 @@ function Share_project() {
             d="M96.915 143.325L101.92 182L140.14 135.135L96.915 143.325Z"
             fill="#3A1A56"
             stroke="#3A1A56"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -105,7 +105,7 @@ function Share_project() {
             d="M45.5 182H71.435L78.26 141.05L45.5 182Z"
             fill="#421C61"
             stroke="#421C61"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -113,7 +113,7 @@ function Share_project() {
             d="M104.65 75.5301L60.0601 65.9751L71.4351 111.93L104.65 75.5301Z"
             fill="#33184B"
             stroke="#33184B"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -121,7 +121,7 @@ function Share_project() {
             d="M38.675 114.205L25.48 147.42L78.26 141.05L38.675 114.205Z"
             fill="#251237"
             stroke="#251237"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -129,7 +129,7 @@ function Share_project() {
             d="M182 100.555L135.135 73.71L132.405 116.935L182 100.555Z"
             fill="#190B23"
             stroke="#190B23"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -137,7 +137,7 @@ function Share_project() {
             d="M132.405 116.935L135.135 73.71L104.65 75.53L132.405 116.935Z"
             fill="#251237"
             stroke="#251237"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -145,7 +145,7 @@ function Share_project() {
             d="M104.65 75.5299L85.5401 45.0449L60.0601 65.9749L104.65 75.5299Z"
             fill="#3A1A56"
             stroke="#3A1A56"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -153,7 +153,7 @@ function Share_project() {
             d="M60.06 65.975L45.955 65.52L38.675 114.205L60.06 65.975Z"
             fill="#251237"
             stroke="#251237"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -161,7 +161,7 @@ function Share_project() {
             d="M38.675 114.205L0 115.57L25.48 147.42L38.675 114.205Z"
             fill="#251237"
             stroke="#251237"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -169,7 +169,7 @@ function Share_project() {
             d="M25.48 147.42L45.5 182L78.26 141.05L25.48 147.42Z"
             fill="#3A1A56"
             stroke="#3A1A56"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -177,7 +177,7 @@ function Share_project() {
             d="M121.94 43.6799L85.54 45.0449L104.65 75.5299L121.94 43.6799Z"
             fill="#3A1A56"
             stroke="#3A1A56"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -185,7 +185,7 @@ function Share_project() {
             d="M60.06 65.9751L24.115 34.5801L45.955 65.5201L60.06 65.9751Z"
             fill="#251237"
             stroke="#251237"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -193,7 +193,7 @@ function Share_project() {
             d="M0 70.0701V115.57L38.675 114.205L0 70.0701Z"
             fill="#1E102D"
             stroke="#1E102D"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -201,7 +201,7 @@ function Share_project() {
             d="M25.48 147.42L0 182H45.5L25.48 147.42Z"
             fill="#251237"
             stroke="#251237"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -209,7 +209,7 @@ function Share_project() {
             d="M135.135 73.7099L121.94 43.6799L104.65 75.5299L135.135 73.7099Z"
             fill="#421C61"
             stroke="#421C61"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -217,7 +217,7 @@ function Share_project() {
             d="M0 115.57V136.5L25.48 147.42L0 115.57Z"
             fill="#491F6C"
             stroke="#491F6C"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -225,7 +225,7 @@ function Share_project() {
             d="M101.92 182H155.155L140.14 135.135L101.92 182Z"
             fill="#190B23"
             stroke="#190B23"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -233,7 +233,7 @@ function Share_project() {
             d="M140.14 135.135L182 100.555L132.405 116.935L140.14 135.135Z"
             fill="#251237"
             stroke="#251237"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -241,7 +241,7 @@ function Share_project() {
             d="M182 153.79V100.555L140.14 135.135L182 153.79Z"
             fill="#1E102D"
             stroke="#1E102D"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -249,7 +249,7 @@ function Share_project() {
             d="M135.135 73.71L158.34 40.04L121.94 43.68L135.135 73.71Z"
             fill="#421C61"
             stroke="#421C61"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -257,7 +257,7 @@ function Share_project() {
             d="M155.155 182L182 153.79L140.14 135.135L155.155 182Z"
             fill="#3A1A56"
             stroke="#3A1A56"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -265,7 +265,7 @@ function Share_project() {
             d="M45.955 65.52L0 70.07L38.675 114.205L45.955 65.52Z"
             fill="#2C1541"
             stroke="#2C1541"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -273,7 +273,7 @@ function Share_project() {
             d="M24.115 34.5801L0 70.0701L45.955 65.5201L24.115 34.5801Z"
             fill="#5A2383"
             stroke="#5A2383"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -281,7 +281,7 @@ function Share_project() {
             d="M0 136.5V182L25.48 147.42L0 136.5Z"
             fill="#190B23"
             stroke="#190B23"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -289,7 +289,7 @@ function Share_project() {
             d="M85.54 45.0451L24.115 34.5801L60.06 65.9751L85.54 45.0451Z"
             fill="#2C1541"
             stroke="#2C1541"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -297,7 +297,7 @@ function Share_project() {
             d="M45.045 0L24.115 34.58L85.54 45.045L45.045 0Z"
             fill="#491F6C"
             stroke="#491F6C"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -305,7 +305,7 @@ function Share_project() {
             d="M182 100.555V68.7051L135.135 73.7101L182 100.555Z"
             fill="#5A2383"
             stroke="#5A2383"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -313,7 +313,7 @@ function Share_project() {
             d="M182 68.705L158.34 40.04L135.135 73.71L182 68.705Z"
             fill="#5A2383"
             stroke="#5A2383"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -321,7 +321,7 @@ function Share_project() {
             d="M120.12 0H69.615L85.54 45.045L120.12 0Z"
             fill="#190B23"
             stroke="#190B23"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -329,7 +329,7 @@ function Share_project() {
             d="M155.155 182H182V153.79L155.155 182Z"
             fill="#1E102D"
             stroke="#1E102D"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -337,7 +337,7 @@ function Share_project() {
             d="M120.12 0L85.54 45.045L121.94 43.68L120.12 0Z"
             fill="#251237"
             stroke="#251237"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -345,7 +345,7 @@ function Share_project() {
             d="M158.34 40.04L120.12 0L121.94 43.68L158.34 40.04Z"
             fill="#62258E"
             stroke="#62258E"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -353,7 +353,7 @@ function Share_project() {
             d="M0 0V26.845L24.115 34.58L0 0Z"
             fill="#1E102D"
             stroke="#1E102D"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -361,7 +361,7 @@ function Share_project() {
             d="M24.115 34.58L0 26.845V70.07L24.115 34.58Z"
             fill="#1E102D"
             stroke="#1E102D"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -369,7 +369,7 @@ function Share_project() {
             d="M69.615 0H45.045L85.54 45.045L69.615 0Z"
             fill="#5A2383"
             stroke="#5A2383"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -377,7 +377,7 @@ function Share_project() {
             d="M182 68.7051V24.5701L158.34 40.0401L182 68.7051Z"
             fill="#512177"
             stroke="#512177"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -385,7 +385,7 @@ function Share_project() {
             d="M158.34 40.04L157.43 0H120.12L158.34 40.04Z"
             fill="#421C61"
             stroke="#421C61"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -393,7 +393,7 @@ function Share_project() {
             d="M182 24.57L157.43 0L158.34 40.04L182 24.57Z"
             fill="#512177"
             stroke="#512177"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -401,7 +401,7 @@ function Share_project() {
             d="M45.045 0H0L24.115 34.58L45.045 0Z"
             fill="#33184B"
             stroke="#33184B"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
           <path
             className="animate-pulse"
@@ -409,7 +409,7 @@ function Share_project() {
             d="M182 24.57V0H157.43L182 24.57Z"
             fill="#3A1A56"
             stroke="#3A1A56"
-            stroke-linejoin="bevel"
+            strokeLinejoin="bevel"
           />
         </g>
         <path
