@@ -93,9 +93,9 @@ function News({ params }: ArchiveBlog) {
         description={
           "Read about " + params.frontmatter?.title + ", on Quebra.co"
         }
-        canonical={`https://quebra.co/hc/archive${params.frontmatter?.slug}`}
+        canonical={`https://www.quebra.co/hc/archive${params.frontmatter?.slug}`}
         openGraph={{
-          url: `https://quebra.co/hc/archive${params.frontmatter?.slug}`,
+          url: `https://www.quebra.co/hc/archive${params.frontmatter?.slug}`,
           title:
             params.frontmatter?.title +
             " " +

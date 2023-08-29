@@ -2,13 +2,13 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 import { useSession } from "next-auth/react";
+import { NextSeo } from "next-seo";
 
 import Button from "../components/button";
-
+import Share_project from "../components/svg/share_project";
+import Triangles from "../components/svg/triangles";
 import { getDynamoProjects, getDynamoArtists } from "../libs/api";
 
-import triangles from "../public/triangles.svg";
-import shareProject from "../public/share_project.svg";
 import newTalents from "../public/new_talents.svg";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,6 +51,19 @@ export default function Home(props: propsType) {
 
   return (
     <>
+      <NextSeo
+        title={
+          "Accueil" + " " + process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX
+        }
+        description={"Bienvenue sur Quebra.co"}
+        canonical={`https://www.quebra.co/`}
+        openGraph={{
+          url: `https://www.quebra.co/`,
+          title:
+            "Accueil" + " " + process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX,
+          description: "Bienvenue sur Quebra.co",
+        }}
+      />
       <Head>
         <title key="title">Homepage | Quebra</title>
       </Head>
@@ -68,26 +81,32 @@ export default function Home(props: propsType) {
             Commencer
           </Button>
         </div>
-        <Image
+        {/* <Image
           priority
           src={triangles}
           alt=""
           className="absolute z-0 -right-3 top-0 max-w-xl"
           style={{ width: "100%" }}
-        />
+        /> */}
+        <div className="absolute z-0 -right-3 top-0 max-w-xl">
+          <Triangles />
+        </div>
       </div>
       <div className="w-3/4 m-auto">
-        <div className="flex flex-col md:flex-row mb-8">
+        <div className="flex flex-col md:flex-row md:items-center mb-8">
           <p className="md:pr-5 order-2 md:order-1">
             Nous fournissons une plate-forme où les artistes peuvent partager
             leurs projets musicaux.
           </p>
-          <Image
+          {/* <Image
             priority
             src={shareProject}
             alt=""
             className="order-1 md:order-2 "
-          />
+          /> */}
+          <div className="order-1 md:order-2 ">
+            <Share_project />
+          </div>
         </div>
         <div className="flex flex-col md:flex-row mb-5">
           <Image priority src={newTalents} alt="" />
