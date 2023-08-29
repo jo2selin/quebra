@@ -14,7 +14,6 @@ import SetArtistProfile from "../../components/me/setArtistProfile";
 
 import AccessDenied from "../../components/access-denied";
 import Button from "../../components/button";
-import { log } from "console";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -44,6 +43,13 @@ const Me: React.FC = () => {
   const { user, isLoading, isError } = useUser();
   const [artistData, setArtistData] = useState<Artist>();
   const [showsetArtist, setShowsetArtist] = useState<boolean>(false);
+  // const { mutate } = useSWRConfig();
+
+  // useEffect(() => {
+  //   mutate("/api/users/me");
+  //   console.log("useeffect");
+  // }, [user, showsetArtist]);
+
   // If no session exists, display access denied message
   if (status !== "authenticated") {
     return <AccessDenied />;
@@ -51,7 +57,8 @@ const Me: React.FC = () => {
   if (isLoading) {
     return <p data-testid="loading">loading...</p>;
   }
-  console.log("session", session);
+  console.log("showsetArtist", showsetArtist);
+  console.log("user", user);
 
   return (
     <>
@@ -83,7 +90,7 @@ const Me: React.FC = () => {
             </>
           )}
           {showsetArtist && (
-            <SetArtistProfile setShowsetArtist={setShowsetArtist} />
+            <SetArtistProfile user={user} setShowsetArtist={setShowsetArtist} />
           )}
         </div>
       </div>

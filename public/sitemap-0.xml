@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://www.quebra.co</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/auth/signin</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/me</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/me/project</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/news</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/projects</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/protected</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/joselu</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/5e941-frezzy</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/aziidao</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/erwan</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/quebra</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/quebra/p/frank-ocean-nostalgia-ultra</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/joselu/p/mon-projet-1</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/erwan/p/and-dollar-percent-greater-less-or-oe</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://www.quebra.co/quebra/p/bob-better-than-drugs</loc><lastmod>2023-08-28T17:07:18.096Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/auth/signin</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/me</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/me/project</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/news</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/projects</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/protected</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/joselu</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/5e941-frezzy</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/aziidao2</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/erwan</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/quebra</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/quebra/p/frank-ocean-nostalgia-ultra</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/joselu/p/mon-projet-1</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/erwan/p/and-dollar-percent-greater-less-or-oe</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://www.quebra.co/quebra/p/bob-better-than-drugs</loc><lastmod>2023-08-29T13:37:51.658Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>
