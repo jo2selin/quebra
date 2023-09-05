@@ -32,7 +32,7 @@ export default async function handler(
 
     if (!data.Item) {
       // profile does not exist yet
-      return res.status(403).json({ info: "Your Artist is not set" });
+      return res.status(200).json([]);
     } else {
       const paramsAllMyProjects = {
         TableName: process.env.TABLE,

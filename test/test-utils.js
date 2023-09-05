@@ -1,6 +1,7 @@
 import * as React from "react";
 import { render as rtlRender } from "@testing-library/react";
 import { SessionProvider } from "next-auth/react";
+import useSWR, { SWRConfig } from "swr";
 
 function render(ui, { ...options } = {}) {
   const mockSession = {
@@ -9,7 +10,14 @@ function render(ui, { ...options } = {}) {
   };
 
   const Wrapper = ({ children }) => (
-    <SessionProvider session={mockSession}>{children}</SessionProvider>
+    <SWRConfig
+      value={{
+        dedupingInterval: 0,
+        provider: () => new Map(),
+      }}
+    >
+      <SessionProvider session={mockSession}>{children}</SessionProvider>
+    </SWRConfig>
   );
   return rtlRender(ui, { wrapper: Wrapper, ...options });
 }

@@ -17,7 +17,7 @@ const SetArtistProfile = ({
   const { mutate } = useSWRConfig();
 
   useEffect(() => {
-    setArtistName(user.artistName);
+    setArtistName(user.artistName ? user.artistName : "");
   }, [user]);
 
   const regex =

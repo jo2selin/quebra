@@ -33,6 +33,10 @@ describe("Home", () => {
     // });
 
     expect(screen.getAllByText("Mon compte")[0]).toBeInTheDocument();
-    // expect(screen.getByText("Log out")).toBeInTheDocument();
+    expect(screen.getAllByText("Mon compte")[1]).toBeInTheDocument();
+    expect(screen.getAllByText(/Projects/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/Projects/i)[1]).toBeInTheDocument();
+    expect(screen.getAllByText("News")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("News")[1]).toBeInTheDocument();
   });
 });

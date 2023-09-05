@@ -2,20 +2,22 @@ import React from "react";
 import Link from "next/link";
 
 import Button from "../button";
-import { fetcher } from "../../libs/fetcher";
-import useSWR from "swr";
+import { useUser, useUserProjects } from "../../pages/me";
 
 interface typeArtistProjects {
   artistData: Artist;
 }
 
 export default function ArtistProjects({ artistData }: typeArtistProjects) {
-  const { data, error, isLoading } = useSWR("/api/projects/me", fetcher);
+  // const { user, isLoading, isError } = useUser();
+  const { dataProjects, isLoadingProjects, errorProjects } = useUserProjects();
+
+  // const { data, error, isLoading } = useSWR("/api/projects/me", fetcher);
   // if (error) return <div>failed to load Artist Projects</div>;
-  if (isLoading) return <div>loading Artist Projects...</div>;
+  if (isLoadingProjects) return <div>loading Artist Projects...</div>;
   // if (error) throw new Error(error);
 
-  const allButDeletedProjects = data.filter(
+  const allButDeletedProjects = dataProjects?.filter(
     (p: Project) => p.status !== "DELETED"
   );
 
@@ -25,12 +27,13 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
         Projects
       </h2>
 
-      {allButDeletedProjects.length < 2 && (
-        <Button to={"/me/project"} className="text-sm ">
-          Creer nouveau projet
-        </Button>
-      )}
-      {allButDeletedProjects.length >= 2 && (
+      {!allButDeletedProjects ||
+        (allButDeletedProjects.length < 2 && (
+          <Button to={"/me/project"} className="text-sm ">
+            Creer nouveau projet
+          </Button>
+        ))}
+      {allButDeletedProjects && allButDeletedProjects.length >= 2 && (
         <div
           className={`mt-5  basis-0 text-md bg-[#323232] text-white rounded-sm px-4 py-2   `}
         >
@@ -44,7 +47,7 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
         </div>
       )}
 
-      {data && !data.error && allButDeletedProjects[0] && (
+      {dataProjects && !errorProjects && allButDeletedProjects[0] && (
         <div className="mt-12">
           {allButDeletedProjects.map((proj: Project) => {
             return (
