@@ -106,7 +106,6 @@ async function unPublishProject({
 }
 
 function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
-  const [loadingPublish, setLoadingPublish] = React.useState(false);
   const [statusLocal, setStatusLocal] = React.useState(project.status);
   const [coverIsSet, setCoverIsSet] = React.useState(
     project.cover ? true : false
@@ -212,12 +211,23 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         </div>
       )}
 
+      {tracks[0] && statusLocal !== "PUBLISHED" && !coverIsSet && (
+        <div className="flex flex-col  justify-center items-center">
+          <div
+            className={`${cssButtonPrimary} cursor-not-allowed  opacity-50  bg-[#323232]`}
+          >
+            Publier
+          </div>
+          <p className="font-mono text-xs">
+            Ajoutez une pochette (cover) a votre projet
+          </p>
+        </div>
+      )}
       {tracks[0] && statusLocal !== "PUBLISHED" && coverIsSet && (
         <PublishProject
           publishingProject={{
             artist,
             project,
-            setLoadingPublish,
             setStatusLocal,
             allowedDownload,
           }}
@@ -241,11 +251,14 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
               Unpublish Project
             </div>
           </div>
-          <div className="font-sans md:w-1/2 md:m-auto md:mb-16  bg-jam-light-transparent text-jam-light-purple lowercase text-sm p-2 border-2 border-jam-purple rounded-md ">
-            <p>
-              Unpublish Project to edit the track&apos;s names.
-              <br /> Unpublished projects are not visible to visitors
-            </p>
+          <div className="font-sans md:w-3/4 md:m-auto md:mb-16  bg-jam-light-transparent text-jam-light-purple lowercase text-sm p-2 border-2 border-jam-purple rounded-md ">
+            <ul className="list-disc list-inside">
+              <li>Annuler la publication pour editer le nom des pistes.</li>
+              <li>
+                Les projets &quot;unpublished&quot; ne sont pas visible aux
+                visiteurs
+              </li>
+            </ul>
           </div>
         </>
       )}
