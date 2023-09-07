@@ -32,7 +32,7 @@ export default function Player({
   // const [currentTrack, setTrackIndex] = React.useState(0);
   const handleClickNext = () => {
     setTrackIndex((currentTrack: number) =>
-      currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
+      currentTrack < playlist.length - 1 ? currentTrack + 1 : 0,
     );
   };
 

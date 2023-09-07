@@ -31,9 +31,9 @@ export default function DownloadZip({ path, path_s3 }: TypeDownloadZip) {
     <>
       <div className="flex items-center justify-center">
         <div
-          className={`inline-block text-md text-white  rounded-md px-4 py-2 leading-none hover:text-white 
-        bg-jam-purple border-b-4 border-jam-pink cursor-pointer
-        mt-5 
+          className={`text-md mt-5 inline-block  cursor-pointer rounded-md border-b-4 border-jam-pink bg-jam-purple 
+        px-4 py-2 leading-none text-white
+        hover:text-white 
         `}
           onClick={handleDownload}
         >

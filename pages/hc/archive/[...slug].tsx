@@ -38,7 +38,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     // Get frontmatter
     const markdownWithMeta = fs.readFileSync(
       path.join("data/hc-old-news", filename),
-      "utf-8"
+      "utf-8",
     );
     //convert data in json format
     const { data: frontmatter } = matter(markdownWithMeta);
@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
     //   // Reading inside each file for the slug
     const markdownWithMeta = fs.readFileSync(
       path.join("data/hc-old-news", filename),
-      "utf-8"
+      "utf-8",
     );
     const { data: frontmatter } = matter(markdownWithMeta);
     return frontmatter.slug === "/" + fullSlug;
@@ -71,7 +71,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   // Reading inside specific file for the frontmatter
   const markdownWithMeta = fs.readFileSync(
     path.join("data/hc-old-news", findPost[0]),
-    "utf-8"
+    "utf-8",
   );
 
   //convert data in json format
@@ -129,11 +129,11 @@ function News({ params }: ArchiveBlog) {
         />
       )}
       {params.frontmatter.title && (
-        <h1 className="text-4xl pb-10">{params.frontmatter.title}</h1>
+        <h1 className="pb-10 text-4xl">{params.frontmatter.title}</h1>
       )}
       {params.content && (
         <div
-          className=" text-base font-serif  normal-case  mb-12"
+          className=" mb-12 font-serif  text-base  normal-case"
           dangerouslySetInnerHTML={{ __html: params.content }}
         />
       )}

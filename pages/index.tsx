@@ -68,7 +68,7 @@ export default function Home(props: propsType) {
       <Head>
         <title key="title">Homepage | Quebra</title>
       </Head>
-      <div className="max-w-sm mx-auto relative mb-24">
+      <div className="relative mx-auto mb-24 max-w-sm">
         <div className="relative z-10">
           <h1 className="text-3xl">
             Uploadez et Partagez <br />
@@ -86,13 +86,13 @@ export default function Home(props: propsType) {
           priority
           src={triangles}
           alt=""
-          className="absolute z-0 -right-3 top-0 max-w-xl"
+          className="absolute -right-3 top-0 z-0 max-w-xl"
           style={{ width: "100%" }}
         />
       </div>
-      <div className="w-3/4 m-auto">
-        <div className="flex flex-col md:flex-row mb-8">
-          <p className="md:pr-5 order-2 md:order-1">
+      <div className="m-auto w-3/4">
+        <div className="mb-8 flex flex-col md:flex-row">
+          <p className="order-2 md:order-1 md:pr-5">
             Nous fournissons une plate-forme où les artistes peuvent partager
             leurs projets musicaux.
           </p>
@@ -103,7 +103,7 @@ export default function Home(props: propsType) {
             className="order-1 md:order-2 "
           />
         </div>
-        <div className="flex flex-col md:flex-row mb-5">
+        <div className="mb-5 flex flex-col md:flex-row">
           <Image priority src={newTalents} alt="" />
           <p className="md:pl-5">
             Nous croyons que chacun devrait avoir la possibilité de présenter

@@ -59,8 +59,8 @@ const Me: React.FC = () => {
         <title key="title">Me | Quebra</title>
       </Head>
       <div className="md:flex">
-        <div className="md:flex-1 mb-20 ">
-          <div className="flex justify-between items-center">
+        <div className="mb-20 md:flex-1 ">
+          <div className="flex items-center justify-between">
             <h1 className="text-5xl uppercase">Mon Compte</h1>
             <Button to={"/api/auth/signout"} className="text-sm" style={"dark"}>
               Se déconnecter

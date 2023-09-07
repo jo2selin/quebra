@@ -8,7 +8,7 @@ function checkImageParams(
   width: number | undefined,
   height: number | undefined,
   size: number | undefined,
-  type: string | undefined
+  type: string | undefined,
 ) {
   setErrorImage(false); //reset for 2nd atempt
   if (
@@ -59,7 +59,7 @@ export default function UploadCover({
 }: TypeUpload) {
   let [imageUrl, setImageUrl] = React.useState(
     project.cover &&
-      `https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${project.path_s3}/cover.${project.cover}`
+      `https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${project.path_s3}/cover.${project.cover}`,
   );
   let [height, setHeight] = React.useState(400);
   let [width, setWidth] = React.useState(400);
@@ -90,7 +90,7 @@ export default function UploadCover({
       width,
       height,
       file.size,
-      file.type
+      file.type,
     );
 
     if (!imageIsOk) return false;
@@ -107,7 +107,7 @@ export default function UploadCover({
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
-          }
+          },
         );
       });
     } catch (error) {
@@ -117,7 +117,7 @@ export default function UploadCover({
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-center w-48 h-48 bg-jam-light-transparent">
+      <div className="flex h-48 w-48 items-center justify-center bg-jam-light-transparent">
         <FileInput onChange={handleFileChange} />
 
         {!imageUrl && (

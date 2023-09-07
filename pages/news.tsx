@@ -42,9 +42,9 @@ function News({ data }: any) {
         href={`hc/posts/${post.hcType}/${post.hcDate}/${post.hcSlug}`}
         className=" text-white hover:text-jam-pink"
       >
-        <article className="flex items-center mb-4">
+        <article className="mb-4 flex items-center">
           <aside className="text-3xl">{post.emoji}</aside>{" "}
-          <h2 className="text-xl pl-4 ">{post.title}</h2>
+          <h2 className="pl-4 text-xl ">{post.title}</h2>
         </article>
       </Link>
     </>

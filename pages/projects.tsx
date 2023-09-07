@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const filterProjectsHome = (projects: Project[]) => {
   return projects.filter(
-    (p) => p.validated === "HOMEPAGE" || p.validated === "OK"
+    (p) => p.validated === "HOMEPAGE" || p.validated === "OK",
   );
 };
 
@@ -48,12 +48,12 @@ export default function Projects(props: propsType) {
       <Head>
         <title key="title">Projets | Quebra</title>
       </Head>
-      <h1 className="text-4xl pb-8">Projets</h1>
+      <h1 className="pb-8 text-4xl">Projets</h1>
       <p className="mb-5 text-lg">
         Faites partie des premiers à uploader vos projets sur Quebra ! <br />
         <Link href="auth/signin">inscrivez-vous</Link>, c&apos;est gratuit
       </p>
-      <div className="flex flex-wrap -mx-4 justify-center">
+      <div className="-mx-4 flex flex-wrap justify-center">
         <Cards projects={projectsWithArtistsData} />
       </div>
     </>

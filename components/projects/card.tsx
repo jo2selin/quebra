@@ -10,7 +10,7 @@ type propsType = {
 export default function Card({ project: p }: propsType) {
   return (
     <>
-      <div className="bg-jam-dark-grey shadow-lg overflow-hidden rounded-b-xl border-b-jam-purple border-b-4">
+      <div className="overflow-hidden rounded-b-xl border-b-4 border-b-jam-purple bg-jam-dark-grey shadow-lg">
         <Link href={`/${p.artist.slug}/p/${p.project.slug}`}>
           <Image
             src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${p.project.path_s3}/cover.jpg`}

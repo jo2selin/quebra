@@ -176,7 +176,7 @@ export default function Project(props: propsType) {
                     } cursor-pointer`}
                     onClick={() => setTrackIndex(i)}
                   >
-                    <span className="p-3 mr-3">{i + 1}</span>
+                    <span className="mr-3 p-3">{i + 1}</span>
                     {track.track_name}
                   </li>
                 );

@@ -57,14 +57,14 @@ export default function Post(post: any) {
         }}
       />
 
-      {post.title && <h1 className="text-4xl pb-10">{post.title}</h1>}
+      {post.title && <h1 className="pb-10 text-4xl">{post.title}</h1>}
       <div className="flex">
-        {post.emoji && <span className="text-3xl mr-3">{post.emoji}</span>}
+        {post.emoji && <span className="mr-3 text-3xl">{post.emoji}</span>}
         {post.bait && <h2 className="text-lg">{post.bait}</h2>}
       </div>
       {post.contentHtml && (
         <div
-          className=" text-base font-serif  normal-case  mb-12"
+          className=" mb-12 font-serif  text-base  normal-case"
           dangerouslySetInnerHTML={{ __html: post.contentHtml }}
         />
       )}
@@ -73,7 +73,7 @@ export default function Post(post: any) {
         post.media_source === "youtube" && (
           <div className="mb-12">
             <iframe
-              className="max-w-2xl w-full"
+              className="w-full max-w-2xl"
               height="315"
               src={`https://www.youtube-nocookie.com/embed/${post.media_id}`}
               title="YouTube video player"

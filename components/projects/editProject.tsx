@@ -109,10 +109,10 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   const [loadingPublish, setLoadingPublish] = React.useState(false);
   const [statusLocal, setStatusLocal] = React.useState(project.status);
   const [coverIsSet, setCoverIsSet] = React.useState(
-    project.cover ? true : false
+    project.cover ? true : false,
   );
   const [allowedDownload, setAllowedDownload] = React.useState(
-    project.allow_download || false
+    project.allow_download || false,
   );
 
   React.useEffect(() => {
@@ -124,29 +124,29 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
   return (
     <>
       <div className="flex flex-col md:flex-row">
-        <div className=" md:order-2 flex-1">
-          <div className="flex align-top justify-between items-center mb-1">
+        <div className=" flex-1 md:order-2">
+          <div className="mb-1 flex items-center justify-between align-top">
             <div className="flex items-center">
               <h1 className="text-5xl  ">{project.projectName}</h1>
             </div>
           </div>
-          <h2 className="text-xl mb-6 ">{artist.artistName}</h2>
+          <h2 className="mb-6 text-xl ">{artist.artistName}</h2>
 
-          <div className="md:order-2 flex items-center mb-6 h-14">
+          <div className="mb-6 flex h-14 items-center md:order-2">
             <div
-              className={` px-3 py-1 rounded-md text-md mr-3 bg-[#323232]  `}
+              className={` text-md mr-3 rounded-md bg-[#323232] px-3 py-1  `}
             >
               {statusLocal}
             </div>
 
             {statusLocal === "PUBLISHED" && (
               <Link href={`/${artist.slug}/p/${project.slug}`}>
-                <div className="px-3 py-1 mr-3 rounded-md border-b-4 text-white border-green-900  bg-green-500 hover:text-green-900 hover:border-b-2 ">
+                <div className="mr-3 rounded-md border-b-4 border-green-900 bg-green-500 px-3 py-1  text-white hover:border-b-2 hover:text-green-900 ">
                   Lien projet
                 </div>
               </Link>
             )}
-            <div className="flex md:flex-1 justify-end items-end">
+            <div className="flex items-end justify-end md:flex-1">
               {/* <button
                 onClick={() => handleDeleteProject({ artist, project })}
                 className={`${cssButtonPrimary} bg-[#323232] border-b-4 border-jam-light-purple h-auto ml-6`}
@@ -155,7 +155,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
               </button> */}
               <div
                 onClick={() => handleDeleteProject({ artist, project })}
-                className="px-3 py-1 rounded-md border-b-4 text-white cursor-pointer border-red-900  bg-red-500 hover:text-red-900 hover:border-b-2 "
+                className="cursor-pointer rounded-md border-b-4 border-red-900 bg-red-500 px-3 py-1  text-white hover:border-b-2 hover:text-red-900 "
               >
                 Supprimer projet
               </div>
@@ -172,8 +172,8 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
           />
         </ErrorBoundary>
       </div>
-      <div className="mt-12 p-8 border border-jam-purple rounded">
-        <h2 className="text-xl mb-6 ">Vos .mp3</h2>
+      <div className="mt-12 rounded border border-jam-purple p-8">
+        <h2 className="mb-6 text-xl ">Vos .mp3</h2>
         {statusLocal === "DRAFT" && (
           <ErrorBoundary fallback={<div>Something went wrong</div>}>
             <UploadTracks project={project} artist={artist} />
@@ -191,20 +191,20 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
       </div>
 
       {statusLocal !== "PUBLISHED" && (
-        <div className="flex my-6">
-          <div className="flex items-center justify-center pl-4 border border-jam-purple rounded ">
+        <div className="my-6 flex">
+          <div className="flex items-center justify-center rounded border border-jam-purple pl-4 ">
             <input
               id="allowDownload"
               type="checkbox"
               value=""
               defaultChecked={allowedDownload}
               name="bordered-checkbox"
-              className="w-4 h-4  bg-gray-100 border-gray-300 rounded focus:ring-purple-500  "
+              className="h-4 w-4  rounded border-gray-300 bg-gray-100 focus:ring-purple-500  "
               onChange={() => setAllowedDownload(!allowedDownload)}
             />
             <label
               htmlFor="allowDownload"
-              className="px-4 py-4 ml-2 text-sm font-medium text-white cursor-pointer"
+              className="ml-2 cursor-pointer px-4 py-4 text-sm font-medium text-white"
             >
               Autoriser le téléchargement direct (.zip)
             </label>
@@ -226,7 +226,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
 
       {tracks[0] && statusLocal === "PUBLISHED" && (
         <>
-          <div className="flex justify-center m-4">
+          <div className="m-4 flex justify-center">
             <div
               onClick={() => {
                 unPublishProject({
@@ -241,7 +241,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
               Unpublish Project
             </div>
           </div>
-          <div className="font-sans md:w-1/2 md:m-auto md:mb-16  bg-jam-light-transparent text-jam-light-purple lowercase text-sm p-2 border-2 border-jam-purple rounded-md ">
+          <div className="rounded-md border-2 border-jam-purple bg-jam-light-transparent  p-2 font-sans text-sm lowercase text-jam-light-purple md:m-auto md:mb-16 md:w-1/2 ">
             <p>
               Unpublish Project to edit the track&apos;s names.
               <br /> Unpublished projects are not visible to visitors
@@ -250,7 +250,7 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         </>
       )}
 
-      {/* <label>
+      {/* <label> 
           <span className="text-3xl">Artist Name</span>{" "}
           <input
             disabled
@@ -282,7 +282,7 @@ export default function EditProject({ uuid }: Uuid) {
     isLoading: projectIsLoading,
   } = useSWR(
     !artistIsLoading && `/api/projects/${artist.uuid}/${uuid}`,
-    fetcher
+    fetcher,
   );
 
   const {
@@ -291,7 +291,7 @@ export default function EditProject({ uuid }: Uuid) {
     isLoading: tracksIsLoading,
   } = useSWR(
     !artistIsLoading && `/api/projects/${artist.uuid}/${uuid}/tracks`,
-    fetcher
+    fetcher,
   );
 
   if (status !== "authenticated") {

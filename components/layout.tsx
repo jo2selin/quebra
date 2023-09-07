@@ -84,7 +84,7 @@ export default function Layout({ children }: Props) {
       <div className=" bg-jam-dark-purple">
         <Header />
 
-        <main className="container px-4 mt-12 mx-auto max-w-2xl">
+        <main className="container mx-auto mt-12 max-w-2xl px-4">
           {children}
         </main>
       </div>

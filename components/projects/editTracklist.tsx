@@ -53,7 +53,7 @@ async function updateTrack({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ trackName: trackName }),
-      }
+      },
     ).then((res) => {
       if (setOldTrackName && setOldTrackNumber && setLoadingSave) {
         setOldTrackName(trackName);
@@ -85,7 +85,7 @@ async function deleteTrack({
           trackName: "trackName",
           path_s3: project.path_s3,
         }),
-      }
+      },
     ).then((res) => {
       if (setLoadingDelete) setLoadingDelete(true);
       if (setIsDeleted) setIsDeleted(true);
@@ -106,33 +106,33 @@ const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
   }, [track]);
 
   return (
-    <div className={`flex mt-3 ${isDeleted ? "opacity-10" : ""}`}>
-      <div className="w-20 mr-5">
+    <div className={`mt-3 flex ${isDeleted ? "opacity-10" : ""}`}>
+      <div className="mr-5 w-20">
         <input
           type="text"
           value={trackNumber}
           onChange={(e) => setTrackNumber(+e.target.value)}
-          className={` bg-jam-dark-grey w-20 mr-5 p-3 text-3xl`}
+          className={` mr-5 w-20 bg-jam-dark-grey p-3 text-3xl`}
           disabled={statusLocal === "PUBLISHED" ? true : false}
         />
         <input
           type="text"
           value={track.slug + ".mp3"}
           disabled
-          className={` bg-jam-dark-purple w-20 mr-5  text-sm font-thin  text-gray-500`}
+          className={` mr-5 w-20 bg-jam-dark-purple  text-sm font-thin  text-gray-500`}
         />
         {/* <audio
           controls
           src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${project.uuid}/${track.slug}.mp3`}
         /> */}
       </div>
-      <div className="w-full bg-jam-dark-grey relative">
+      <div className="relative w-full bg-jam-dark-grey">
         <input
           type="text"
           value={trackName}
           onChange={(t) => setTrackName(t.target.value)}
           placeholder="track title"
-          className={`w-full h-10 mt-0 pt-0 px-2 bg-jam-dark-grey text-white text-2xl mb-0 `}
+          className={`mt-0 mb-0 h-10 w-full bg-jam-dark-grey px-2 pt-0 text-2xl text-white `}
           disabled={statusLocal === "PUBLISHED" ? true : false}
         />
         {statusLocal !== "PUBLISHED" && (
@@ -164,7 +164,7 @@ const TrackAction = ({
 }: TypeUpdateTrack) => {
   const [oldTrackName, setOldTrackName] = React.useState(track.track_name);
   const [oldTrackNumber, setOldTrackNumber] = React.useState(
-    track.track_id.toString()
+    track.track_id.toString(),
   );
   const [displaySave, setDisplaySave] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
@@ -181,7 +181,7 @@ const TrackAction = ({
 
   return (
     <>
-      <div className="flex p-2 items-end justify-end">
+      <div className="flex items-end justify-end p-2">
         {displaySave && (
           <div
             onClick={() => {
@@ -215,7 +215,7 @@ const TrackAction = ({
               })
             }
             className={`${cssButtonPrimary} 
-            bg-[#323232] border-b-4 border-jam-light-purple ${
+            border-b-4 border-jam-light-purple bg-[#323232] ${
               loadingDelete ? " cursor-not-allowed opacity-10" : ""
             }`}
           >
@@ -226,7 +226,7 @@ const TrackAction = ({
       <div
         className={`${
           displaySave ? "bg-red-400" : "bg-green-400"
-        }  text-center h-1 w-full absolute bottom-0 z-10`}
+        }  absolute bottom-0 z-10 h-1 w-full text-center`}
       />
     </>
   );

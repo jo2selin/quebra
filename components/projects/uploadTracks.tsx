@@ -99,13 +99,13 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
           })} */}
         </div>
         <div className="flex flex-wrap">
-          <div className=" w-full md:flex-1 md:w-2/4">
+          <div className=" w-full md:w-2/4 md:flex-1">
             {files[0] && <p className="pt-12">Fichiers récemment ajoutés :</p>}
             {files.map((file, index) => {
               return (
                 <div
                   key={index}
-                  className="flex mt-3 align-middle justify-left items-center"
+                  className="justify-left mt-3 flex items-center align-middle"
                 >
                   {/* <div className="w-10 mr-5 p-6 text-3xl">{index}</div> */}
                   <div className="w-full">
@@ -122,8 +122,8 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
             })}
           </div>
           {files[0] && (
-            <div className=" w-full   mt-12 md:flex-1 md:ml-10 ">
-              <div className=" p-4 border-4 pl-6 border-jam-purple bg-jam-light-grey text-jam-dark-purple font-serif lowercase rounded-xl">
+            <div className=" mt-12   w-full md:ml-10 md:flex-1 ">
+              <div className=" rounded-xl border-4 border-jam-purple bg-jam-light-grey p-4 pl-6 font-serif lowercase text-jam-dark-purple">
                 <ul className="list-disc">
                   <li className="pb-4">
                     Il est impossible de rajouter des mp3 ou d&apos;editer la

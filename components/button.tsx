@@ -24,7 +24,7 @@ export default function Button({
       <div className={className}>
         <Link
           href={to}
-          className={`inline-block text-md text-white  rounded-md px-4 py-2 leading-none hover:text-white ${
+          className={`text-md inline-block rounded-md  px-4 py-2 leading-none text-white hover:text-white ${
             style === "primary" && stylePrimary
           } ${style === "secondary" && styleSecondary}  ${
             style === "dark" && styleDark
@@ -38,7 +38,7 @@ export default function Button({
     return (
       <div className={className}>
         <div
-          className={`inline-block text-md text-white cursor-pointer rounded-md px-4 py-2 leading-none hover:text-white ${
+          className={`text-md inline-block cursor-pointer rounded-md px-4 py-2 leading-none text-white hover:text-white ${
             style === "primary" && stylePrimary
           } ${style === "secondary" && styleSecondary}  ${
             style === "dark" && styleDark

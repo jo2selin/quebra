@@ -40,14 +40,14 @@ export default function CreateProject() {
   if (!isLoading && !data.artistName) return <div>No artist name found</div>;
   return (
     <>
-      <h1 className="text-xl mb-6 ">Infos de votre projet</h1>
+      <h1 className="mb-6 text-xl ">Infos de votre projet</h1>
       <label>
         <span className="text-3xl">Nom artiste</span>{" "}
         <input
           disabled
           type="text"
           value={data.artistName}
-          className={cssInput + " opacity-50 cursor-not-allowed"}
+          className={cssInput + " cursor-not-allowed opacity-50"}
         />
       </label>
       <form onSubmit={submitData}>
@@ -68,7 +68,7 @@ export default function CreateProject() {
             <p className="text-sm text-red-500">project name too short</p>
           )}
           <input
-            className={`text-xl mx-auto block text-white rounded-md px-4 py-2 leading-none  bg-jam-purple border-b-4 border-jam-pink cursor-pointer disabled:opacity-50 disabled:border-none disabled:cursor-not-allowed ${
+            className={`mx-auto block cursor-pointer rounded-md border-b-4 border-jam-pink bg-jam-purple px-4  py-2 text-xl leading-none text-white disabled:cursor-not-allowed disabled:border-none disabled:opacity-50 ${
               !visibleForm && "opacity-10"
             }
         `}

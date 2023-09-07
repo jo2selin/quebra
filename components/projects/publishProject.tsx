@@ -42,7 +42,7 @@ function PublishProject({ publishingProject }: any) {
             path_s3: project.path_s3,
             allow_download: allowedDownload,
           }),
-        }
+        },
       );
 
       if (!resPostProject.ok) {
@@ -70,14 +70,14 @@ function PublishProject({ publishingProject }: any) {
 
   if (error) {
     return (
-      <div className=" text-sm text-red-500 bg-red-200 border-red-500 border inline justify-center m-16 px-8 py-3  rounded-md">
+      <div className=" m-16 inline justify-center rounded-md border border-red-500 bg-red-200 px-8 py-3 text-sm  text-red-500">
         {error}
       </div>
     );
   }
 
   return (
-    <div className="flex justify-center m-16">
+    <div className="m-16 flex justify-center">
       <div
         onClick={() => {
           publishProject({
