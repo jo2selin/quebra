@@ -5,44 +5,74 @@ import type {
 import { getProviders, signIn } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth/next";
 import { authOptions } from "../api/auth/[...nextauth]";
+import Image from "next/image";
+import IconGoogle from "../../public/iconGoogle.svg";
+import IconDiscord from "../../public/iconDiscord.svg";
 
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log(IconGoogle);
+
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className=" rounded-xl border-2 border-jam-purple pb-4">
+      <div className="w-full max-w-md rounded-xl border-2 border-jam-purple pb-4">
         <h1 className="mx-auto w-full -translate-y-4 text-center text-4xl">
           &quot;Premier venu&quot;
         </h1>
         <ul>
-          <li className="px-4 pb-5 text-2xl">
+          <li className="px-4 pb-5 text-xl">
             ✅ Creez un projet et Uploadez vos pistes audio
           </li>
-          <li className="px-4 pb-5 text-2xl">
-            ✅ Visibilité et partage facile
-          </li>
-          <li className="px-4 pb-5 text-2xl">✅ fAITES VOUS REMARQUER</li>
-          <li className="px-4 pb-5 text-2xl">
+          <li className="px-4 pb-5 text-xl">✅ Visibilité et partage facile</li>
+          <li className="px-4 pb-5 text-xl">✅ fAITES VOUS REMARQUER</li>
+          <li className="px-4 pb-5 text-xl">
             ✅ Accès depuis n&apos;importe où
           </li>
         </ul>
       </div>
-      <div className="mb-8 w-full -translate-y-4 text-center ">
+      <div className="h-0 w-full -translate-y-4 text-center ">
         <span className="rounded-xl border-2 border-green-500 bg-jam-dark-purple px-3 py-2 text-white ">
           Gratuit
         </span>
       </div>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button
-            className={`mb-4 inline-block rounded-md  border-b-4 border-jam-pink bg-jam-purple px-4 py-2 text-2xl leading-none text-white hover:text-white`}
-            onClick={() => signIn(provider.id)}
+      <div className="flex w-full max-w-xs flex-col items-center justify-center rounded-xl rounded-t-none border-2 border-t-0 border-jam-purple p-4 pb-8">
+        {Object.values(providers).map((provider) => (
+          <div key={provider.name}>
+            {/* <button
+            className={`inline-block text-2xl text-white  rounded-md px-4 py-2 mb-4 leading-none hover:text-white bg-jam-purple border-b-4 border-jam-pink`}
           >
             Se connecter avec {provider.name}
-          </button>
-        </div>
-      ))}
+          </button> */}
+            <button
+              onClick={() => signIn(provider.id)}
+              className="mt-4 flex items-center rounded-lg border border-gray-300 bg-white px-6 py-2 text-sm font-medium text-gray-800 shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            >
+              {provider.name === "Google" && (
+                <Image
+                  src={IconGoogle.src}
+                  width="16"
+                  height="16"
+                  alt=""
+                  className="mr-2"
+                />
+              )}
+              {provider.name === "Discord" && (
+                <Image
+                  src={IconDiscord.src}
+                  width="16"
+                  height="16"
+                  alt=""
+                  className="mr-2"
+                />
+              )}
+              <span className="font-sans">
+                Se connecter avec {provider.name}
+              </span>
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

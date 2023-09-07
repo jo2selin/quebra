@@ -37,7 +37,7 @@ export default function DownloadZip({ path, path_s3 }: TypeDownloadZip) {
         `}
           onClick={handleDownload}
         >
-          Download
+          Télécharger .zip
         </div>
       </div>
     </>

@@ -37,8 +37,8 @@ export default function Button({
   } else {
     return (
       <div className={className}>
-        <div
-          className={`text-md inline-block cursor-pointer rounded-md px-4 py-2 leading-none text-white hover:text-white ${
+        <button
+          className={`text-md inline-block cursor-pointer rounded-md px-4 py-2 uppercase leading-none text-white hover:text-white ${
             style === "primary" && stylePrimary
           } ${style === "secondary" && styleSecondary}  ${
             style === "dark" && styleDark
@@ -46,7 +46,7 @@ export default function Button({
           {...props}
         >
           {children}
-        </div>
+        </button>
       </div>
     );
   }

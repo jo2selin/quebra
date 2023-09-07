@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import AccessDenied from "../access-denied";
 import { useS3Upload, getImageData } from "next-s3-upload";
 import slugify from "slugify";
+import { useSWRConfig } from "swr";
 
 interface TypeUpload {
   project: Project;
@@ -21,10 +22,10 @@ function cleanTrackName(name: string) {
 export default function UploadTracks({ project, artist }: TypeUpload) {
   let { FileInput, openFileDialog, uploadToS3, files } = useS3Upload();
   const [urls, setUrls] = React.useState([]);
+  const { mutate } = useSWRConfig();
 
   const handleFilesChange = async ({ target }: any) => {
     const files = Array.from(target.files);
-    // console.log("target", target);
 
     try {
       for (let index = 0; index < files.length; index++) {
@@ -36,8 +37,6 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
         }
 
         const trackName = cleanTrackName(file.name);
-        console.log("final trackName track", trackName);
-        console.log(files[index]);
 
         await uploadToS3(file, {
           endpoint: {
@@ -67,6 +66,7 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(body),
             });
+            mutate(`/api/projects/${artist.uuid}/${project.uuid}/tracks`);
           } catch (error) {
             console.error(error);
           }
@@ -100,7 +100,7 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
         </div>
         <div className="flex flex-wrap">
           <div className=" w-full md:w-2/4 md:flex-1">
-            {files[0] && <p className="pt-12">Fichiers récemment ajoutés :</p>}
+            {files[0] && <p className="pt-12">Avancement de l&apos;upload</p>}
             {files.map((file, index) => {
               return (
                 <div
@@ -109,11 +109,12 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
                 >
                   {/* <div className="w-10 mr-5 p-6 text-3xl">{index}</div> */}
                   <div className="w-full">
-                    <p className=" bg-jam-dark-grey px-6 py-4">
+                    <p className=" w-22 h-6 overflow-x-scroll bg-jam-dark-grey px-2 py-1 font-mono  text-xs text-gray-400">
+                      <span className="text-jam-pink"> {file.progress}% </span>-{" "}
                       {file.file.name}
                     </p>
                     <div
-                      className="h-1 bg-jam-pink text-center"
+                      className="h-0.5 bg-jam-pink text-center"
                       style={{ width: file.progress + "%" }}
                     ></div>
                   </div>
@@ -122,16 +123,12 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
             })}
           </div>
           {files[0] && (
-            <div className=" mt-12   w-full md:ml-10 md:flex-1 ">
-              <div className=" rounded-xl border-4 border-jam-purple bg-jam-light-grey p-4 pl-6 font-serif lowercase text-jam-dark-purple">
-                <ul className="list-disc">
-                  <li className="pb-4">
-                    Il est impossible de rajouter des mp3 ou d&apos;editer la
+            <div className=" mt-5   w-full md:ml-10 md:mt-20 md:flex-1 ">
+              <div className=" rounded-xl border-4 border-jam-purple bg-jam-pink p-2 pl-3 font-mono lowercase text-white">
+                <ul className="list-none">
+                  <li className="text-xs">
+                    ℹ️ Il est impossible de rajouter des mp3 ou d&apos;editer la
                     cover apres avoir publié le projet
-                  </li>
-                  <li>
-                    Une fois tous vos mp3 envoyés, retounez sur &quot;mon
-                    compte&quot; pour editer votre tracklist
                   </li>
                 </ul>
               </div>

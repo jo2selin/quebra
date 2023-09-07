@@ -14,28 +14,36 @@ import SetArtistProfile from "../../components/me/setArtistProfile";
 
 import AccessDenied from "../../components/access-denied";
 import Button from "../../components/button";
-import { log } from "console";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
 
-  // If the status code is not in the range 200-299,
-  // we still try to parse and throw it.
   if (!res.ok) {
     const error = new Error("An error occurred while fetching the data.");
-    // Attach extra info to the error object.
     throw error;
   }
-
   return res.json();
 };
+
 export function useUser() {
   const { data, error, isLoading } = useSWR(`/api/users/me`, fetcher);
-
   return {
     user: data,
     isLoading,
     isError: error,
+  };
+}
+
+export function useUserProjects() {
+  const {
+    data: dataProjects,
+    error: errorProjects,
+    isLoading: isLoadingProjects,
+  } = useSWR(`/api/projects/me`, fetcher);
+  return {
+    dataProjects,
+    isLoadingProjects,
+    errorProjects,
   };
 }
 
@@ -44,6 +52,7 @@ const Me: React.FC = () => {
   const { user, isLoading, isError } = useUser();
   const [artistData, setArtistData] = useState<Artist>();
   const [showsetArtist, setShowsetArtist] = useState<boolean>(false);
+
   // If no session exists, display access denied message
   if (status !== "authenticated") {
     return <AccessDenied />;
@@ -51,7 +60,6 @@ const Me: React.FC = () => {
   if (isLoading) {
     return <p data-testid="loading">loading...</p>;
   }
-  console.log("session", session);
 
   return (
     <>
@@ -72,18 +80,13 @@ const Me: React.FC = () => {
                 <Welcome setShowsetArtist={setShowsetArtist} />
               )}
               {user?.artistName && (
-                <ArtistProfile
-                  setArtistData={setArtistData}
-                  setShowsetArtist={setShowsetArtist}
-                />
+                <ArtistProfile setShowsetArtist={setShowsetArtist} />
               )}
-              {user?.artistName && artistData && (
-                <ArtistProjects artistData={artistData} />
-              )}
+              {user?.artistName && <ArtistProjects artistData={user} />}
             </>
           )}
           {showsetArtist && (
-            <SetArtistProfile setShowsetArtist={setShowsetArtist} />
+            <SetArtistProfile user={user} setShowsetArtist={setShowsetArtist} />
           )}
         </div>
       </div>

@@ -3,45 +3,31 @@ import { useS3Upload, getImageData } from "next-s3-upload";
 import Image from "next/image";
 
 function checkImageParams(
-  setErrorImage: Function,
-  errorImage: string,
+  // setErrorImage: Function,
+  // errorImage: string,
   width: number | undefined,
   height: number | undefined,
   size: number | undefined,
   type: string | undefined,
 ) {
-  setErrorImage(false); //reset for 2nd atempt
+  let errorParams = null;
   if (
     width === undefined ||
     height === undefined ||
     size === undefined ||
     type === undefined
   ) {
-    setErrorImage("Error with image width,height,size or type");
-    return false;
+    errorParams = " Image erreur : largeur, hauteur, poid ou format";
+  } else if (width >= 1100) {
+    errorParams =
+      "L'image est trop grande, utilisez squoosh.app pour la reduire";
+  } else if (width != height) {
+    errorParams = "L'image doit etre carrée, utilisez squoosh.app";
+  } else if (size >= 2048000) {
+    errorParams =
+      "L'image pèse trop , utilisez squoosh.app pour reduire la qualité";
   }
-
-  // throw new Error("Image error");
-
-  if (width >= 1100) {
-    setErrorImage("Image is too big, use squoosh.app");
-    return false;
-  }
-  if (width != height) {
-    setErrorImage("Image should be square, use squoosh.app");
-    return false;
-  }
-  if (size >= 2048000) {
-    setErrorImage("Image weight too much, use squoosh.app");
-    return false;
-  }
-
-  // console.log("errorImage", errorImage);
-  if (errorImage) {
-    return false;
-  } else {
-    return true;
-  }
+  return errorParams;
 }
 
 interface TypeUpload {
@@ -64,10 +50,12 @@ export default function UploadCover({
   let [height, setHeight] = React.useState(400);
   let [width, setWidth] = React.useState(400);
   // let [progress, setProgress] = React.useState();
-  let [errorImage, setErrorImage] = React.useState(false) as any;
+  let [errorImage, setErrorImage] = React.useState(null) as any;
   let { FileInput, openFileDialog, uploadToS3, files } = useS3Upload();
 
   const uploadImage = async (file: any) => {
+    console.log("uploadImage");
+
     // setProgress(file.progress)
     return await uploadToS3(file, {
       endpoint: {
@@ -80,23 +68,21 @@ export default function UploadCover({
   };
 
   let handleFileChange = async (file: any) => {
+    setErrorImage(null); // reset
     let { height, width } = await getImageData(file);
     width && setWidth(width);
     height && setHeight(height);
 
-    const imageIsOk = checkImageParams(
-      setErrorImage,
-      errorImage,
-      width,
-      height,
-      file.size,
-      file.type,
-    );
+    const resCheckImage = checkImageParams(width, height, file.size, file.type);
+    const imageIsOk = resCheckImage === null ? true : false;
 
+    setErrorImage(resCheckImage);
     if (!imageIsOk) return false;
 
     try {
       uploadImage(file).then(async (image) => {
+        console.log("uploadImage", image);
+
         setImageUrl(image.url + "?" + Date.now());
         setCoverIsSet(true);
 
@@ -121,9 +107,14 @@ export default function UploadCover({
         <FileInput onChange={handleFileChange} />
 
         {!imageUrl && (
-          <button onClick={openFileDialog}>
-            <p className="text-8xl">+</p>
-          </button>
+          <div className="flex flex-col">
+            <button onClick={openFileDialog}>
+              <p className="text-8xl">+</p>
+              <p>
+                Ajouter une cover carré<span>*</span>{" "}
+              </p>
+            </button>
+          </div>
         )}
         {imageUrl && (
           <Image
@@ -134,13 +125,10 @@ export default function UploadCover({
           />
         )}
       </div>
-      {!imageUrl && (
-        <p>
-          Ajouter une cover <span>*</span>{" "}
-        </p>
-      )}
       {errorImage && <p className="text-red-600">{errorImage}</p>}
-      {files[0] && <p>cover: {files[0]?.progress} %</p>}
+      {files[0] && files[0]?.progress !== 100 && (
+        <p>cover: {files[0]?.progress} %</p>
+      )}
       {imageUrl && status === "DRAFT" && (
         <p onClick={openFileDialog} className="cursor-pointer">
           Edit cover

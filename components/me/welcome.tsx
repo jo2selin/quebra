@@ -13,7 +13,7 @@ export default function Welcome({ setShowsetArtist }: PropsWelcome) {
 
   return (
     <>
-      <h1 className="text-3xl mb-5">
+      <h1 className="text-3xl mt-12 mb-5">
         Premierement, creez-vous un nom d&apos;artiste
       </h1>
       <span onClick={() => setShowsetArtist(true)}>

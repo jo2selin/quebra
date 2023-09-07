@@ -6,14 +6,10 @@ import SetYourArtistProfile from "./welcome";
 import { useUser } from "../../pages/me";
 
 type PropsArtistProfile = {
-  setArtistData: (a: Artist) => void;
   setShowsetArtist: (a: boolean) => void;
 };
 
-const ArtistProfile = ({
-  setArtistData,
-  setShowsetArtist,
-}: PropsArtistProfile) => {
+const ArtistProfile = ({ setShowsetArtist }: PropsArtistProfile) => {
   const { user, isLoading, isError } = useUser();
 
   // using an array style key.
@@ -21,7 +17,6 @@ const ArtistProfile = ({
     throw new Error("Error finding Artist");
   }
   if (isLoading) return <div>loading Artist Profile...</div>;
-  setArtistData(user);
   return (
     <div className="mt-12 p-5 pt-0 border-2 border-jam-purple rounded-lg">
       <h2 className="text-5xl uppercase -translate-y-6 bg-jam-dark-purple w-min">

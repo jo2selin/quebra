@@ -45,9 +45,9 @@ export default function Post(post: any) {
           process.env.NEXT_PUBLIC_QUEBRA_META_TITLE_SUFFIX
         }
         description={"Read about " + post.title + ", on Quebra.co"}
-        canonical={`https://quebra.co/hc/posts/${post.hcType}/${post.hcDate}/${post.hcSlug}`}
+        canonical={`https://www.quebra.co/hc/posts/${post.hcType}/${post.hcDate}/${post.hcSlug}`}
         openGraph={{
-          url: `https://quebra.co/hc/posts/${post.hcType}/${post.hcDate}/${post.hcSlug}`,
+          url: `https://www.quebra.co/hc/posts/${post.hcType}/${post.hcDate}/${post.hcSlug}`,
           title:
             (post.bait === "" ? post.title : post.bait) +
             " " +

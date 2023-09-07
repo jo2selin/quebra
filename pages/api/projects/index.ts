@@ -91,7 +91,7 @@ export default async function handler(
       }
       const slug = await createSlug(slugProjectName, userArtist.Item.uuid);
 
-      console.log("userArtist, /projects", userArtist);
+      // console.log("userArtist, /projects", userArtist);
 
       const data = await ddbDocClient.send(
         new PutCommand({

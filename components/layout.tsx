@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import Header from "./header";
+import Footer from "./footer";
 import Script from "next/script";
 import { DefaultSeo } from "next-seo";
 
@@ -87,6 +88,7 @@ export default function Layout({ children }: Props) {
         <main className="container mx-auto mt-12 max-w-2xl px-4">
           {children}
         </main>
+        <Footer />
       </div>
     </>
   );
