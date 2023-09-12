@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { remark } from "remark";
 import html from "remark-html";
 import { NextSeo } from "next-seo";
