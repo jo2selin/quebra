@@ -3,7 +3,7 @@
 import { render, screen } from "test/test-utils";
 import "@testing-library/jest-dom";
 
-import SetYourArtistProfile from "../components/me/welcome";
+import SetYourArtistProfile from "../../components/me/welcome";
 import { SessionProvider } from "next-auth/react";
 
 describe("Me/", () => {
@@ -22,7 +22,7 @@ describe("Me/", () => {
     // });
 
     expect(
-      screen.getByText("Premierement, creez-vous un nom d'artiste")
+      screen.getByText("Premierement, creez-vous un nom d'artiste"),
     ).toBeInTheDocument();
     // expect(setArtist).toBeInTheDocument();
     // expect(setArtist).toHaveAttribute("href", "./me/artistProfile");

@@ -3,50 +3,69 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 
 import Button from "../components/button";
 import Share_project from "../components/svg/share_project";
 import Triangles from "../components/svg/triangles";
 import { getDynamoProjects, getDynamoArtists } from "../libs/api";
+import groq from "groq";
+import client from "../client";
+import Img from "next/image";
 
 import newTalents from "../public/new_talents.svg";
 const inter = Inter({ subsets: ["latin"] });
 
-const filterProjectsHome = (projects: Project[]) => {
-  return projects.filter((p) => p.validated === "HOMEPAGE");
-};
+// const filterProjectsHome = (projects: Project[]) => {
+//   return projects.filter((p) => p.validated === "HOMEPAGE");
+// };
 
-const matchProjectToArtistSlug = (project: Project, artists: Artist[]) => {
-  const a_uuid = project.sk.split("#")[0];
-  const artist = artists.filter((a: Artist) => a.uuid === a_uuid)[0];
-  return artist ? { project, artist } : false;
-};
+// const matchProjectToArtistSlug = (project: Project, artists: Artist[]) => {
+//   const a_uuid = project.sk.split("#")[0];
+//   const artist = artists.filter((a: Artist) => a.uuid === a_uuid)[0];
+//   return artist ? { project, artist } : false;
+// };
 
 export async function getStaticProps() {
-  const projects = await getDynamoProjects();
-  const artists = (await getDynamoArtists()) as Artist[];
+  // const projects = await getDynamoProjects();
+  // const artists = (await getDynamoArtists()) as Artist[];
 
-  const filteredProjects = filterProjectsHome(projects as Project[]);
+  // const filteredProjects = filterProjectsHome(projects as Project[]);
 
-  let projectsWithArtistsData = [] as any;
-  filteredProjects.forEach((p) => {
-    const res = matchProjectToArtistSlug(p, artists);
-    projectsWithArtistsData = [...projectsWithArtistsData, res];
-  });
+  // let projectsWithArtistsData = [] as any;
+  // filteredProjects.forEach((p) => {
+  //   const res = matchProjectToArtistSlug(p, artists);
+  //   projectsWithArtistsData = [...projectsWithArtistsData, res];
+  // });
 
-  const data = { projectsWithArtistsData };
+  // const data = { projectsWithArtistsData };
+
+  const query = groq`*[_type == "post"][0..1]{
+    title,
+    "excerpt": array::join(string::split((pt::text(body)), "")[0..100], "") + "..." ,
+    slug,
+    _createdAt,
+    mainImage {
+      asset->{
+        url,
+        metadata
+      }
+    },
+  }`;
+  const postsQuebra = await client.fetch(query);
 
   return {
-    props: data, // will be passed to the page component as props
+    props: { postsQuebra }, // will be passed to the page component as props
   };
 }
 
 type propsType = {
-  projectsWithArtistsData: [{ project: Project; artist: Artist }];
+  // projectsWithArtistsData: [{ project: Project; artist: Artist }];
+  postsQuebra: PostQuebra[];
 };
 
 export default function Home(props: propsType) {
-  const { projectsWithArtistsData } = props;
+  const { postsQuebra } = props;
   const { data: session, status } = useSession();
 
   return (
@@ -91,6 +110,34 @@ export default function Home(props: propsType) {
         <div className="absolute -right-3 top-0 z-0 max-w-xl">
           <Triangles />
         </div>
+      </div>
+      <div className="flex flex-col md:flex-row">
+        {postsQuebra.map((post: PostQuebra) => (
+          <Link
+            key={post._id}
+            href={`/post/fr/${post.slug.current}`}
+            className=" text-white hover:text-jam-pink"
+          >
+            <article className="relative mb-6 flex items-center justify-center md:first:mr-5">
+              <div className=" w-full opacity-30">
+                <Img
+                  src={post.mainImage.asset.url + "?h=250&w=500&fit=crop"}
+                  width={500}
+                  height={250}
+                  alt={post.title}
+                  placeholder="blur"
+                  blurDataURL={post.mainImage.asset.metadata.lqip}
+                />
+              </div>
+              <div className="absolute max-h-40 w-full overflow-y-auto px-4 ">
+                <h2 className=" text-3xl md:text-2xl">{post.title}</h2>
+                <p className="font-mono text-xs  normal-case ">
+                  {post.excerpt}
+                </p>
+              </div>
+            </article>
+          </Link>
+        ))}
       </div>
       <div className="m-auto w-3/4">
         <div className="mb-8 flex flex-col md:flex-row md:items-center">
