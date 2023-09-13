@@ -8,7 +8,6 @@ import { NextSeo } from "next-seo";
 
 const Post = (post: any) => {
   date.locale(fr);
-  // console.log("post date: ", post.title, post);
 
   const datePost = date.format(new Date(post._createdAt), "dddd, DD MMM YYYY");
   const components: PortableTextComponents = {
@@ -110,7 +109,6 @@ export async function getStaticPaths() {
   const paths = await client.fetch(
     `*[_type == "post" && defined(slug.current)][].slug.current`,
   );
-  console.log("paths", paths);
 
   return {
     paths: paths.map((slug: string) => ({ params: { lang: "fr", slug } })),
@@ -119,12 +117,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: any) {
-  console.log("context", context);
-
   // It's important to default the slug so that it doesn't return "undefined"
   const { slug = "", lang } = context.params;
   const post = await client.fetch(query, { slug });
-  console.log("post getStaticProps  ", post);
 
   return {
     props: post,

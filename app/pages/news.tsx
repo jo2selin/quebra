@@ -74,7 +74,6 @@ export async function getStaticProps() {
     },
   }`;
   const postsQuebra = await client.fetch(query);
-  console.log("postsQuebra-----", postsQuebra);
 
   let requiredData: Array<HcPost> = [];
   blogPosts
