@@ -52,9 +52,9 @@ const Post = (post: any) => {
         <h1 className="mb-5 text-3xl">{post.title}</h1>
         {post.mainImage && (
           <Img
-            src={post.mainImage.asset.url}
-            width={post.mainImage.asset.metadata.dimensions.width}
-            height={post.mainImage.asset.metadata.dimensions.height}
+            src={post.mainImage.asset.url + "?h=350&w=700"}
+            width={700}
+            height={350}
             alt={post.title}
             placeholder="blur"
             blurDataURL={post.mainImage.asset.metadata.lqip}

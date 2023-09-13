@@ -34,3 +34,30 @@ interface ProjectsWithArtistsData {
   project: Project;
   artist: Artist;
 }
+
+interface PostQuebra {
+  _id: string;
+  _createdAt: string;
+  title: string;
+  slug: { current: string };
+  mainImage: {
+    asset: {
+      url: string;
+      metadata: { dimensions: { width: int; height: int }; lqip: string };
+    };
+  };
+  publishedAt: date;
+  body: object;
+  source: string;
+  language: string;
+  excerpt?: string;
+}
+
+interface HcPost {
+  id: string;
+  emoji: string;
+  title: string;
+  hcType: string;
+  hcDate: string;
+  hcSlug: string;
+}
