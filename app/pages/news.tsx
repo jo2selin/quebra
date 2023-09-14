@@ -72,7 +72,7 @@ export async function getStaticProps() {
         metadata
       }
     },
-  }`;
+  }| order(_createdAt desc)`;
   const postsQuebra = await client.fetch(query);
 
   let requiredData: Array<HcPost> = [];
@@ -93,7 +93,7 @@ export async function getStaticProps() {
     });
 
   const oldPostsHc = requiredData.reverse();
-  return { props: { oldPostsHc, postsQuebra } };
+  return { props: { oldPostsHc, postsQuebra }, revalidate: 30 };
 }
 
 function News({ oldPostsHc, postsQuebra }: any) {

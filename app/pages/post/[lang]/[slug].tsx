@@ -1,3 +1,4 @@
+import React from "react";
 import client from "../../../client";
 import groq from "groq";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
@@ -5,8 +6,9 @@ import Img from "next/image";
 import date from "date-and-time";
 import fr from "date-and-time/locale/fr";
 import { NextSeo } from "next-seo";
+import Link from "next/link";
 
-const Post = (post: any) => {
+const Post = ({ post, morePosts }: any) => {
   date.locale(fr);
 
   const datePost = date.format(new Date(post._createdAt), "dddd, DD MMM YYYY");
@@ -86,24 +88,59 @@ const Post = (post: any) => {
           </aside>
         </footer>
       </article>
+      <aside className="mt-10">
+        <div className="flex flex-col md:flex-row">
+          {morePosts.map((post: PostQuebra) => (
+            <React.Fragment key={post._id}>
+              <Link
+                href={`/post/fr/${post.slug.current}`}
+                className=" text-white hover:text-jam-pink"
+              >
+                <article className="relative mb-6 flex items-center justify-center md:first:mr-5">
+                  <div className=" w-full opacity-30">
+                    <Img
+                      src={post.mainImage.asset.url + "?h=250&w=500&fit=crop"}
+                      width={500}
+                      height={250}
+                      alt={post.title}
+                      placeholder="blur"
+                      blurDataURL={post.mainImage.asset.metadata.lqip}
+                    />
+                  </div>
+                  <div className="absolute max-h-40 w-full overflow-y-auto px-4 ">
+                    <h2 className=" text-3xl md:text-2xl">{post.title}</h2>
+                    <p className="font-mono text-xs  normal-case ">
+                      {post.excerpt}
+                    </p>
+                  </div>
+                </article>
+              </Link>
+            </React.Fragment>
+          ))}
+        </div>
+      </aside>
     </>
   );
 };
 
+const queryPost = ` title,
+source,
+body,
+language,
+slug,
+_createdAt,
+mainImage {
+  asset->{
+    url,
+    metadata
+  }
+},`;
 const query = groq`*[_type == "post" && slug.current == $slug][0]{
-  title,
-  source,
-  body,
-  language,
-  slug,
-  _createdAt,
-  mainImage {
-    asset->{
-      url,
-      metadata
-    }
-  },
+  ${queryPost}
 }`;
+const queryMorePosts = groq`*[_type == "post" && slug.current != $slug]{
+ ${queryPost}
+}| order(_createdAt desc) [0..3]`;
 
 export async function getStaticPaths() {
   const paths = await client.fetch(
@@ -112,7 +149,7 @@ export async function getStaticPaths() {
 
   return {
     paths: paths.map((slug: string) => ({ params: { lang: "fr", slug } })),
-    fallback: false,
+    fallback: "blocking",
   };
 }
 
@@ -120,9 +157,10 @@ export async function getStaticProps(context: any) {
   // It's important to default the slug so that it doesn't return "undefined"
   const { slug = "", lang } = context.params;
   const post = await client.fetch(query, { slug });
+  const morePosts = await client.fetch(queryMorePosts, { slug });
 
   return {
-    props: post,
+    props: { post, morePosts },
     revalidate: 30,
   };
 }
