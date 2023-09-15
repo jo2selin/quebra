@@ -10,7 +10,8 @@ import Link from "next/link";
 
 const Post = ({ post, morePosts }: any) => {
   date.locale(fr);
-
+  console.log("post from POST ", post);
+  // if (post === null) return;
   const datePost = date.format(new Date(post._createdAt), "dddd, DD MMM YYYY");
   const components: PortableTextComponents = {
     block: {
@@ -129,6 +130,7 @@ body,
 language,
 slug,
 _createdAt,
+_id,
 mainImage {
   asset->{
     url,
@@ -146,6 +148,7 @@ export async function getStaticPaths() {
   const paths = await client.fetch(
     `*[_type == "post" && defined(slug.current)][].slug.current`,
   );
+  console.log("paths getstaticPaths", paths);
 
   return {
     paths: paths.map((slug: string) => ({ params: { lang: "fr", slug } })),

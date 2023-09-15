@@ -46,6 +46,7 @@ export async function getStaticProps() {
     "excerpt": array::join(string::split((pt::text(body)), "")[0..50], "") + "..." ,
     slug,
     _createdAt,
+    _id,
     mainImage {
       asset->{
         url,
@@ -68,6 +69,7 @@ type propsType = {
 export default function Home(props: propsType) {
   const { postsQuebra } = props;
   const { data: session, status } = useSession();
+  console.log("props", props);
 
   return (
     <>
