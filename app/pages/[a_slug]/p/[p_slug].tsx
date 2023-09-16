@@ -97,7 +97,7 @@ export default function Project(props: propsType) {
   const [currentTrack, setTrackIndex] = React.useState(0);
 
   if (!props.project) {
-    console.error("ERROR ON ", props);
+    console.error("ERROR ON p_slug", props);
     return false;
   }
   const { projectName, path_s3, slug, allow_download = false } = props.project;

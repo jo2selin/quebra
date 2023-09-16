@@ -31,28 +31,31 @@ function PostList({ posts }: any) {
   return (
     <>
       {posts.map((post: PostQuebra) => (
-        <Link
-          key={post._id}
-          href={`/post/fr/${post.slug.current}`}
-          className=" text-white hover:text-jam-pink"
-        >
-          <article className="mb-4 flex items-center justify-center">
-            <div className="max-w-md">
-              <Img
-                src={post.mainImage.asset.url + "?h=150&w=230&fit=crop"}
-                width={230}
-                height={150}
-                alt={post.title}
-                placeholder="blur"
-                blurDataURL={post.mainImage.asset.metadata.lqip}
-              />
-            </div>
-            <div className="flex:1 pl-4 ">
-              <h2 className=" text-xl">{post.title}</h2>
-              <p className="font-mono text-xs  normal-case ">{post.excerpt}</p>
-            </div>
-          </article>
-        </Link>
+        <React.Fragment key={post._id}>
+          <Link
+            href={`/post/fr/${post.slug.current}`}
+            className=" text-white hover:text-jam-pink"
+          >
+            <article className="mb-4 flex items-center justify-center">
+              <div className="max-w-md">
+                <Img
+                  src={post.mainImage.asset.url + "?h=150&w=230&fit=crop"}
+                  width={230}
+                  height={150}
+                  alt={post.title}
+                  placeholder="blur"
+                  blurDataURL={post.mainImage.asset.metadata.lqip}
+                />
+              </div>
+              <div className="flex:1 pl-4 ">
+                <h2 className=" text-xl">{post.title}</h2>
+                <p className="font-mono text-xs  normal-case ">
+                  {post.excerpt}
+                </p>
+              </div>
+            </article>
+          </Link>
+        </React.Fragment>
       ))}
     </>
   );
@@ -66,6 +69,7 @@ export async function getStaticProps() {
     language,
     slug,
     _createdAt,
+    _id,
     mainImage {
       asset->{
         url,
@@ -93,7 +97,7 @@ export async function getStaticProps() {
     });
 
   const oldPostsHc = requiredData.reverse();
-  return { props: { oldPostsHc, postsQuebra }, revalidate: 30 };
+  return { props: { oldPostsHc, postsQuebra }, revalidate: 10 };
 }
 
 function News({ oldPostsHc, postsQuebra }: any) {

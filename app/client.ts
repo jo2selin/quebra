@@ -6,4 +6,5 @@ export default createClient({
   dataset: "production", // or the name you chose in step 1
   useCdn: true, // `false` if you want to ensure fresh data
   apiVersion: "2023-09-12",
+  perspective: "published",
 });
