@@ -27,40 +27,6 @@ const inter = Inter({ subsets: ["latin"] });
 //   return artist ? { project, artist } : false;
 // };
 
-export async function getStaticProps() {
-  // const projects = await getDynamoProjects();
-  // const artists = (await getDynamoArtists()) as Artist[];
-
-  // const filteredProjects = filterProjectsHome(projects as Project[]);
-
-  // let projectsWithArtistsData = [] as any;
-  // filteredProjects.forEach((p) => {
-  //   const res = matchProjectToArtistSlug(p, artists);
-  //   projectsWithArtistsData = [...projectsWithArtistsData, res];
-  // });
-
-  // const data = { projectsWithArtistsData };
-
-  const query = groq`*[_type == "post"]{
-    title,
-    "excerpt": array::join(string::split((pt::text(body)), "")[0..50], "") + "..." ,
-    slug,
-    _createdAt,
-    _id,
-    mainImage {
-      asset->{
-        url,
-        metadata
-      }
-    },
-  }| order(_createdAt desc) [0..1]`;
-  const postsQuebra = await client.fetch(query);
-
-  return {
-    props: { postsQuebra }, // will be passed to the page component as props
-  };
-}
-
 type propsType = {
   // projectsWithArtistsData: [{ project: Project; artist: Artist }];
   postsQuebra: PostQuebra[];
@@ -69,7 +35,6 @@ type propsType = {
 export default function Home(props: propsType) {
   const { postsQuebra } = props;
   const { data: session, status } = useSession();
-  console.log("props", props);
 
   return (
     <>
@@ -196,4 +161,39 @@ export default function Home(props: propsType) {
       </div> */}
     </>
   );
+}
+
+export async function getStaticProps() {
+  // const projects = await getDynamoProjects();
+  // const artists = (await getDynamoArtists()) as Artist[];
+
+  // const filteredProjects = filterProjectsHome(projects as Project[]);
+
+  // let projectsWithArtistsData = [] as any;
+  // filteredProjects.forEach((p) => {
+  //   const res = matchProjectToArtistSlug(p, artists);
+  //   projectsWithArtistsData = [...projectsWithArtistsData, res];
+  // });
+
+  // const data = { projectsWithArtistsData };
+
+  const query = groq`*[_type == "post"]{
+    title,
+    "excerpt": array::join(string::split((pt::text(body)), "")[0..50], "") + "..." ,
+    slug,
+    _createdAt,
+    _id,
+    mainImage {
+      asset->{
+        url,
+        metadata
+      }
+    },
+  }| order(_createdAt desc) [0..1]`;
+  const postsQuebra = await client.fetch(query);
+
+  return {
+    props: { postsQuebra }, // will be passed to the page component as props
+    revalidate: 10,
+  };
 }

@@ -28,8 +28,6 @@ function OldNewsHc({ oldPostsHc }: { oldPostsHc: HcPost[] }) {
 }
 
 function PostList({ posts }: any) {
-  console.log(posts);
-
   return (
     <>
       {posts.map((post: PostQuebra) => (
@@ -99,7 +97,7 @@ export async function getStaticProps() {
     });
 
   const oldPostsHc = requiredData.reverse();
-  return { props: { oldPostsHc, postsQuebra }, revalidate: 30 };
+  return { props: { oldPostsHc, postsQuebra }, revalidate: 10 };
 }
 
 function News({ oldPostsHc, postsQuebra }: any) {

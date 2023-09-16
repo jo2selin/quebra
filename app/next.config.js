@@ -9,12 +9,12 @@ const nextConfig = {
       `cdn.sanity.io`,
     ],
   },
-  i18n: {
-    // These are all the locales you want to support in
-    // your application
-    locales: ["fr"],
-    defaultLocale: "fr",
-  },
+  // i18n: {
+  // These are all the locales you want to support in
+  // your application
+  // locales: ["fr"],
+  // defaultLocale: "fr",
+  // },
 };
 
 module.exports = nextConfig;

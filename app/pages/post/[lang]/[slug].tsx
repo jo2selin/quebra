@@ -7,11 +7,19 @@ import date from "date-and-time";
 import fr from "date-and-time/locale/fr";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Post = ({ post, morePosts }: any) => {
   date.locale(fr);
-  console.log("post from POST ", post);
-  // if (post === null) return;
+  // if (post === undefined) {
+  //   return <p>error 404</p>;
+  // }
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   const datePost = date.format(new Date(post._createdAt), "dddd, DD MMM YYYY");
   const components: PortableTextComponents = {
     block: {
@@ -89,7 +97,7 @@ const Post = ({ post, morePosts }: any) => {
           </aside>
         </footer>
       </article>
-      <aside className="mt-10">
+      <aside className="mt-10 md:mt-24">
         <div className="flex flex-col md:flex-row">
           {morePosts.map((post: PostQuebra) => (
             <React.Fragment key={post._id}>
@@ -142,29 +150,38 @@ const query = groq`*[_type == "post" && slug.current == $slug][0]{
 }`;
 const queryMorePosts = groq`*[_type == "post" && slug.current != $slug]{
  ${queryPost}
-}| order(_createdAt desc) [0..3]`;
+} | order(_createdAt desc) [0..2]`;
 
 export async function getStaticPaths() {
   const paths = await client.fetch(
     `*[_type == "post" && defined(slug.current)][].slug.current`,
   );
-  console.log("paths getstaticPaths", paths);
 
   return {
     paths: paths.map((slug: string) => ({ params: { lang: "fr", slug } })),
-    fallback: "blocking",
+    fallback: true,
   };
 }
 
 export async function getStaticProps(context: any) {
   // It's important to default the slug so that it doesn't return "undefined"
+
   const { slug = "", lang } = context.params;
   const post = await client.fetch(query, { slug });
   const morePosts = await client.fetch(queryMorePosts, { slug });
 
+  if (post === undefined || post === null || !post) {
+    return {
+      notFound: true,
+      revalidate: 1,
+    };
+  }
   return {
-    props: { post, morePosts },
-    revalidate: 30,
+    props: {
+      post,
+      morePosts,
+    },
+    revalidate: 10,
   };
 }
 

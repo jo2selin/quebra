@@ -7,7 +7,7 @@ const Nav = ({ setMenuOpen, menuIsOpen, session }: any) => {
   return (
     <nav>
       <ol
-        className={`flex w-full flex-col justify-center items-center md:flex-row ${
+        className={`flex w-full flex-col items-center justify-center md:flex-row ${
           !menuIsOpen ? "h-0" : ""
         }`}
       >
@@ -15,12 +15,12 @@ const Nav = ({ setMenuOpen, menuIsOpen, session }: any) => {
           className="mb-3 md:ml-8 md:mb-0 "
           onClick={() => setMenuOpen(false)}
         >
-          <Link href={"/projects"} className="text-white text-2xl">
+          <Link href={"/projects"} className="text-2xl text-white">
             Projects
           </Link>
         </li>
         <li className="mb-3 md:ml-8 md:mb-0" onClick={() => setMenuOpen(false)}>
-          <Link href={"/news"} className="text-white text-2xl">
+          <Link href={"/news"} className="text-2xl text-white">
             News
           </Link>
         </li>
@@ -50,55 +50,54 @@ export default function Header() {
 
   return (
     <>
-      <div className=" sticky top-0 bg-jam-dark-purple/80 backdrop-blur z-30">
-        <div className="bg-gradient-to-r from-jam-purple to-jam-pink text-white font-mono normal-case border-b-2 border-jam-purple">
+      <div className=" sticky top-0 z-30 bg-jam-dark-purple/80 backdrop-blur">
+        <div className="border-b-2 border-jam-purple bg-gradient-to-r from-jam-purple to-jam-pink font-mono normal-case text-white">
           <div className="container mx-auto py-2 px-3">
-            Pré-inscriptions ouvertes!{" "}
-            <span className="text-xs">01/09/2023</span>
+            Inscriptions ouvertes! <span className="text-xs">01/09/2023</span>
             <br />
             Faites partie des premiers à{" "}
             <span className="font-bold"> publier votre projet musical</span> sur
-            Quebra (tracks/mixtapes...) 💿🔥🔥
+            Quebra (tracks/mixtapes...) 💿🔥
             <br />
-            <Link href="/auth/signin" className="text-white font-bold">
+            <Link href="/auth/signin" className="font-bold text-white">
               Inscrivez-vous dès maintenant. ⬅️
             </Link>
           </div>
         </div>
-        <div className="container mx-auto px-4 py-5 flex justify-between items-center   ">
+        <div className="container mx-auto flex items-center justify-between px-4 py-5   ">
           <div className="logo relative" onClick={() => setmenuIsOpen(false)}>
             <Link href="/" className="text-4xl text-white">
               Quebra
             </Link>
-            <span className="absolute -bottom-1 right-2 bg-jam-pink rounded-md px-2 py-0 text-xs ">
+            <span className="absolute -bottom-1 right-2 rounded-md bg-jam-pink px-2 py-0 text-xs ">
               BETA
             </span>
           </div>
 
           {/* desktop */}
-          <div className="hidden md:flex md:flex-1 items-end justify-end">
+          <div className="hidden items-end justify-end md:flex md:flex-1">
             <Nav setMenuOpen={setmenuIsOpen} session={session} />
           </div>
 
-          <div className="md:hidden flex-1 flex items-end justify-end ">
+          <div className="flex flex-1 items-end justify-end md:hidden ">
             <div className="flex flex-row ">
               <div
-                className="space-y-2 cursor-pointer "
+                className="cursor-pointer space-y-2 "
                 onClick={() => setmenuIsOpen(!menuIsOpen)}
               >
                 <div
-                  className={`w-8 h-1 bg-gray-200 transition-all ${
-                    menuIsOpen ? "rotate-45 translate-y-3" : ""
+                  className={`h-1 w-8 bg-gray-200 transition-all ${
+                    menuIsOpen ? "translate-y-3 rotate-45" : ""
                   } `}
                 ></div>
                 <div
-                  className={`w-8 h-1 bg-gray-200 transition-all ${
+                  className={`h-1 w-8 bg-gray-200 transition-all ${
                     menuIsOpen ? "opacity-0" : ""
                   } `}
                 ></div>
                 <div
-                  className={`w-8 h-1 bg-gray-200 transition-all ${
-                    menuIsOpen ? "-rotate-45 -translate-y-3" : ""
+                  className={`h-1 w-8 bg-gray-200 transition-all ${
+                    menuIsOpen ? "-translate-y-3 -rotate-45" : ""
                   } `}
                 ></div>
               </div>
@@ -108,10 +107,10 @@ export default function Header() {
 
         {/* mobile */}
         <div
-          className={` md:hidden transition-all  ${
+          className={` transition-all md:hidden  ${
             menuIsOpen
-              ? "w-full translate-y-5 opacity-100 py-10 px-10 -mt-5"
-              : " h-0 -translate-y-72 opacity-0 p-0 m-0"
+              ? "-mt-5 w-full translate-y-5 py-10 px-10 opacity-100"
+              : " m-0 h-0 -translate-y-72 p-0 opacity-0"
           }`}
         >
           <Nav
