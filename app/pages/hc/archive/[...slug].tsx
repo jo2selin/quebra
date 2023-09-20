@@ -5,6 +5,9 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import Image from "next/image";
+import groq from "groq";
+import RelatedPost from "components/posts/relatedPosts";
+import client from "client";
 
 import type {
   InferGetStaticPropsType,
@@ -23,6 +26,7 @@ interface ArchiveBlog {
     };
     content: string;
   };
+  morePosts: PostQuebra[];
 }
 
 const hcArchiveFiles = fs.readdirSync(path.join("data/hc-old-news"));
@@ -54,6 +58,19 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
+const queryMorePosts = groq`*[_type == "post"]{
+  title,
+  slug,
+  _createdAt,
+  _id,
+  mainImage {
+    asset->{
+      url,
+      metadata
+    }
+  }
+} | order(_createdAt desc) [0..2]`;
+
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   const fullSlug = params.slug.join("/");
 
@@ -77,10 +94,12 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   //convert data in json format
   const { data: frontmatter, content } = matter(markdownWithMeta);
 
-  return { props: { params: { frontmatter, content } } };
+  const morePosts = await client.fetch(queryMorePosts);
+
+  return { props: { params: { frontmatter, content }, morePosts } };
 };
 
-function News({ params }: ArchiveBlog) {
+function News({ params, morePosts }: ArchiveBlog) {
   if (!params?.frontmatter.title) return <p>Loading</p>;
   return (
     <>
@@ -137,6 +156,7 @@ function News({ params }: ArchiveBlog) {
           dangerouslySetInnerHTML={{ __html: params.content }}
         />
       )}
+      <RelatedPost posts={morePosts} />
     </>
   );
 }

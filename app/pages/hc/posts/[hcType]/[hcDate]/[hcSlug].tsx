@@ -1,6 +1,10 @@
 import { remark } from "remark";
 import html from "remark-html";
 import { NextSeo } from "next-seo";
+import groq from "groq";
+
+import RelatedPost from "components/posts/relatedPosts";
+import client from "client";
 
 let blogPosts = require("../../../../../data/hc2Posts.json");
 export async function getStaticPaths() {
@@ -21,6 +25,19 @@ export async function getStaticPaths() {
   return { paths: paths, fallback: false };
 }
 
+const queryMorePosts = groq`*[_type == "post"]{
+  title,
+  slug,
+  _createdAt,
+  _id,
+  mainImage {
+    asset->{
+      url,
+      metadata
+    }
+  }
+} | order(_createdAt desc) [0..2]`;
+
 export async function getStaticProps({ params }: any) {
   let post = blogPosts.find((post: any) => post.hcSlug === `${params.hcSlug}`);
 
@@ -28,11 +45,13 @@ export async function getStaticProps({ params }: any) {
   const contentHtml = processedContent.toString();
   post.contentHtml = contentHtml;
 
+  const morePosts = await client.fetch(queryMorePosts);
+
   // Pass post data to the page via props
-  return { props: post, revalidate: 30 };
+  return { props: { post, morePosts }, revalidate: 30 };
 }
 
-export default function Post(post: any) {
+export default function Post({ post, morePosts }: any) {
   return (
     <>
       <NextSeo
@@ -110,6 +129,7 @@ export default function Post(post: any) {
             </a>
           </div>
         )}
+      <RelatedPost posts={morePosts} />
     </>
   );
 }

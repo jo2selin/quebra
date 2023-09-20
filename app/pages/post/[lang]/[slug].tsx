@@ -1,5 +1,5 @@
 import React from "react";
-import client from "../../../client";
+import client from "client";
 import groq from "groq";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import Img from "next/image";
@@ -8,6 +8,7 @@ import fr from "date-and-time/locale/fr";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import RelatedPost from "components/posts/relatedPosts";
 
 const Post = ({ post, morePosts }: any) => {
   date.locale(fr);
@@ -97,37 +98,8 @@ const Post = ({ post, morePosts }: any) => {
           </aside>
         </footer>
       </article>
-      <aside className="mt-10 md:mt-24">
-        <div className="flex flex-col md:flex-row">
-          {morePosts.map((post: PostQuebra) => (
-            <React.Fragment key={post._id}>
-              <Link
-                href={`/post/fr/${post.slug.current}`}
-                className=" text-white hover:text-jam-pink"
-              >
-                <article className="relative mb-6 flex items-center justify-center md:first:mr-5">
-                  <div className=" w-full opacity-30">
-                    <Img
-                      src={post.mainImage.asset.url + "?h=250&w=500&fit=crop"}
-                      width={500}
-                      height={250}
-                      alt={post.title}
-                      placeholder="blur"
-                      blurDataURL={post.mainImage.asset.metadata.lqip}
-                    />
-                  </div>
-                  <div className="absolute max-h-40 w-full overflow-y-auto px-4 ">
-                    <h2 className=" text-3xl md:text-2xl">{post.title}</h2>
-                    <p className="font-mono text-xs  normal-case ">
-                      {post.excerpt}
-                    </p>
-                  </div>
-                </article>
-              </Link>
-            </React.Fragment>
-          ))}
-        </div>
-      </aside>
+
+      <RelatedPost posts={morePosts} />
     </>
   );
 };
