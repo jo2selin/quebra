@@ -13,7 +13,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",
@@ -21,7 +22,8 @@
     "**/*.tsx",
     "config/index.js",
     "libs/zipS3Lamba.js",
-    "pages/api/zipaws.js"
+    "pages/api/zipaws.js",
+    "components/**/*.tsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -35,8 +35,15 @@ const Nav = ({ setMenuOpen, menuIsOpen, session }: any) => {
           </li>
         )}
         {!session && (
-          <li className="mb-1 md:ml-8 md:mb-0">
-            <Button to={`/api/auth/signin`}>Se Connecter</Button>
+          <li className=" flex items-baseline">
+            <div className="mb-1 md:ml-8 md:mb-0">
+              <Button to={`/api/auth/signin`}>S'inscrire</Button>
+            </div>
+            <div className="ml-4  ">
+              <Link href={`/api/auth/signin`} className="text-white">
+                Se connecter
+              </Link>
+            </div>
           </li>
         )}
       </ol>

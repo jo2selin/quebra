@@ -16,6 +16,37 @@ export default function SignIn({
 
   return (
     <div className="flex flex-col items-center justify-center">
+      <div className="mb-12 flex flex-wrap gap-x-8">
+        {Object.values(providers).map((provider) => (
+          <div key={provider.name}>
+            <button
+              onClick={() => signIn(provider.id)}
+              className=" mt-4 flex items-center rounded-lg border border-gray-300 bg-white px-6 py-2 text-sm font-medium text-gray-800 shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            >
+              {provider.name === "Google" && (
+                <Image
+                  src={IconGoogle.src}
+                  width="16"
+                  height="16"
+                  alt=""
+                  className="mr-2"
+                />
+              )}
+              {provider.name === "Discord" && (
+                <Image
+                  src={IconDiscord.src}
+                  width="16"
+                  height="16"
+                  alt=""
+                  className="mr-2"
+                />
+              )}
+              <span className="font-sans">Se connecter</span>
+            </button>
+          </div>
+        ))}
+      </div>
+
       <div className="w-full max-w-md rounded-xl border-2 border-jam-purple pb-4">
         <h1 className="mx-auto w-full -translate-y-4 text-center text-4xl">
           &quot;Premier venu&quot;
@@ -24,10 +55,16 @@ export default function SignIn({
           <li className="px-4 pb-5 text-xl">
             ✅ Creez un projet et Uploadez vos pistes audio
           </li>
-          <li className="px-4 pb-5 text-xl">✅ Visibilité et partage facile</li>
+          <li className="px-4 pb-5 text-xl">
+            ✅ Visibilité, téléchargement direct et partage facile
+          </li>
           <li className="px-4 pb-5 text-xl">✅ fAITES VOUS REMARQUER</li>
           <li className="px-4 pb-5 text-xl">
             ✅ Accès depuis n&apos;importe où
+          </li>
+          <li className="px-4 pl-12 pb-5 text-xl opacity-40">
+            Liez vos réseaux sociaux{" "}
+            <span className="font-mono text-xs lowercase">Prochainement</span>
           </li>
         </ul>
       </div>
@@ -66,9 +103,7 @@ export default function SignIn({
                   className="mr-2"
                 />
               )}
-              <span className="font-sans">
-                Se connecter avec {provider.name}
-              </span>
+              <span className="font-sans">S'inscrire avec {provider.name}</span>
             </button>
           </div>
         ))}
