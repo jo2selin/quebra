@@ -12,8 +12,6 @@ import IconDiscord from "../../public/iconDiscord.svg";
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(IconGoogle);
-
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="mb-12 flex flex-wrap gap-x-8">
@@ -49,7 +47,7 @@ export default function SignIn({
 
       <div className="w-full max-w-md rounded-xl border-2 border-jam-purple pb-4">
         <h1 className="mx-auto w-full -translate-y-4 text-center text-4xl">
-          &quot;Premier venu&quot;
+          Compte
         </h1>
         <ul>
           <li className="px-4 pb-5 text-xl">
