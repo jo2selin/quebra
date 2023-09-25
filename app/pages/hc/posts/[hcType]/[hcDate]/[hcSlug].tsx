@@ -8,10 +8,10 @@ import client from "client";
 
 let blogPosts = require("../../../../../data/hc2Posts.json");
 export async function getStaticPaths() {
-  if (process.env.NEXTAUTH_URL === "http://localhost:3000") {
-    // do not build blog on local
-    return { paths: [], fallback: false };
-  }
+  // if (process.env.NEXTAUTH_URL === "http://localhost:3000") {
+  //   // do not build blog on local
+  //   return { paths: [], fallback: false };
+  // }
   const paths = blogPosts.map((post: any) => {
     return {
       params: {
@@ -80,12 +80,40 @@ export default function Post({ post, morePosts }: any) {
         {post.emoji && <span className="mr-3 text-3xl">{post.emoji}</span>}
         {post.bait && <h2 className="text-lg">{post.bait}</h2>}
       </div>
+      <aside>
+        <a
+          href="https://www.amazon.fr/gp/dmusic/promotions/AmazonMusicUnlimited?tag=francemixtape-21"
+          className="my-4 block rounded-md bg-jam-pink px-3 py-3"
+        >
+          <div className="text-2xl text-white">
+            Offre Amazon music ! <br />
+            jusqu'à 3 MOIS GRATUITS
+          </div>
+          <p className="font-mono text-sm normal-case text-white">
+            Toutes les nouveautés, découvrez tous les derniers titres dès leur
+            sortie
+          </p>
+        </a>
+      </aside>
+
       {post.contentHtml && (
         <div
           className=" mb-12 font-serif  text-base  normal-case"
           dangerouslySetInnerHTML={{ __html: post.contentHtml }}
         />
       )}
+      <p className=" mb-8 font-serif  text-base  normal-case">
+        Ecoutez dès maintenant cet artiste sur Amazon Music, entre 1 et 3 mois
+        gratuits.{" "}
+        <a
+          target="_blank"
+          rel="noopener"
+          href="https://www.amazon.fr/gp/dmusic/promotions/AmazonMusicUnlimited?tag=francemixtape-21"
+        >
+          Profitez de l'offre spéciale.
+        </a>
+        . Conditions sur amazon.fr
+      </p>
       {post.media_source &&
         post.media_id &&
         post.media_source === "youtube" && (
@@ -129,7 +157,25 @@ export default function Post({ post, morePosts }: any) {
             </a>
           </div>
         )}
+
       <RelatedPost posts={morePosts} />
+      <aside>
+        <a
+          href="https://www.primevideo.com/?tag=francemixtape-21"
+          target="_blank"
+          rel="noopener"
+          className="my-4 block rounded-md bg-jam-pink px-3 py-3"
+        >
+          <div className="text-2xl text-white">
+            Prime Video ! <br />
+            Essai gratuit de 30 jours
+          </div>
+          <p className="font-mono text-sm normal-case text-white">
+            Diffusion en streaming illimitée de milliers de films et de séries
+            télévisées
+          </p>
+        </a>
+      </aside>
     </>
   );
 }

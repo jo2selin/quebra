@@ -79,6 +79,18 @@ const Post = ({ post, morePosts }: any) => {
             components={components}
           />
         </div>
+        <aside className=" mb-8  font-serif  text-base normal-case">
+          Ecoutez dès maintenant cet artiste sur Amazon Music, entre 1 et 3 mois
+          gratuits.{" "}
+          <a
+            target="_blank"
+            rel="noopener"
+            href="https://www.amazon.fr/gp/dmusic/promotions/AmazonMusicUnlimited?tag=francemixtape-21"
+          >
+            Profitez de l'offre spéciale.
+          </a>
+          . Conditions sur amazon.fr
+        </aside>
         <footer>
           Publié le <time dateTime={post._createdAt}>{datePost}</time>
           <aside className="flex justify-between">
