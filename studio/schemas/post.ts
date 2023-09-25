@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {defineField, defineType, defineArrayMember} from 'sanity'
 
 export default defineType({
   name: 'post',
@@ -17,6 +17,22 @@ export default defineType({
       options: {
         source: 'title',
         maxLength: 96,
+      },
+    }),
+    defineField({
+      name: 'emoji',
+      title: 'Emoji',
+      type: 'string',
+    }),
+    defineField({
+      name: 'country',
+      type: 'string',
+      title: 'Country',
+      options: {
+        list: [
+          {title: 'FR', value: 'fr'},
+          {title: 'US', value: 'us'},
+        ],
       },
     }),
     // defineField({

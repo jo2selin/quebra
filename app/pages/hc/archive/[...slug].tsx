@@ -148,15 +148,67 @@ function News({ params, morePosts }: ArchiveBlog) {
         />
       )}
       {params.frontmatter.title && (
-        <h1 className="pb-10 text-4xl">{params.frontmatter.title}</h1>
+        <h1 className="pb-2 text-4xl">{params.frontmatter.title}</h1>
       )}
+      <aside>
+        <a
+          href="https://www.amazon.fr/gp/dmusic/promotions/AmazonMusicUnlimited?tag=francemixtape-21"
+          className="my-4 block rounded-md bg-jam-pink px-3 py-3"
+        >
+          <div className="text-2xl text-white">
+            Offre Amazon music ! <br />
+            jusqu'à 3 MOIS GRATUITS
+          </div>
+          <p className="font-mono text-sm normal-case text-white">
+            Toutes les nouveautés, découvrez tous les derniers titres dès leur
+            sortie
+          </p>
+        </a>
+      </aside>
       {params.content && (
         <div
-          className=" mb-12 font-serif  text-base  normal-case"
+          className=" mb-1 font-serif  text-base  normal-case"
           dangerouslySetInnerHTML={{ __html: params.content }}
         />
       )}
+      <p className=" mb-8 font-serif  text-base  normal-case">
+        Ecoutez dès maintenant cet artiste sur Amazon Music, entre 1 et 3 mois
+        gratuits.{" "}
+        <a
+          target="_blank"
+          rel="noopener"
+          href="https://www.amazon.fr/gp/dmusic/promotions/AmazonMusicUnlimited?tag=francemixtape-21"
+        >
+          Profitez de l'offre spéciale.
+        </a>
+        . Conditions sur amazon.fr
+      </p>
+
+      <aside>
+        <p className="mb-5 font-mono text-xs normal-case text-jam-light-purple">
+          Archive : Cet article a été publié sur HauteCulture
+        </p>
+        <div className="text-3xl">Articles Récents : </div>
+      </aside>
       <RelatedPost posts={morePosts} />
+
+      <aside>
+        <a
+          href="https://www.primevideo.com/?tag=francemixtape-21"
+          className="my-4 block rounded-md bg-jam-pink px-3 py-3"
+          target="_blank"
+          rel="noopener"
+        >
+          <div className="text-2xl text-white">
+            Prime Video ! <br />
+            Essai gratuit de 30 jours
+          </div>
+          <p className="font-mono text-sm normal-case text-white">
+            Diffusion en streaming illimitée de milliers de films et de séries
+            télévisées
+          </p>
+        </a>
+      </aside>
     </>
   );
 }
