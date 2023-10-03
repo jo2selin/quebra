@@ -51,6 +51,8 @@ interface PostQuebra {
   source: string;
   language: string;
   excerpt?: string;
+  country?: string;
+  emoji?: string;
 }
 
 interface HcPost {
