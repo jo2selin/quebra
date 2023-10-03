@@ -19,3 +19,20 @@ export const testUser = {
   projects: "",
   uuid: "9832948094283098423",
 };
+
+export const userProjects = [
+  {
+    created_at: "2023-04-25T18:03:55.607Z",
+    status: "PUBLISHED",
+    slug: "bob-better-than-drugs",
+    views: 6,
+    cover: "jpg",
+    projectName: "Test Project Mixtape test One",
+    path_s3: "t-p-m-t-o",
+    validated: "NOPE",
+    allow_download: true,
+    uuid: "7effe73f-f95c-46b5-9f23-8a5e69fc4f2c",
+    sk: "af5f7849-8064-424c-85aa-1ee68c9f1bd5#7effe73f-f95c-46b5-9f23-8a5e69fc4f2c",
+    pk: "PROJECT",
+  },
+];

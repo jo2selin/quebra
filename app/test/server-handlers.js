@@ -1,5 +1,5 @@
 import { rest } from "msw";
-import { testUser } from "./index";
+import { testUser, userProjects } from "./index";
 
 const delay = process.env.NODE_ENV === "test" ? 0 : 1500;
 
@@ -22,7 +22,7 @@ const handlers = [
     return res(ctx.json(testUser));
   }),
   rest.get("/api/projects/me", async (req, res, ctx) => {
-    return res(ctx.delay(delay), ctx.json([]));
+    return res(ctx.delay(300), ctx.json(userProjects));
   }),
 ];
 
