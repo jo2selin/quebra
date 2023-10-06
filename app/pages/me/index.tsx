@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Head from "next/head";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import useSWR from "swr";
 
 // import JamListItem, { JamProps } from "../../components/jam";
@@ -13,7 +13,6 @@ import Welcome from "../../components/me/welcome";
 import SetArtistProfile from "../../components/me/setArtistProfile";
 
 import AccessDenied from "../../components/access-denied";
-import Button from "../../components/button";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url);
@@ -70,9 +69,13 @@ const Me: React.FC = () => {
         <div className="mb-20 md:flex-1 ">
           <div className="flex items-center justify-between">
             <h1 className="text-5xl uppercase">Mon Compte</h1>
-            <Button to={"/api/auth/signout"} className="text-sm" style={"dark"}>
+            <div
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="text-md inline-block cursor-pointer rounded-md border-b-4 border-jam-light-purple bg-[#323232] px-4 py-2 text-sm uppercase leading-none text-white hover:text-white"
+              // style={"dark"}
+            >
               Se déconnecter
-            </Button>
+            </div>
           </div>
           {!showsetArtist && (
             <>
