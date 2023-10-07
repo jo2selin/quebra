@@ -58,10 +58,8 @@ export default function Header() {
   return (
     <>
       <div className=" sticky top-0 z-30 bg-jam-dark-purple/80 backdrop-blur">
-        <div className="border-b-2 border-jam-purple bg-gradient-to-r from-jam-purple to-jam-pink font-mono normal-case text-white">
+        <div className="border-b-2 border-jam-purple bg-gradient-to-r from-jam-purple to-[#a621a2] font-mono normal-case text-white">
           <div className="container mx-auto py-2 px-3">
-            Inscriptions ouvertes! <span className="text-xs">01/09/2023</span>
-            <br />
             Faites partie des premiers à{" "}
             <span className="font-bold"> publier votre projet musical</span> sur
             Quebra (tracks/mixtapes...) 💿🔥
