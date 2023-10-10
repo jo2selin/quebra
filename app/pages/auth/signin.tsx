@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import IconGoogle from "../../public/iconGoogle.svg";
 import IconDiscord from "../../public/iconDiscord.svg";
+import IconTwitter from "../../public/iconTwitterx.svg";
 
 const EmailForm = ({ csrfToken, text }: any) => {
   const [showEmailForm, setShowEmailForm] = useState(false);
@@ -84,7 +85,6 @@ export default function SignIn({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const { error } = router.query;
-  console.log("router", router);
 
   return (
     <>
@@ -94,14 +94,14 @@ export default function SignIn({
           <h2 className="mx-auto hidden w-full -translate-y-4 text-center text-4xl md:block">
             Connection
           </h2>
-          <div className="mb-4 flex flex-wrap gap-x-8">
+          <div className="mb-4  flex max-w-md flex-col gap-x-8">
             {Object.values(providers)
               .filter((p) => p.name !== "Email")
               .map((provider) => (
-                <div key={provider.name} className="md:w-full">
+                <div key={provider.name} className=" md:w-full">
                   <button
                     onClick={() => signIn(provider.id)}
-                    className="mt-4 flex items-center rounded-lg border border-gray-300 bg-white px-6 py-2 text-sm font-medium text-gray-800 shadow-md outline-none hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 md:w-full "
+                    className="mt-4 flex w-full max-w-md items-center rounded-lg border border-gray-300 bg-white px-6 py-2 text-sm font-medium text-gray-800 shadow-md outline-none hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 md:w-full "
                   >
                     {provider.name === "Google" && (
                       <Image
@@ -115,6 +115,15 @@ export default function SignIn({
                     {provider.name === "Discord" && (
                       <Image
                         src={IconDiscord.src}
+                        width="16"
+                        height="16"
+                        alt=""
+                        className="mr-2"
+                      />
+                    )}
+                    {provider.name === "Twitter (Legacy)" && (
+                      <Image
+                        src={IconTwitter.src}
                         width="16"
                         height="16"
                         alt=""
@@ -189,8 +198,20 @@ export default function SignIn({
                         className="mr-2"
                       />
                     )}
+                    {provider.name === "Twitter (Legacy)" && (
+                      <Image
+                        src={IconTwitter.src}
+                        width="16"
+                        height="16"
+                        alt=""
+                        className="mr-2"
+                      />
+                    )}
                     <span className="font-sans">
-                      S'inscrire avec {provider.name}
+                      S'inscrire avec{" "}
+                      {provider.name === "Twitter (Legacy)"
+                        ? "Twitter"
+                        : provider.name}
                     </span>
                   </button>
                 </div>
