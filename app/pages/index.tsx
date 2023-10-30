@@ -54,6 +54,40 @@ export default function Home(props: propsType) {
       <Head>
         <title key="title">Homepage | Quebra</title>
       </Head>
+      <div className="grid grid-cols-6 gap-4">
+        <div className="col-span-4">
+          <Link
+            href={`/post/fr/${postsQuebra[0].slug.current}`}
+            className=" text-white hover:text-jam-pink"
+          >
+            <article className=" ">
+              <div className="relative  w-full   ">
+                <Img
+                  src={
+                    postsQuebra[0].mainImage.asset.url +
+                    "?h=500&w=1000&fit=crop"
+                  }
+                  width={1000}
+                  height={500}
+                  // fill={true}
+                  alt={postsQuebra[0].title}
+                  placeholder="blur"
+                  blurDataURL={postsQuebra[0].mainImage.asset.metadata.lqip}
+                />
+              </div>
+              <div className="bg-gradient-radial px-6 py-12">
+                <h2 className=" text-3xl md:text-2xl">
+                  {postsQuebra[0].title}
+                </h2>
+                <p className="font-mono text-xs  normal-case ">
+                  {postsQuebra[0].excerpt}
+                </p>
+              </div>
+            </article>
+          </Link>
+        </div>
+        <div className="bg-gradient-radial col-span-2">b</div>
+      </div>
       <div className="relative mx-auto mb-24 max-w-sm">
         <div className="relative z-10">
           <h1 className="text-3xl">
