@@ -59,7 +59,7 @@ const Post = ({ post, morePosts }: any) => {
           ],
         }}
       />
-      <article>
+      <article className="md:mx-auto md:max-w-3xl">
         <h1 className="mb-5 text-3xl">{post.title}</h1>
         {post.mainImage && (
           <Img

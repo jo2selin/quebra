@@ -138,7 +138,7 @@ export default function Project(props: propsType) {
           </>
         )}
       </Head>
-      <div className="pb-10">
+      <div className="pb-10 md:mx-auto md:max-w-3xl">
         {props.project && <h1 className="text-3xl">{projectName}</h1>}
         {props.artist && <h2 className="text-xl">{props.artist.artistName}</h2>}
         {props.artist && props.project && (
