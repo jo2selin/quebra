@@ -7,6 +7,12 @@ import { NextSeo } from "next-seo";
 import Link from "next/link";
 
 import Button from "../components/button";
+import SectionRounded from "../components/sectionRounded";
+import HomeNews from "../components/home/home_news";
+import HomeProjects from "../components/home/home_projects";
+import HomeTopArtists from "../components/home/home_topArtists";
+import HomeProjectOfTheWeek from "../components/home/home_projectOfTheWeek";
+import HomePresentation from "../components/home/home_presentation";
 import Share_project from "../components/svg/share_project";
 import Triangles from "../components/svg/triangles";
 import { getDynamoProjects, getDynamoArtists } from "../libs/api";
@@ -17,23 +23,24 @@ import Img from "next/image";
 import newTalents from "../public/new_talents.svg";
 const inter = Inter({ subsets: ["latin"] });
 
-// const filterProjectsHome = (projects: Project[]) => {
-//   return projects.filter((p) => p.validated === "HOMEPAGE");
-// };
+const filterProjectsHome = (projects: Project[]) => {
+  return projects.filter((p) => p.validated === "HOMEPAGE");
+};
 
-// const matchProjectToArtistSlug = (project: Project, artists: Artist[]) => {
-//   const a_uuid = project.sk.split("#")[0];
-//   const artist = artists.filter((a: Artist) => a.uuid === a_uuid)[0];
-//   return artist ? { project, artist } : false;
-// };
+const matchProjectToArtistSlug = (project: Project, artists: Artist[]) => {
+  const a_uuid = project.sk.split("#")[0];
+  const artist = artists.filter((a: Artist) => a.uuid === a_uuid)[0];
+  return artist ? { project, artist } : false;
+};
 
 type propsType = {
-  // projectsWithArtistsData: [{ project: Project; artist: Artist }];
   postsQuebra: PostQuebra[];
+  lastPostQuebra: PostQuebra;
+  projects: { projectsWithArtistsData: ProjectsWithArtistsData[] };
 };
 
 export default function Home(props: propsType) {
-  const { postsQuebra } = props;
+  const { postsQuebra, lastPostQuebra, projects } = props;
   const { data: session, status } = useSession();
 
   return (
@@ -54,164 +61,69 @@ export default function Home(props: propsType) {
       <Head>
         <title key="title">Homepage | Quebra</title>
       </Head>
-      <div className="grid grid-cols-6 gap-4">
-        <div className="col-span-4">
+      <div className=" grid-cols-12 items-start md:grid md:gap-4 lg:gap-10 xl:gap-20">
+        <div className=" md:col-span-6 lg:col-span-7 xl:col-span-7 ">
           <Link
-            href={`/post/fr/${postsQuebra[0].slug.current}`}
+            href={`/post/fr/${lastPostQuebra.slug.current}`}
             className=" text-white hover:text-jam-pink"
           >
             <article className=" ">
-              <div className="relative  w-full   ">
+              <div className="relative w-full  ">
                 <Img
                   src={
-                    postsQuebra[0].mainImage.asset.url +
+                    lastPostQuebra.mainImage.asset.url +
                     "?h=500&w=1000&fit=crop"
                   }
                   width={1000}
                   height={500}
                   // fill={true}
-                  alt={postsQuebra[0].title}
+                  alt={lastPostQuebra.title}
                   placeholder="blur"
-                  blurDataURL={postsQuebra[0].mainImage.asset.metadata.lqip}
+                  blurDataURL={lastPostQuebra.mainImage.asset.metadata.lqip}
+                  className="rounded-t-3xl"
                 />
               </div>
-              <div className="bg-gradient-radial px-6 py-12">
+              <div className="rounded-b-3xl bg-gradient-radial px-6 py-6 md:py-12">
                 <h2 className=" text-3xl md:text-2xl">
-                  {postsQuebra[0].title}
+                  {lastPostQuebra.title}
                 </h2>
                 <p className="font-mono text-xs  normal-case ">
-                  {postsQuebra[0].excerpt}
+                  {lastPostQuebra.excerpt}
                 </p>
               </div>
             </article>
           </Link>
+          <HomeProjects projects={projects} />
         </div>
-        <div className="bg-gradient-radial col-span-2">b</div>
+        <div className="row-auto transition-all duration-300 md:col-span-6 lg:col-span-5 xl:col-span-4 xl:col-end-13 ">
+          <HomeNews posts={postsQuebra} />
+          <HomeTopArtists />
+          <HomeProjectOfTheWeek />
+        </div>
+        <div className="md:col-span-6 lg:col-span-7 xl:col-span-7">
+          <HomePresentation />
+        </div>
+        <div className=" md:col-span-6 lg:col-span-5 xl:col-span-4 xl:col-end-13"></div>
       </div>
-      <div className="relative mx-auto mb-24 max-w-sm">
-        <div className="relative z-10">
-          <h1 className="text-3xl">
-            Uploadez et Partagez <br />
-            votre musique <br />
-            sur Quebra!
-          </h1>
-          <Button
-            to={status !== "authenticated" ? "/auth/signin" : "/me"}
-            className="mt-5"
-          >
-            Commencer
-          </Button>
-        </div>
-        {/* <Image
-          priority
-          src={triangles}
-          alt=""
-          className="absolute -right-3 top-0 z-0 max-w-xl"
-          style={{ width: "100%" }}
-        /> */}
-        <div className="absolute -right-3 top-0 z-0 max-w-xl">
-          <Triangles />
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row">
-        {postsQuebra.map((post: PostQuebra) => (
-          <React.Fragment key={post._id}>
-            <Link
-              href={`/post/fr/${post.slug.current}`}
-              className=" text-white hover:text-jam-pink"
-            >
-              <article className="relative mb-6 flex items-center justify-center md:first:mr-5">
-                <div className=" w-full opacity-30">
-                  <Img
-                    src={post.mainImage.asset.url + "?h=250&w=500&fit=crop"}
-                    width={500}
-                    height={250}
-                    alt={post.title}
-                    placeholder="blur"
-                    blurDataURL={post.mainImage.asset.metadata.lqip}
-                  />
-                </div>
-                <div className="absolute max-h-40 w-full overflow-y-auto px-4 ">
-                  <h2 className=" text-3xl md:text-2xl">{post.title}</h2>
-                  <p className="font-mono text-xs  normal-case ">
-                    {post.excerpt}
-                  </p>
-                </div>
-              </article>
-            </Link>
-          </React.Fragment>
-        ))}
-      </div>
-      <div className="m-auto w-3/4">
-        <div className="mb-8 flex flex-col md:flex-row md:items-center">
-          <p className="order-2 md:order-1 md:pr-5">
-            Nous fournissons une plate-forme où les artistes peuvent partager
-            leurs projets musicaux.
-          </p>
-          {/* <Image
-            priority
-            src={shareProject}
-            alt=""
-            className="order-1 md:order-2 "
-          /> */}
-          <div className="order-1 md:order-2 ">
-            <Share_project />
-          </div>
-        </div>
-        <div className="mb-5 flex flex-col md:flex-row">
-          <Image priority src={newTalents} alt="" />
-          <p className="md:pl-5">
-            Nous croyons que chacun devrait avoir la possibilité de présenter
-            son travail et de se connecter avec d&apos;autres personnes
-            partageant une passion pour la musique.
-          </p>
-        </div>
-      </div>
-      {/* <h2 className="text-2xl">Latest releases</h2>
-      <div className="flex flex-wrap -mx-4 justify-center">
-        {projectsWithArtistsData.map((p: any) => (
-          <div
-            key={p.project.uuid}
-            className="w-4/6 md:w-1/3 lg:w-1/2 px-4 mb-4"
-          >
-            <div className="bg-jam-dark-grey shadow-lg overflow-hidden rounded-b-xl border-b-jam-purple border-b-4">
-              <Link href={`/${p.artist.slug}/p/${p.project.slug}`}>
-                <Image
-                  src={`https://quebra-bucket.s3.eu-west-1.amazonaws.com/projects/${p.project.path_s3}/cover.jpg`}
-                  alt={`${p.project.projectName}, ${p.artist.artistName}`}
-                  width={450}
-                  height={450}
-                />
-              </Link>
-              <div className="p-4">
-                <h2 className="text-xl font-bold text-white ">
-                  {p.project.projectName} - {p.artist.artistName}
-                </h2>
-               
-              </div>
-            </div>
-          </div>
-        ))}
-      </div> */}
     </>
   );
 }
 
 export async function getStaticProps() {
-  // const projects = await getDynamoProjects();
-  // const artists = (await getDynamoArtists()) as Artist[];
+  const allProjects = await getDynamoProjects();
+  const artists = (await getDynamoArtists()) as Artist[];
 
-  // const filteredProjects = filterProjectsHome(projects as Project[]);
+  const filteredProjects = filterProjectsHome(allProjects as Project[]);
 
-  // let projectsWithArtistsData = [] as any;
-  // filteredProjects.forEach((p) => {
-  //   const res = matchProjectToArtistSlug(p, artists);
-  //   projectsWithArtistsData = [...projectsWithArtistsData, res];
-  // });
+  let projectsWithArtistsData = [] as any;
+  filteredProjects.forEach((p) => {
+    const res = matchProjectToArtistSlug(p, artists);
+    projectsWithArtistsData = [...projectsWithArtistsData, res];
+  });
 
-  // const data = { projectsWithArtistsData };
+  const projects = { projectsWithArtistsData };
 
-  const query = groq`*[_type == "post"]{
+  const queryPosts = groq`*[_type == "post"]{
     title,
     "excerpt": array::join(string::split((pt::text(body)), "")[0..50], "") + "..." ,
     slug,
@@ -223,11 +135,25 @@ export async function getStaticProps() {
         metadata
       }
     },
-  }| order(_createdAt desc) [0..1]`;
-  const postsQuebra = await client.fetch(query);
+  }| order(_createdAt desc) [1..6]`;
+  const queryLastPost = groq`*[_type == "post"]{
+    title,
+    "excerpt": array::join(string::split((pt::text(body)), "")[0..150], "") + "..." ,
+    slug,
+    _createdAt,
+    _id,
+    mainImage {
+      asset->{
+        url,
+        metadata
+      }
+    },
+  }| order(_createdAt desc)[0]`;
+  const postsQuebra = await client.fetch(queryPosts);
+  const lastPostQuebra = await client.fetch(queryLastPost);
 
   return {
-    props: { postsQuebra }, // will be passed to the page component as props
+    props: { postsQuebra, lastPostQuebra, projects }, // will be passed to the page component as props
     revalidate: 10,
   };
 }
