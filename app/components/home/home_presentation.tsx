@@ -32,7 +32,7 @@ function Home_presentation() {
             i % 2 && "flex-row-reverse"
           }`}
         >
-          <div className=" w-full text-center md:w-52">
+          <div className=" mb-5 w-full text-center md:mb-0 md:w-52">
             <Image
               src={`/${c.image}`}
               width={200}

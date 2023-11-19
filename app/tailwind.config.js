@@ -16,7 +16,7 @@ module.exports = {
       },
       backgroundImage: {
         "gradient-radial":
-          "radial-gradient(at left top , #4D1D70 0%, #1E102D 100%)",
+          "radial-gradient(at left top , #4D1D70 0%, #1E102D 60%)",
       },
       lineHeight: {
         11: "3rem",

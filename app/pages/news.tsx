@@ -35,7 +35,7 @@ function MainPost({ post }: { post: PostQuebra }) {
       href={`/post/fr/${post.slug.current}`}
       className=" text-white hover:text-jam-pink"
     >
-      <article className="relative mb-12 md:mb-20">
+      <article className="relative mb-12  md:mb-20">
         <Img
           src={post.mainImage.asset.url + "?h=300&w=640&fit=crop"}
           width={640}
@@ -155,12 +155,12 @@ export async function getStaticProps() {
 
 function News({ oldPostsHc, postsQuebra }: any) {
   return (
-    <>
+    <div className=" md:mx-auto md:max-w-3xl">
       <h1 className="mb-4 text-3xl">News</h1>
       <MainPost post={postsQuebra[0]} />
       <PostList posts={postsQuebra.slice(1)} />
       <OldNewsHc oldPostsHc={oldPostsHc} />
-    </>
+    </div>
   );
 }
 
