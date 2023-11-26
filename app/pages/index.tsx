@@ -61,8 +61,8 @@ export default function Home(props: propsType) {
       <Head>
         <title key="title">Homepage | Quebra</title>
       </Head>
-      <div className=" grid-cols-12 items-start md:grid md:gap-4 lg:gap-10 xl:gap-20">
-        <div className=" md:col-span-6 lg:col-span-7 xl:col-span-7 ">
+      <div className="  grid grid-flow-row gap-6 md:auto-cols-auto md:grid-flow-dense md:auto-rows-auto  md:grid-cols-2 lg:grid-cols-8 lg:gap-12 xl:grid-cols-12 xl:gap-20">
+        <div className="md:col-span-1 md:row-span-2 lg:order-1 lg:col-span-5 xl:col-span-8 ">
           <Link
             href={`/post/fr/${lastPostQuebra.slug.current}`}
             className=" text-white hover:text-jam-pink"
@@ -93,17 +93,22 @@ export default function Home(props: propsType) {
               </div>
             </article>
           </Link>
+        </div>
+        <div className=" md:col-span-1 md:row-span-1 lg:order-3 lg:col-span-6 lg:row-start-3 lg:row-end-4 xl:col-span-4  xl:row-start-3 xl:row-end-3">
           <HomeProjects projects={projects} />
         </div>
-        <div className="row-auto transition-all duration-300 md:col-span-6 lg:col-span-5 xl:col-span-4 xl:col-end-13 ">
+        <div className="row-auto  transition-all duration-300 md:order-3 md:col-span-1 md:row-span-1 lg:order-2 lg:col-span-3 xl:col-span-4 ">
           <HomeNews posts={postsQuebra} />
+        </div>
+        <div className=" md:order-4 md:col-span-1 md:row-span-1 lg:order-4 lg:col-span-6 lg:row-start-4 lg:row-end-5  xl:col-span-4 xl:row-start-3 xl:row-end-3">
           <HomeTopArtists />
+        </div>
+        <div className=" md:order-2 md:col-span-1 md:row-span-1 lg:order-5 lg:col-span-2 lg:row-start-3 lg:row-end-5  xl:col-span-4 xl:row-start-3 xl:row-end-3">
           <HomeProjectOfTheWeek />
         </div>
-        <div className="md:col-span-6 lg:col-span-7 xl:col-span-7">
+        <div className="order-last md:col-span-2 lg:col-span-7 xl:col-span-8 xl:row-start-4 xl:m-auto">
           <HomePresentation />
         </div>
-        <div className=" md:col-span-6 lg:col-span-5 xl:col-span-4 xl:col-end-13"></div>
       </div>
     </>
   );

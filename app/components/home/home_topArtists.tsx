@@ -37,7 +37,7 @@ const artistesRap = [
 
 function Home_topArtists() {
   return (
-    <SectionRounded title={"Top Artists"} className={"mt-8"}>
+    <SectionRounded title={"Top Artists"}>
       <ol className="lg:flex lg:flex-wrap">
         {artistesRap.map((p: any, i) => (
           <li key={i} className="flex-1 transition-transform hover:scale-105">

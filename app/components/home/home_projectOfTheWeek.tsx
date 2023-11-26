@@ -5,9 +5,9 @@ import Image from "next/image";
 
 function Home_projectOfTheWeek() {
   return (
-    <SectionRounded title={"Projet de la semaine"} className={"mt-8"}>
+    <SectionRounded title={"Projet de la semaine"}>
       <div className="flex items-center justify-center">
-        <div className="max-w-52 block h-52 w-full flex-1 rounded-xl bg-jam-dark-purple"></div>
+        <div className="max-w-52 block h-52 w-full flex-1 rounded-xl bg-jam-dark-purple md:h-36"></div>
       </div>
     </SectionRounded>
   );

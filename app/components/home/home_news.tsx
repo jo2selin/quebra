@@ -10,7 +10,7 @@ type propsType = {
 
 function Home_news({ posts }: propsType) {
   return (
-    <SectionRounded className="mt-8 md:mt-0">
+    <SectionRounded>
       <ol>
         {posts.map((post: PostQuebra) => (
           <li key={post._id} className="transition-transform hover:scale-105">
