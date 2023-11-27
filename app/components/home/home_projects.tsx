@@ -11,7 +11,7 @@ function Home_projects({ projects }: propsType) {
   const { projectsWithArtistsData: homeProjects } = projects;
 
   return (
-    <SectionRounded className={"mt-8"}>
+    <SectionRounded>
       <ol className="lg:flex lg:flex-wrap">
         {homeProjects.map((p: ProjectsWithArtistsData) => (
           <li
