@@ -14,6 +14,10 @@ module.exports = {
           "light-transparent": "#2C2035",
         },
       },
+      backgroundImage: {
+        "gradient-radial":
+          "radial-gradient(at left top , #4D1D70 0%, #1E102D 60%)",
+      },
       lineHeight: {
         11: "3rem",
         12: "3.5rem",

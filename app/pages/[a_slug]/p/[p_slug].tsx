@@ -138,7 +138,7 @@ export default function Project(props: propsType) {
           </>
         )}
       </Head>
-      <div className="pb-10">
+      <div className="pb-10 md:mx-auto md:max-w-3xl">
         {props.project && <h1 className="text-3xl">{projectName}</h1>}
         {props.artist && <h2 className="text-xl">{props.artist.artistName}</h2>}
         {props.artist && props.project && (
@@ -161,7 +161,7 @@ export default function Project(props: propsType) {
           </>
         )}
         {props.tracks && (
-          <ol className="max-w-[500px]">
+          <ol className="max-w-[500px] ">
             {props.tracks
               .sort((a, b) => a.track_id - b.track_id)
               .map((track: Track, i) => {
@@ -169,11 +169,11 @@ export default function Project(props: propsType) {
                 return (
                   <li
                     key={track.uuid}
-                    className={`border-l-4 px-3 py-4  ${
+                    className={` px-3 py-4  shadow-sm shadow-jam-dark-grey ${
                       isCurrent
-                        ? " border-jam-pink  bg-jam-light-transparent "
-                        : "border-jam-dark-purple"
-                    } cursor-pointer`}
+                        ? " border-l-4 border-r-4 border-jam-pink bg-jam-light-transparent "
+                        : "border-l-2 border-r-2 border-jam-purple"
+                    } cursor-pointer last:rounded-b-md last:border-b-2`}
                     onClick={() => setTrackIndex(i)}
                   >
                     <span className="mr-3 p-3">{i + 1}</span>

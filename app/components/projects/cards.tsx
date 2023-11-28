@@ -130,8 +130,8 @@ export default function Cards({ projects }: propsType) {
 
   return (
     <>
-      <div className="mt-10 w-full px-4  ">
-        <div className="mb-10 flex w-full overflow-hidden rounded-xl rounded-tr-none border-b-4 border-b-jam-dark-grey shadow-lg sm:w-3/4 md:w-2/3">
+      <div className="mt-10 w-full px-4 md:max-w-3xl ">
+        <div className="mb-10 flex w-full overflow-hidden  rounded-xl rounded-tr-none border-b-4 border-b-jam-dark-grey shadow-lg sm:w-3/4 md:w-2/3 md:max-w-2xl">
           <div className="h-40 w-2/5 animate-pulse bg-jam-purple"></div>
 
           <div className="flex-1 pl-4">
