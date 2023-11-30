@@ -14,16 +14,17 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
 
   // const { data, error, isLoading } = useSWR("/api/projects/me", fetcher);
   // if (error) return <div>failed to load Artist Projects</div>;
-  if (isLoadingProjects) return <div>loading Artist Projects...</div>;
+  if (isLoadingProjects)
+    return <div data-testid="loading-projects">loading Artist Projects...</div>;
   // if (error) throw new Error(error);
 
   const allButDeletedProjects = dataProjects?.filter(
-    (p: Project) => p.status !== "DELETED"
+    (p: Project) => p.status !== "DELETED",
   );
 
   return (
-    <div className="mt-12 p-5 pt-0 border-2 border-jam-purple rounded-lg">
-      <h2 className="text-5xl uppercase -translate-y-6 bg-jam-dark-purple w-min">
+    <div className="mt-12 rounded-lg border-2 border-jam-purple p-5 pt-0">
+      <h2 className="w-min -translate-y-6 bg-jam-dark-purple text-5xl uppercase">
         Projects
       </h2>
 
@@ -35,9 +36,13 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
         ))}
       {allButDeletedProjects && allButDeletedProjects.length >= 2 && (
         <div
-          className={`mt-5  basis-0 text-md bg-[#323232] text-white rounded-sm px-4 py-2   `}
+          className={`text-md  mt-5 basis-0 rounded-sm bg-[#323232] px-4 py-2 text-white   `}
         >
-          <a href="#openBrevoChat" className={`mt-5 text-md  text-white    `}>
+          <a
+            href="#openBrevoChat"
+            data-testid="max-proj-limit-reached"
+            className={`text-md mt-5  text-white    `}
+          >
             Max projects limit reached ({allButDeletedProjects.length}/2).
           </a>
           <p className="">
@@ -53,9 +58,9 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
             return (
               <div
                 key={proj.sk}
-                className="flex flex-col mt-10 md:items-center md:flex-row "
+                className="mt-10 flex flex-col md:flex-row md:items-center "
               >
-                <h3 className="text-4xl uppercase ">
+                <h3 data-testid="title-project" className="text-4xl uppercase ">
                   <Link href={`/me/project?uuid=${proj.uuid}`}>
                     {proj.projectName}
                   </Link>
@@ -63,14 +68,15 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                 {proj.status === "PUBLISHED" && (
                   <div className="flex">
                     <span
-                      className={`md:ml-5 text-xs  bg-[#323232]   rounded-sm px-4 py-2  md:px-2 md:py-0 `}
+                      data-testid="project-status"
+                      className={`rounded-sm bg-[#323232]  px-4   py-2 text-xs md:ml-5  md:px-2 md:py-0 `}
                     >
                       {proj.status}
                     </span>
 
                     <Link
                       href={`/${artistData.slug}/p/${proj.slug}`}
-                      className="ml-5 text-xs rounded-sm px-2  bg-green-500 text-white hover:text-green-900 px-4 py-2  md:px-2 md:py-0"
+                      className="ml-5 rounded-sm bg-green-500 px-2  px-4 py-2 text-xs text-white hover:text-green-900  md:px-2 md:py-0"
                     >
                       Lien projet
                     </Link>
@@ -79,12 +85,13 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                 {proj.status !== "PUBLISHED" && (
                   <div className="flex">
                     <span
-                      className={`md:ml-5 text-xs bg-[#323232] rounded-sm px-4 py-2  md:px-2 md:py-0 `}
+                      data-testid="project-status"
+                      className={`rounded-sm bg-[#323232] px-4 py-2 text-xs md:ml-5  md:px-2 md:py-0 `}
                     >
                       {proj.status}
                     </span>
                     <span
-                      className={`ml-5 text-xs bg-jam-purple rounded-sm px-4 py-2  md:px-2 md:py-0`}
+                      className={`ml-5 rounded-sm bg-jam-purple px-4 py-2 text-xs  md:px-2 md:py-0`}
                     >
                       <Link
                         href={`/me/project?uuid=${proj.uuid}`}
