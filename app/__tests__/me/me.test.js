@@ -12,7 +12,7 @@ import {
 import "@testing-library/jest-dom";
 import { faker } from "@faker-js/faker";
 import MeIndex from "pages/me/index";
-import { testUser } from "../../test";
+import { testUser, userProjects, userMaxLimitProjects } from "../../test";
 
 beforeAll(() => mswServer.listen());
 afterAll(() => mswServer.close());
@@ -44,32 +44,63 @@ test("Shows the [Creer un nom d'artiste] Button when not already set", async () 
 test("Shows profile data when artist name is set", async () => {
   customRender(<MeIndex />);
   const { artistName, slug } = testUser;
-  await waitFor(() => expect(screen.getByText("Artiste")).toBeInTheDocument());
+  expect(screen.getByTestId("loading")).toBeInTheDocument();
+  await waitForElementToBeRemoved(() => screen.getByTestId("loading"));
+  // loading-artist never shows
+  expect(screen.getByText("Artiste")).toBeInTheDocument();
+  expect(screen.getByText(artistName)).toBeInTheDocument();
   // screen.debug();
-  await waitFor(() => expect(screen.getByText(artistName)).toBeInTheDocument());
 });
 
 test("Shows Projects data and creation button", async () => {
   customRender(<MeIndex />);
 
   await waitFor(() =>
-    expect(document.querySelector("div#loading-projects")).toBeInTheDocument(),
+    expect(screen.getByTestId("loading-projects")).toBeInTheDocument(),
   );
+  await waitForElementToBeRemoved(() => screen.getByTestId("loading-projects"));
 
-  await waitFor(() =>
-    expect(
-      screen.getByText(/Test Project Mixtape test One/i),
-    ).toBeInTheDocument(),
-  );
-  await waitFor(() =>
-    expect(screen.getByText(/Creer nouveau projet/i)).toBeInTheDocument(),
-  );
+  expect(screen.getByText(userProjects[0].projectName)).toBeInTheDocument();
+
+  expect(screen.getByText(/Creer nouveau projet/i)).toBeInTheDocument();
+
   expect(
     screen.getByRole("link", {
       name: /Creer nouveau projet/i,
     }),
-  ).toHaveAttribute("href", "/me/project"),
-    screen.debug();
+  ).toHaveAttribute("href", "/me/project");
+  // screen.debug();
+});
+
+test("Shows Projects data and Max limit warning", async () => {
+  mswServer.use(
+    rest.get("/api/projects/me", (req, res, ctx) =>
+      res(ctx.delay(300), ctx.json(userMaxLimitProjects)),
+    ),
+  );
+  customRender(<MeIndex />);
+
+  await waitFor(() =>
+    expect(screen.getByTestId("loading-projects")).toBeInTheDocument(),
+  );
+  await waitForElementToBeRemoved(() => screen.getByTestId("loading-projects"));
+
+  expect(
+    screen.getByText(userMaxLimitProjects[0].projectName),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(userMaxLimitProjects[1].projectName),
+  ).toBeInTheDocument();
+  // status of the project : Published, Draft...
+  const statusList = ["published", "draft"];
+  const statusSpans = screen.getAllByTestId("project-status");
+  expect(statusSpans).toHaveLength(2);
+  expect(statusSpans.map((s) => s.textContent.toLowerCase())).toEqual(
+    statusList,
+  );
+
+  expect(screen.getByTestId("max-proj-limit-reached")).toBeInTheDocument();
+  // screen.debug();
 });
 
 // describe("Me/", () => {

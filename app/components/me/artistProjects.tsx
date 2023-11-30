@@ -15,7 +15,7 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
   // const { data, error, isLoading } = useSWR("/api/projects/me", fetcher);
   // if (error) return <div>failed to load Artist Projects</div>;
   if (isLoadingProjects)
-    return <div id="loading-projects">loading Artist Projects...</div>;
+    return <div data-testid="loading-projects">loading Artist Projects...</div>;
   // if (error) throw new Error(error);
 
   const allButDeletedProjects = dataProjects?.filter(
@@ -38,7 +38,11 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
         <div
           className={`text-md  mt-5 basis-0 rounded-sm bg-[#323232] px-4 py-2 text-white   `}
         >
-          <a href="#openBrevoChat" className={`text-md mt-5  text-white    `}>
+          <a
+            href="#openBrevoChat"
+            data-testid="max-proj-limit-reached"
+            className={`text-md mt-5  text-white    `}
+          >
             Max projects limit reached ({allButDeletedProjects.length}/2).
           </a>
           <p className="">
@@ -56,7 +60,7 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                 key={proj.sk}
                 className="mt-10 flex flex-col md:flex-row md:items-center "
               >
-                <h3 className="text-4xl uppercase ">
+                <h3 data-testid="title-project" className="text-4xl uppercase ">
                   <Link href={`/me/project?uuid=${proj.uuid}`}>
                     {proj.projectName}
                   </Link>
@@ -64,6 +68,7 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                 {proj.status === "PUBLISHED" && (
                   <div className="flex">
                     <span
+                      data-testid="project-status"
                       className={`rounded-sm bg-[#323232]  px-4   py-2 text-xs md:ml-5  md:px-2 md:py-0 `}
                     >
                       {proj.status}
@@ -80,6 +85,7 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                 {proj.status !== "PUBLISHED" && (
                   <div className="flex">
                     <span
+                      data-testid="project-status"
                       className={`rounded-sm bg-[#323232] px-4 py-2 text-xs md:ml-5  md:px-2 md:py-0 `}
                     >
                       {proj.status}
