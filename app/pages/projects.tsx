@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 import Cards from "../components/projects/cards";
 
 import { getDynamoProjects, getDynamoArtists } from "../libs/api";

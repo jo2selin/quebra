@@ -34,7 +34,7 @@
     "lazystream": "^1.0.1",
     "marked": "^7.0.2",
     "next": "^14.0.3",
-    "next-auth": "^4.18.6",
+    "next-auth": "^4.24.5",
     "next-s3-upload": "^0.2.9",
     "next-seo": "^6.1.0",
     "next-sitemap": "^4.2.2",
