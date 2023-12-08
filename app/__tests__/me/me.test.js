@@ -8,6 +8,7 @@ import {
   waitFor,
   toHaveBeenCalledTimes,
   queryByText,
+  fireEvent,
 } from "test/test-utils";
 import "@testing-library/jest-dom";
 import { faker } from "@faker-js/faker";
@@ -52,6 +53,30 @@ test("Shows profile data when artist name is set", async () => {
   // screen.debug();
 });
 
+test("Display editing form when clicking on edit artist", async () => {
+  customRender(<MeIndex />);
+  await waitFor(() => expect(screen.getByText("Artiste")));
+  const editButton = screen.getByRole("button", {
+    name: "Modifier mes infos artiste",
+  });
+  expect(editButton).toBeInTheDocument();
+
+  fireEvent.click(editButton);
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", {
+        name: /< retour/i,
+      }),
+    ).toBeInTheDocument(),
+  );
+  const input = screen.getByRole("textbox", {
+    name: /nom d'artiste \*/i,
+  });
+
+  screen.debug();
+  expect(input.value).toBe(testUser.artistName);
+});
+
 test("Shows Projects data and creation button", async () => {
   customRender(<MeIndex />);
 
@@ -91,37 +116,10 @@ test("Shows Projects data and Max limit warning", async () => {
   expect(
     screen.getByText(userMaxLimitProjects[1].projectName),
   ).toBeInTheDocument();
-  // status of the project : Published, Draft...
-  const statusList = ["published", "draft"];
-  const statusSpans = screen.getAllByTestId("project-status");
-  expect(statusSpans).toHaveLength(2);
-  expect(statusSpans.map((s) => s.textContent.toLowerCase())).toEqual(
-    statusList,
-  );
+  expect(screen.getByText("PUBLISHED")).toBeInTheDocument();
+  expect(screen.getByText("DRAFT")).toBeInTheDocument();
+  expect(screen.getAllByText("Modifier")).toHaveLength(2);
 
   expect(screen.getByTestId("max-proj-limit-reached")).toBeInTheDocument();
   // screen.debug();
 });
-
-// describe("Me/", () => {
-//   it("Shows the Create a Artist name when artist.name is empty", () => {
-//     // const Wrapper = ({ children }) => (
-//     //   <SessionProvider>{children}</SessionProvider>
-//     // );
-//     render(<MeIndex />);
-
-//     // const heading = screen.getByRole("button", {
-//     //   name: /Log In/i,
-//     // });
-
-//     const setArtist = screen.getByRole("link", {
-//       name: /creer un nom d'artiste/i,
-//     });
-
-//     expect(
-//       screen.getByText("Premierement, creez-vous un nom d'artiste")
-//     ).toBeInTheDocument();
-//     // expect(setArtist).toBeInTheDocument();
-//     // expect(setArtist).toHaveAttribute("href", "./me/artistProfile");
-//   });
-// });

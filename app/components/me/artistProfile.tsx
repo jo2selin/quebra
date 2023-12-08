@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import Button from "../../components/button";
-import SetYourArtistProfile from "./welcome";
 
 import { useUser } from "../../pages/me";
 
@@ -19,7 +18,7 @@ const ArtistProfile = ({ setShowsetArtist }: PropsArtistProfile) => {
   if (isLoading)
     return <div data-testid="loading-artist">loading Artist Profile...</div>;
   return (
-    <div className="mt-12 rounded-lg border-2 border-jam-purple p-5 pt-0">
+    <section className="mt-12 rounded-lg border-2 border-jam-purple p-5 pt-0">
       <h2 className="w-min -translate-y-6 bg-jam-dark-purple text-5xl uppercase">
         Artiste
       </h2>
@@ -31,7 +30,7 @@ const ArtistProfile = ({ setShowsetArtist }: PropsArtistProfile) => {
           Modifier mes infos artiste
         </Button>
       </span>
-    </div>
+    </section>
   );
 };
 

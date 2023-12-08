@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import Head from "next/head";
 
 import { useSession, signOut } from "next-auth/react";
@@ -47,9 +46,8 @@ export function useUserProjects() {
 }
 
 const Me: React.FC = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const { user, isLoading, isError } = useUser();
-  const [artistData, setArtistData] = useState<Artist>();
   const [showsetArtist, setShowsetArtist] = useState<boolean>(false);
 
   // If no session exists, display access denied message
@@ -65,33 +63,30 @@ const Me: React.FC = () => {
       <Head>
         <title key="title">Me | Quebra</title>
       </Head>
-      <div className="md:flex">
-        <div className="mb-20 md:flex-1 ">
-          <div className="flex items-center justify-between">
-            <h1 className="text-5xl uppercase">Mon Compte</h1>
-            <div
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className="text-md inline-block cursor-pointer rounded-md border-b-4 border-jam-light-purple bg-[#323232] px-4 py-2 text-sm uppercase leading-none text-white hover:text-white"
-              // style={"dark"}
-            >
-              Se déconnecter
-            </div>
+      <div className="mx-auto mb-20 md:max-w-4xl ">
+        <div className="flex items-center justify-between">
+          <h1 className="text-5xl uppercase">Mon Compte</h1>
+          <div
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className="text-md inline-block cursor-pointer rounded-md border-b-4 border-jam-light-purple bg-[#323232] px-4 py-2 text-sm uppercase leading-none text-white hover:text-white"
+          >
+            Se déconnecter
           </div>
-          {!showsetArtist && (
-            <>
-              {!user?.artistName && (
-                <Welcome setShowsetArtist={setShowsetArtist} />
-              )}
-              {user?.artistName && (
-                <ArtistProfile setShowsetArtist={setShowsetArtist} />
-              )}
-              {user?.artistName && <ArtistProjects artistData={user} />}
-            </>
-          )}
-          {showsetArtist && (
-            <SetArtistProfile user={user} setShowsetArtist={setShowsetArtist} />
-          )}
         </div>
+        {!showsetArtist && (
+          <>
+            {!user?.artistName && (
+              <Welcome setShowsetArtist={setShowsetArtist} />
+            )}
+            {user?.artistName && (
+              <ArtistProfile setShowsetArtist={setShowsetArtist} />
+            )}
+            {user?.artistName && <ArtistProjects artistData={user} />}
+          </>
+        )}
+        {showsetArtist && (
+          <SetArtistProfile user={user} setShowsetArtist={setShowsetArtist} />
+        )}
       </div>
     </>
   );
