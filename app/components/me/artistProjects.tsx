@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import Button from "../button";
 import { useUserProjects } from "../../pages/me";
-
 interface typeArtistProjects {
   artistData: Artist;
 }
@@ -95,7 +94,6 @@ const ProjectTags = ({ status, artistData, proj }: typeProjectTags) => {
 
 export default function ArtistProjects({ artistData }: typeArtistProjects) {
   const { dataProjects, isLoadingProjects, errorProjects } = useUserProjects();
-
   if (isLoadingProjects)
     return <div data-testid="loading-projects">loading Artist Projects...</div>;
 

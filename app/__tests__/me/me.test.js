@@ -73,7 +73,7 @@ test("Display editing form when clicking on edit artist", async () => {
     name: /nom d'artiste \*/i,
   });
 
-  screen.debug();
+  // screen.debug();
   expect(input.value).toBe(testUser.artistName);
 });
 
@@ -121,5 +121,23 @@ test("Shows Projects data and Max limit warning", async () => {
   expect(screen.getAllByText("Modifier")).toHaveLength(2);
 
   expect(screen.getByTestId("max-proj-limit-reached")).toBeInTheDocument();
-  // screen.debug();
+});
+
+test("Unknown server error displays the error message", async () => {
+  mswServer.use(
+    rest.get("/api/projects/me", (req, res, ctx) =>
+      res(
+        ctx.delay(1000),
+        ctx.status(500),
+        ctx.json({ message: "something is wrong" }),
+      ),
+    ),
+  );
+  customRender(<MeIndex />);
+  await waitFor(() =>
+    expect(screen.getByTestId("loading-projects")).toBeInTheDocument(),
+  );
+  await waitForElementToBeRemoved(() => screen.getByTestId("loading-projects"));
+  expect(screen.getByText("Error")).toBeInTheDocument();
+  screen.debug();
 });

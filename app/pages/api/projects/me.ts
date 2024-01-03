@@ -8,7 +8,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
 
@@ -23,31 +23,35 @@ export default async function handler(
   // === GET ========================================
   // GET ALL MY PROJECTS
   if (session && session.user?.email && req.method === "GET") {
-    const data = await ddbDocClient.send(
-      new GetCommand({
-        TableName: process.env.TABLE,
-        Key: { pk: "ARTIST", sk: session.user?.email },
-      })
-    );
-
-    if (!data.Item) {
-      // profile does not exist yet
-      return res.status(200).json([]);
-    } else {
-      const paramsAllMyProjects = {
-        TableName: process.env.TABLE,
-        KeyConditionExpression: "pk = :pk and begins_with(sk, :uuid)",
-        ExpressionAttributeValues: {
-          ":pk": "PROJECT",
-          ":uuid": data.Item.uuid,
-        },
-      };
-
-      const projects = await ddbDocClient.send(
-        new QueryCommand(paramsAllMyProjects)
+    try {
+      const data = await ddbDocClient.send(
+        new GetCommand({
+          TableName: process.env.TABLE,
+          Key: { pk: "ARTIST", sk: session.user?.email },
+        }),
       );
 
-      return res.status(200).json(projects.Items);
+      if (!data.Item) {
+        // No projects yet
+        return res.status(200).json([]);
+      } else {
+        const paramsAllMyProjects = {
+          TableName: process.env.TABLE,
+          KeyConditionExpression: "pk = :pk and begins_with(sk, :uuid)",
+          ExpressionAttributeValues: {
+            ":pk": "PROJECT",
+            ":uuid": data.Item?.uuid,
+          },
+        };
+
+        const projects = await ddbDocClient.send(
+          new QueryCommand(paramsAllMyProjects),
+        );
+
+        return res.status(200).json(projects.Items);
+      }
+    } catch (error) {
+      return res.status(500).json({ error });
     }
   }
 }
