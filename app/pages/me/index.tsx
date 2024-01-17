@@ -6,8 +6,6 @@ import useSWR from "swr";
 import { toast } from "react-toastify";
 import { fetcher } from "../../libs/fetcher";
 
-// import JamListItem, { JamProps } from "../../components/jam";
-
 import ArtistProjects from "../../components/me/artistProjects";
 import ArtistProfile from "../../components/me/artistProfile";
 import Welcome from "../../components/me/welcome";
@@ -19,11 +17,26 @@ import ErrorBoundary from "components/ErrorBoundary";
 import Toast from "components/Toast";
 
 export function useUser() {
-  const { data, error, isLoading } = useSWR(`/api/users/me`, fetcher);
+  const {
+    data: dataUser,
+    error: errorUser,
+    isLoading: isLoadingUser,
+  } = useSWR(`/api/users/me`, fetcher);
+  if (errorUser) {
+    toast.error(
+      <Toast
+        error={"Erreur pour recupérer votre profil"}
+        info={errorUser.status + ": " + errorUser.statusText}
+      />,
+      {
+        toastId: "useUser",
+      },
+    );
+  }
   return {
-    user: data,
-    isLoading,
-    isError: error,
+    dataUser,
+    isLoadingUser,
+    errorUser,
   };
 }
 
@@ -54,15 +67,13 @@ export function useUserProjects() {
 
 const Me: React.FC = () => {
   const { status } = useSession();
-  const { user, isLoading, isError } = useUser();
+  const { dataUser, isLoadingUser, errorUser } = useUser();
   const [showsetArtist, setShowsetArtist] = useState<boolean>(false);
+  console.log("user", dataUser);
 
   // If no session exists, display access denied message
   if (status !== "authenticated") {
     return <AccessDenied />;
-  }
-  if (isLoading) {
-    return <p data-testid="loading">loading...</p>;
   }
 
   return (
@@ -72,19 +83,23 @@ const Me: React.FC = () => {
       </Head>
       <MeLayout title={"Mon compte"}>
         <ErrorBoundary>
+          {isLoadingUser && <p data-testid="loading">loading...</p>}
           {!showsetArtist && (
             <>
-              {!user?.artistName && (
+              {!dataUser?.artistName && !errorUser && (
                 <Welcome setShowsetArtist={setShowsetArtist} />
               )}
-              {user?.artistName && (
+              {dataUser?.artistName && (
                 <ArtistProfile setShowsetArtist={setShowsetArtist} />
               )}
-              {user?.artistName && <ArtistProjects artistData={user} />}
+              {dataUser?.artistName && <ArtistProjects artistData={dataUser} />}
             </>
           )}
           {showsetArtist && (
-            <SetArtistProfile user={user} setShowsetArtist={setShowsetArtist} />
+            <SetArtistProfile
+              user={dataUser}
+              setShowsetArtist={setShowsetArtist}
+            />
           )}
         </ErrorBoundary>
       </MeLayout>

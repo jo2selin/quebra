@@ -94,8 +94,6 @@ const ProjectTags = ({ status, artistData, proj }: typeProjectTags) => {
 
 export default function ArtistProjects({ artistData }: typeArtistProjects) {
   const { dataProjects, isLoadingProjects, errorProjects } = useUserProjects();
-  if (isLoadingProjects)
-    return <div data-testid="loading-projects">loading Artist Projects...</div>;
 
   const allButDeletedProjects = dataProjects?.filter(
     (p: Project) => p.status !== "DELETED",
@@ -106,6 +104,9 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
       <h2 className="w-min -translate-y-6 bg-jam-dark-purple text-5xl uppercase">
         Projects
       </h2>
+      {isLoadingProjects && (
+        <div data-testid="loading-projects">loading Artist Projects...</div>
+      )}
 
       {!allButDeletedProjects ||
         (allButDeletedProjects.length < 2 && (

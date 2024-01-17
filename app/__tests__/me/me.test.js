@@ -13,6 +13,7 @@ import {
 import "@testing-library/jest-dom";
 import { faker } from "@faker-js/faker";
 import MeIndex from "pages/me/index";
+import { ToastContainer } from "react-toastify";
 import { testUser, userProjects, userMaxLimitProjects } from "../../test";
 
 beforeAll(() => mswServer.listen());
@@ -123,7 +124,34 @@ test("Shows Projects data and Max limit warning", async () => {
   expect(screen.getByTestId("max-proj-limit-reached")).toBeInTheDocument();
 });
 
-test("Unknown server error displays the error message", async () => {
+test("Unknown server error displays the Profile error message", async () => {
+  mswServer.use(
+    rest.get("/api/users/me", (req, res, ctx) =>
+      res(
+        ctx.delay(1000),
+        ctx.status(500),
+        ctx.json({ message: "something is wrong profile" }),
+      ),
+    ),
+  );
+  customRender(
+    <>
+      <ToastContainer />
+      <MeIndex />
+    </>,
+  );
+  await waitFor(() =>
+    expect(screen.getByTestId("loading")).toBeInTheDocument(),
+  );
+  await waitForElementToBeRemoved(() => screen.getByTestId("loading"));
+  screen.debug();
+  expect(
+    screen.getByText("Erreur pour recupérer votre profil"),
+  ).toBeInTheDocument();
+  screen.debug();
+});
+
+test("Unknown server error displays the Projects error message", async () => {
   mswServer.use(
     rest.get("/api/projects/me", (req, res, ctx) =>
       res(
@@ -133,11 +161,18 @@ test("Unknown server error displays the error message", async () => {
       ),
     ),
   );
-  customRender(<MeIndex />);
+  customRender(
+    <>
+      <ToastContainer />
+      <MeIndex />
+    </>,
+  );
   await waitFor(() =>
     expect(screen.getByTestId("loading-projects")).toBeInTheDocument(),
   );
   await waitForElementToBeRemoved(() => screen.getByTestId("loading-projects"));
-  expect(screen.getByText("Error")).toBeInTheDocument();
-  screen.debug();
+  expect(
+    screen.getByText("Erreur pour recupérer vos projets"),
+  ).toBeInTheDocument();
+  // screen.debug();
 });

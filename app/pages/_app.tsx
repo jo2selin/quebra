@@ -2,7 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import ErrorBoundary from "components/ErrorBoundary";
 import { SessionProvider } from "next-auth/react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 import "@fontsource/passion-one";
 import Layout from "../components/layout";
