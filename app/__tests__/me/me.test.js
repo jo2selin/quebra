@@ -144,11 +144,11 @@ test("Unknown server error displays the Profile error message", async () => {
     expect(screen.getByTestId("loading")).toBeInTheDocument(),
   );
   await waitForElementToBeRemoved(() => screen.getByTestId("loading"));
-  screen.debug();
+  // screen.debug();
   expect(
     screen.getByText("Erreur pour recupérer votre profil"),
   ).toBeInTheDocument();
-  screen.debug();
+  // screen.debug();
 });
 
 test("Unknown server error displays the Projects error message", async () => {

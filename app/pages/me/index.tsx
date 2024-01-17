@@ -69,7 +69,6 @@ const Me: React.FC = () => {
   const { status } = useSession();
   const { dataUser, isLoadingUser, errorUser } = useUser();
   const [showsetArtist, setShowsetArtist] = useState<boolean>(false);
-  console.log("user", dataUser);
 
   // If no session exists, display access denied message
   if (status !== "authenticated") {
