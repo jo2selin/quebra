@@ -17,7 +17,7 @@ async function deleteTrack(
   p_uuid: string,
   t_uuid: string,
   slug: string,
-  path_s3: string
+  path_s3: string,
 ) {
   if (!slug) {
     throw new Error("Track slug not defined");
@@ -47,7 +47,7 @@ async function deleteTrack(
 // GET /api/projects/:uuid
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   // === GET ========================================
   if (req.method === "GET") {
@@ -56,7 +56,7 @@ export default async function handler(
       new GetCommand({
         TableName: process.env.TABLE,
         Key: { pk: "PROJECT", sk: req.query.a_uuid + "#" + req.query.p_uuid },
-      })
+      }),
     );
 
     if (!project.Item) {
@@ -110,7 +110,7 @@ export default async function handler(
               body: JSON.stringify({
                 path_s3: req.body.path_s3,
               }),
-            }
+            },
           );
           if (!response.ok) {
             throw new Error("No content found in folder");
@@ -126,7 +126,7 @@ export default async function handler(
                 path_s3: req.body.path_s3,
                 filesToZip,
               }),
-            }
+            },
           );
           if (!responseZip.ok) {
             throw new Error("Error creating zip file");
@@ -157,7 +157,7 @@ export default async function handler(
       new GetCommand({
         TableName: process.env.TABLE,
         Key: { pk: "ARTIST", sk: session.user?.email },
-      })
+      }),
     );
 
     if (artistSession.Item?.uuid !== req.query.a_uuid) {
@@ -191,7 +191,7 @@ export default async function handler(
             req.query.p_uuid as string,
             track.uuid,
             track.slug,
-            req.body.path_s3
+            req.body.path_s3,
           );
         });
       })
@@ -202,7 +202,7 @@ export default async function handler(
         };
         try {
           const data = await s3Client.send(
-            new DeleteObjectCommand(bucketParams)
+            new DeleteObjectCommand(bucketParams),
           );
           return data;
         } catch (err) {

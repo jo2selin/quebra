@@ -2,31 +2,111 @@ import React from "react";
 import Link from "next/link";
 
 import Button from "../button";
-import { useUser, useUserProjects } from "../../pages/me";
-
+import { useUserProjects } from "../../pages/me";
 interface typeArtistProjects {
   artistData: Artist;
 }
 
-export default function ArtistProjects({ artistData }: typeArtistProjects) {
-  // const { user, isLoading, isError } = useUser();
-  const { dataProjects, isLoadingProjects, errorProjects } = useUserProjects();
+interface typeLimitProjectReachedProps {
+  allButDeletedProjects: Project[];
+}
 
-  // const { data, error, isLoading } = useSWR("/api/projects/me", fetcher);
-  // if (error) return <div>failed to load Artist Projects</div>;
-  if (isLoadingProjects)
-    return <div data-testid="loading-projects">loading Artist Projects...</div>;
-  // if (error) throw new Error(error);
+interface typeTag {
+  testId?: string;
+  tagColor?: string;
+  className?: string;
+  children: React.ReactNode;
+}
+interface typeProjectTags {
+  status?: string;
+  artistData: Artist;
+  proj: Project;
+}
+
+const LimitProjectReached = ({
+  allButDeletedProjects,
+}: typeLimitProjectReachedProps) => {
+  return (
+    <div
+      className={`text-md  mt-5 basis-0 rounded-sm bg-[#323232] px-4 py-2 text-white   `}
+    >
+      <a
+        href="#brevoConversationsExpanded"
+        data-testid="max-proj-limit-reached"
+        className={`text-md mt-5  text-white    `}
+      >
+        Max projects limit reached ({allButDeletedProjects.length}/2).
+      </a>
+      <p className="">
+        Quebra Beta: Les projets sont limités à 2 par membre, <br />
+        <a href="#brevoConversationsExpanded">contactez-nous via chat</a> pour
+        augmenter la limite
+      </p>
+    </div>
+  );
+};
+
+const Tag = ({
+  testId,
+  tagColor = "bg-[#323232]",
+  className,
+  children,
+}: typeTag) => {
+  return (
+    <span
+      data-testid={testId}
+      className={`rounded-sm ${tagColor} ml-3 px-4 py-2 text-xs md:ml-3 md:px-2 md:py-1 ${className}`}
+    >
+      {children}
+    </span>
+  );
+};
+
+const ProjectTags = ({ status, artistData, proj }: typeProjectTags) => {
+  const isPublished = status === "PUBLISHED" ? true : false;
+  const tagColor = isPublished ? "bg-green-500" : "bg-jam-purple";
+  return (
+    <footer className="flex">
+      <Tag testId="project-status" className="ml-0">
+        {status}
+      </Tag>
+      {isPublished && (
+        <Tag tagColor={tagColor}>
+          <Link
+            href={`/${artistData.slug}/p/${proj.slug}`}
+            className="text-white hover:text-green-900"
+          >
+            Lien projet
+          </Link>
+        </Tag>
+      )}
+      <Tag tagColor="bg-jam-purple">
+        <Link
+          href={`/me/project?uuid=${proj.uuid}`}
+          className="inline-block text-white "
+        >
+          Modifier
+        </Link>
+      </Tag>
+    </footer>
+  );
+};
+
+export default function ArtistProjects({ artistData }: typeArtistProjects) {
+  const { dataProjects, isLoadingProjects, errorProjects } = useUserProjects();
 
   const allButDeletedProjects = dataProjects?.filter(
     (p: Project) => p.status !== "DELETED",
   );
 
   return (
-    <div className="mt-12 rounded-lg border-2 border-jam-purple p-5 pt-0">
+    <section className="mt-12 rounded-lg border-2 border-jam-purple p-5 pt-0">
       <h2 className="w-min -translate-y-6 bg-jam-dark-purple text-5xl uppercase">
         Projects
       </h2>
+      {isLoadingProjects && (
+        <div data-testid="loading-projects">loading Artist Projects...</div>
+      )}
 
       {!allButDeletedProjects ||
         (allButDeletedProjects.length < 2 && (
@@ -35,28 +115,14 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
           </Button>
         ))}
       {allButDeletedProjects && allButDeletedProjects.length >= 2 && (
-        <div
-          className={`text-md  mt-5 basis-0 rounded-sm bg-[#323232] px-4 py-2 text-white   `}
-        >
-          <a
-            href="#openBrevoChat"
-            data-testid="max-proj-limit-reached"
-            className={`text-md mt-5  text-white    `}
-          >
-            Max projects limit reached ({allButDeletedProjects.length}/2).
-          </a>
-          <p className="">
-            Project are limited to 2,{" "}
-            <a href="#openBrevoChat">contact us via chat</a> to add more
-          </p>
-        </div>
+        <LimitProjectReached allButDeletedProjects={allButDeletedProjects} />
       )}
 
       {dataProjects && !errorProjects && allButDeletedProjects[0] && (
         <div className="mt-12">
           {allButDeletedProjects.map((proj: Project) => {
             return (
-              <div
+              <article
                 key={proj.sk}
                 className="mt-10 flex flex-col md:flex-row md:items-center "
               >
@@ -65,48 +131,17 @@ export default function ArtistProjects({ artistData }: typeArtistProjects) {
                     {proj.projectName}
                   </Link>
                 </h3>
-                {proj.status === "PUBLISHED" && (
-                  <div className="flex">
-                    <span
-                      data-testid="project-status"
-                      className={`rounded-sm bg-[#323232]  px-4   py-2 text-xs md:ml-5  md:px-2 md:py-0 `}
-                    >
-                      {proj.status}
-                    </span>
 
-                    <Link
-                      href={`/${artistData.slug}/p/${proj.slug}`}
-                      className="ml-5 rounded-sm bg-green-500 px-2  px-4 py-2 text-xs text-white hover:text-green-900  md:px-2 md:py-0"
-                    >
-                      Lien projet
-                    </Link>
-                  </div>
-                )}
-                {proj.status !== "PUBLISHED" && (
-                  <div className="flex">
-                    <span
-                      data-testid="project-status"
-                      className={`rounded-sm bg-[#323232] px-4 py-2 text-xs md:ml-5  md:px-2 md:py-0 `}
-                    >
-                      {proj.status}
-                    </span>
-                    <span
-                      className={`ml-5 rounded-sm bg-jam-purple px-4 py-2 text-xs  md:px-2 md:py-0`}
-                    >
-                      <Link
-                        href={`/me/project?uuid=${proj.uuid}`}
-                        className="text-white hover:text-green-300"
-                      >
-                        edit
-                      </Link>
-                    </span>
-                  </div>
-                )}
-              </div>
+                <ProjectTags
+                  status={proj.status}
+                  artistData={artistData}
+                  proj={proj}
+                />
+              </article>
             );
           })}
         </div>
       )}
-    </div>
+    </section>
   );
 }

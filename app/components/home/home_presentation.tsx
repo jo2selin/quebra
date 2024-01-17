@@ -28,6 +28,7 @@ function Home_presentation() {
     <div className="mt-8">
       {content.map((c, i) => (
         <div
+          key={i}
           className={`mt-8 items-center justify-center md:flex ${
             i % 2 && "flex-row-reverse"
           }`}

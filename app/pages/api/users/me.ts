@@ -13,7 +13,7 @@ async function createSlug(input: string) {
   const isArtistSlugAvailable = await checkArtistSlugAvailable(input).then(
     (data) => {
       return data;
-    }
+    },
   );
 
   const slug = isArtistSlugAvailable ? input : generateUniqueSlug(input);
@@ -27,7 +27,7 @@ function generateUniqueSlug(slug: string) {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const session = await unstable_getServerSession(req, res, authOptions);
 
@@ -39,18 +39,22 @@ export default async function handler(
 
   // === GET ========================================
   if (session && session.user?.email && req.method === "GET") {
-    const data = await ddbDocClient.send(
-      new GetCommand({
-        TableName: process.env.TABLE,
-        Key: { pk: "ARTIST", sk: session.user?.email },
-      })
-    );
+    try {
+      const data = await ddbDocClient.send(
+        new GetCommand({
+          TableName: process.env.TABLE,
+          Key: { pk: "ARTIST", sk: session.user?.email },
+        }),
+      );
 
-    if (!data.Item) {
-      // profile does not exist yet
-      return res.status(200).json({});
-    } else {
-      return res.status(200).json(data.Item);
+      if (!data.Item) {
+        // profile does not exist yet
+        return res.status(200).json({});
+      } else {
+        return res.status(200).json(data.Item);
+      }
+    } catch (error) {
+      return res.status(500).json({ error });
     }
   }
 
@@ -67,7 +71,7 @@ export default async function handler(
       new GetCommand({
         TableName: process.env.TABLE,
         Key: { pk: "ARTIST", sk: session.user?.email },
-      })
+      }),
     );
 
     if (!artist.Item) {
@@ -84,7 +88,7 @@ export default async function handler(
             // projects: [],
             uuid: uuid,
           },
-        })
+        }),
       );
       return res.status(201).json(data);
     } else {
