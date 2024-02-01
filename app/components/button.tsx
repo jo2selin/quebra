@@ -19,6 +19,7 @@ export default function Button({
   const stylePrimary = "bg-jam-purple border-b-4 border-jam-pink";
   const styleSecondary = "bg-jam-pink border-b-4 border-jam-purple";
   const styleDark = "bg-[#323232] border-b-4 border-jam-light-purple";
+  const styleGreen = "bg-jam-green border-b-4 border-jam-green-dark";
   if (to) {
     return (
       <div className={className}>
@@ -26,9 +27,10 @@ export default function Button({
           href={to}
           className={`text-md inline-block rounded-md  px-4 py-2 leading-none text-white hover:text-white ${
             style === "primary" && stylePrimary
-          } ${style === "secondary" && styleSecondary}  ${
-            style === "dark" && styleDark
-          }`}
+          } ${style === "secondary" && styleSecondary}  
+          ${style === "dark" && styleDark}
+          ${style === "green" && styleGreen}
+          `}
         >
           {children}
         </Link>
@@ -42,7 +44,8 @@ export default function Button({
             style === "primary" && stylePrimary
           } ${style === "secondary" && styleSecondary}  ${
             style === "dark" && styleDark
-          }`}
+          }
+          ${style === "green" && styleGreen}`}
           {...props}
         >
           {children}

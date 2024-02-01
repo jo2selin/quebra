@@ -12,6 +12,9 @@ module.exports = {
           "dark-grey": "#1E1E1E",
           "light-grey": "#E3E3E3",
           "light-transparent": "#2C2035",
+          alert: "#8E2532",
+          green: "#09A73E",
+          "green-dark": "#055F23",
         },
       },
       backgroundImage: {

@@ -7,7 +7,8 @@ import AccessDenied from "../access-denied";
 import { useS3Upload, getImageData } from "next-s3-upload";
 import slugify from "slugify";
 import { useSWRConfig } from "swr";
-
+import Info from "components/me/info";
+import Button from "components/button";
 interface TypeUpload {
   project: Project;
   artist: Artist;
@@ -81,13 +82,17 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
 
   return (
     <>
-      <div className="mt-4">
-        <input
-          type="file"
-          name="file"
-          multiple={true}
-          onChange={handleFilesChange}
-        />
+      <div className="mt-12">
+        <label className="mx-auto inline-block cursor-pointer  rounded-md border-b-4 border-jam-green-dark bg-jam-green px-6 py-3 text-xl leading-none text-white hover:text-white">
+          Envoyer .mp3s
+          <input
+            type="file"
+            name="file"
+            multiple={true}
+            onChange={handleFilesChange}
+            className="hidden"
+          />
+        </label>
         <div>
           {/* {urls.map((url, index) => {
 
@@ -109,7 +114,7 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
                 >
                   {/* <div className="w-10 mr-5 p-6 text-3xl">{index}</div> */}
                   <div className="w-full">
-                    <p className=" w-22 h-6 overflow-x-scroll bg-jam-dark-grey px-2 py-1 font-mono  text-xs text-gray-400">
+                    <p className=" w-22 h-6 overflow-x-auto overflow-y-hidden	 bg-jam-dark-grey px-2 py-1 font-mono  text-xs text-gray-400">
                       <span className="text-jam-pink"> {file.progress}% </span>-{" "}
                       {file.file.name}
                     </p>
@@ -123,15 +128,13 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
             })}
           </div>
           {files[0] && (
-            <div className=" mt-5   w-full md:ml-10 md:mt-20 md:flex-1 ">
-              <div className=" rounded-xl border-4 border-jam-purple bg-jam-pink p-2 pl-3 font-mono lowercase text-white">
-                <ul className="list-none">
-                  <li className="text-xs">
-                    ℹ️ Il est impossible de rajouter des mp3 ou d&apos;editer la
-                    cover apres avoir publié le projet
-                  </li>
-                </ul>
-              </div>
+            <div className=" mt-5 md:ml-10 md:mt-20 md:flex-1 ">
+              <Info
+                type={"info"}
+                text={
+                  "Il est impossible de rajouter des mp3 ou d'editer la cover apres avoir publié le projet"
+                }
+              />
             </div>
           )}
         </div>

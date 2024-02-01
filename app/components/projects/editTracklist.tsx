@@ -245,7 +245,12 @@ export default function editTracklist({
   return (
     <div className="max-w-screen-md ">
       {tracks[0] && statusEdition && (
-        <p className="pt-12 ">Pistes prête pour l&apos;édition:</p>
+        <div className="border-l-8 border-jam-purple pl-3 ">
+          <h2 className="mb-1 text-3xl ">Pistes prête pour l&apos;édition:</h2>
+          <h3 className="mb-6 font-serif text-sm normal-case opacity-80 ">
+            Ordre et nom des pistes
+          </h3>
+        </div>
       )}
       {orderedTracks &&
         orderedTracks.map((track, i) => (

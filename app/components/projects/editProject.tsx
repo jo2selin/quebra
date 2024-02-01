@@ -11,7 +11,7 @@ import EditTracklist from "./editTracklist";
 import PublishProject from "./publishProject";
 import { cssButtonPrimary } from "../../libs/css";
 import { ErrorBoundary } from "react-error-boundary";
-
+import Info from "../me/info";
 interface Uuid {
   uuid: string;
 }
@@ -172,13 +172,19 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
         </ErrorBoundary>
       </div>
       <div className="mt-12 rounded border border-jam-purple p-8">
-        <h2 className="mb-6 text-xl ">Vos .mp3</h2>
+        <div className="border-l-8 border-jam-purple pl-3 ">
+          <h2 className="mb-1 text-3xl ">Uploadez vos .mp3</h2>
+          <h3 className="mb-6 font-serif text-sm normal-case opacity-80 ">
+            Selectionnez tous les .mp3 de votre projet
+          </h3>
+        </div>
         {statusLocal === "DRAFT" && (
           <ErrorBoundary fallback={<div>Something went wrong</div>}>
             <UploadTracks project={project} artist={artist} />
           </ErrorBoundary>
         )}
-
+      </div>
+      <div className="mt-12 rounded border border-jam-purple p-8">
         {tracks && (
           <EditTracklist
             tracks={tracks}
@@ -218,9 +224,12 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
           >
             Publier
           </div>
-          <p className="font-mono text-xs">
-            Ajoutez une pochette (cover) a votre projet
-          </p>
+
+          <Info
+            type="info"
+            text="Vous devez ajouter une pochette avant de pouvoir publier le projet"
+            className={"mt-5"}
+          />
         </div>
       )}
       {tracks[0] && statusLocal !== "PUBLISHED" && coverIsSet && (
