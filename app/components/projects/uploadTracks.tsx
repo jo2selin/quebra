@@ -83,7 +83,7 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
   return (
     <>
       <div className="mt-12">
-        <label className="mx-auto inline-block cursor-pointer  rounded-md border-b-4 border-jam-green-dark bg-jam-green px-6 py-3 text-xl leading-none text-white hover:text-white">
+        <label className="mx-auto inline-block cursor-pointer rounded-md  border-b-4 border-jam-green-dark bg-jam-green px-6 py-3 text-xl leading-none text-white transition-transform hover:scale-105 hover:text-white">
           Envoyer .mp3s
           <input
             type="file"
@@ -129,12 +129,12 @@ export default function UploadTracks({ project, artist }: TypeUpload) {
           </div>
           {files[0] && (
             <div className=" mt-5 md:ml-10 md:mt-20 md:flex-1 ">
-              <Info
-                type={"info"}
-                text={
-                  "Il est impossible de rajouter des mp3 ou d'editer la cover apres avoir publié le projet"
-                }
-              />
+              <Info type={"info"}>
+                <p>
+                  Il est impossible de rajouter des mp3 ou d'editer la cover
+                  apres avoir publié le projet
+                </p>
+              </Info>
             </div>
           )}
         </div>

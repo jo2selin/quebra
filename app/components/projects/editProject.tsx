@@ -171,19 +171,19 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
           />
         </ErrorBoundary>
       </div>
-      <div className="mt-12 rounded border border-jam-purple p-8">
-        <div className="border-l-8 border-jam-purple pl-3 ">
-          <h2 className="mb-1 text-3xl ">Uploadez vos .mp3</h2>
-          <h3 className="mb-6 font-serif text-sm normal-case opacity-80 ">
-            Selectionnez tous les .mp3 de votre projet
-          </h3>
-        </div>
-        {statusLocal === "DRAFT" && (
+      {statusLocal === "DRAFT" && (
+        <div className="mt-12 rounded border border-jam-purple p-8">
+          <div className="border-l-8 border-jam-purple pl-3 ">
+            <h2 className="mb-1 text-3xl ">Uploadez vos .mp3</h2>
+            <h3 className="mb-6 font-serif text-sm normal-case opacity-80 ">
+              Selectionnez tous les .mp3 de votre projet
+            </h3>
+          </div>
           <ErrorBoundary fallback={<div>Something went wrong</div>}>
             <UploadTracks project={project} artist={artist} />
           </ErrorBoundary>
-        )}
-      </div>
+        </div>
+      )}
       <div className="mt-12 rounded border border-jam-purple p-8">
         {tracks && (
           <EditTracklist
@@ -225,11 +225,11 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
             Publier
           </div>
 
-          <Info
-            type="info"
-            text="Vous devez ajouter une pochette avant de pouvoir publier le projet"
-            className={"mt-5"}
-          />
+          <Info type="info" className={"mt-5"}>
+            <p>
+              Vous devez ajouter une pochette avant de pouvoir publier le projet
+            </p>
+          </Info>
         </div>
       )}
       {tracks[0] && statusLocal !== "PUBLISHED" && coverIsSet && (
@@ -257,17 +257,23 @@ function ContentEditProject({ project, artist, tracks }: ProjectEdit) {
               }}
               className={`${cssButtonPrimary}  bg-[#323232]`}
             >
-              Unpublish Project
+              Dépublier le projet
             </div>
           </div>
-          <div className="rounded-md border-2 border-jam-purple bg-jam-light-transparent  p-2 font-sans text-sm lowercase text-jam-light-purple md:m-auto md:mb-16 md:w-3/4 ">
-            <ul className="list-inside list-disc">
-              <li>Annuler la publication pour editer le nom des pistes.</li>
-              <li>
-                Les projets &quot;unpublished&quot; ne sont pas visible aux
-                visiteurs
-              </li>
-            </ul>
+          <div className="flex justify-center">
+            <Info type="info" className={" mt-5 max-w-md "}>
+              <ul className="list-inside list-disc">
+                <li>Dépubliez le projet pour editer le nom des pistes.</li>
+                <li>
+                  Les projets &quot;dépubliés&quot; ne sont pas visible aux
+                  visiteurs
+                </li>
+                <li>
+                  Il est impossible de rajouter des pistes ou d'éditer la
+                  pochette après la publication
+                </li>
+              </ul>
+            </Info>
           </div>
         </>
       )}
