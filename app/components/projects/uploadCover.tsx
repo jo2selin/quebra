@@ -109,7 +109,7 @@ export default function UploadCover({
         {!imageUrl && (
           <div className="flex flex-col">
             <button onClick={openFileDialog}>
-              <p className="text-8xl">+</p>
+              <p className="animate-pulse text-8xl">+</p>
               <p>
                 Ajouter une cover carré<span>*</span>{" "}
               </p>

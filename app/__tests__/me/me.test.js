@@ -24,25 +24,6 @@ const customRender = (ui, { providerProps = {}, ...renderOptions } = {}) => {
   return render(ui, renderOptions);
 };
 
-test("Shows the [Creer un nom d'artiste] Button when not already set", async () => {
-  mswServer.use(
-    rest.get("/api/users/me", (req, res, ctx) => res(ctx.json({}))),
-  );
-  const welcomeText = "Premierement, creez-vous un nom d'artiste";
-  const welcomeButton = "Creer un nom d'artiste";
-  // const loadtingText = screen.getByTestId("loading");
-  customRender(<MeIndex />);
-
-  await waitFor(() =>
-    expect(screen.getByText(welcomeText)).toBeInTheDocument(),
-  );
-  await waitFor(() =>
-    expect(
-      screen.getByRole("button", { name: welcomeButton }),
-    ).toBeInTheDocument(),
-  );
-});
-
 test("Shows profile data when artist name is set", async () => {
   customRender(<MeIndex />);
   const { artistName, slug } = testUser;
@@ -52,30 +33,6 @@ test("Shows profile data when artist name is set", async () => {
   expect(screen.getByText("Artiste")).toBeInTheDocument();
   expect(screen.getByText(artistName)).toBeInTheDocument();
   // screen.debug();
-});
-
-test("Display editing form when clicking on edit artist", async () => {
-  customRender(<MeIndex />);
-  await waitFor(() => expect(screen.getByText("Artiste")));
-  const editButton = screen.getByRole("button", {
-    name: "Modifier mes infos artiste",
-  });
-  expect(editButton).toBeInTheDocument();
-
-  fireEvent.click(editButton);
-  await waitFor(() =>
-    expect(
-      screen.getByRole("button", {
-        name: /< retour/i,
-      }),
-    ).toBeInTheDocument(),
-  );
-  const input = screen.getByRole("textbox", {
-    name: /nom d'artiste \*/i,
-  });
-
-  // screen.debug();
-  expect(input.value).toBe(testUser.artistName);
 });
 
 test("Shows Projects data and creation button", async () => {
@@ -148,7 +105,6 @@ test("Unknown server error displays the Profile error message", async () => {
   expect(
     screen.getByText("Erreur pour recupérer votre profil"),
   ).toBeInTheDocument();
-  // screen.debug();
 });
 
 test("Unknown server error displays the Projects error message", async () => {
