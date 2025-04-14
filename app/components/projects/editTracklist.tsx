@@ -100,6 +100,15 @@ const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
   const [trackName, setTrackName] = React.useState(track.track_name);
   const [trackNumber, setTrackNumber] = React.useState(track.track_id);
   const [isDeleted, setIsDeleted] = React.useState(false);
+  const ref = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (!ref.current) return;
+    // console.log(ref.current.value);
+    if (trackNumber === 1) {
+      ref.current.focus();
+    }
+  }, [track.track_id, statusLocal]);
 
   React.useEffect(() => {
     setTrackName(track.track_name);
@@ -134,6 +143,7 @@ const Track = ({ track, artist, project, statusLocal }: TypeTrack) => {
           placeholder="track title"
           className={`mt-0 mb-0 h-10 w-full bg-jam-dark-grey px-2 pt-0 text-2xl text-white `}
           disabled={statusLocal === "PUBLISHED" ? true : false}
+          ref={ref}
         />
         {statusLocal !== "PUBLISHED" && (
           <TrackAction
@@ -245,7 +255,12 @@ export default function editTracklist({
   return (
     <div className="max-w-screen-md ">
       {tracks[0] && statusEdition && (
-        <p className="pt-12 ">Pistes prête pour l&apos;édition:</p>
+        <div className="border-l-8 border-jam-purple pl-3 ">
+          <h2 className="mb-1 text-3xl ">Pistes prête pour l&apos;édition:</h2>
+          <h3 className="mb-6 font-serif text-sm normal-case opacity-80 ">
+            Ordre et nom des pistes
+          </h3>
+        </div>
       )}
       {orderedTracks &&
         orderedTracks.map((track, i) => (

@@ -1,35 +1,42 @@
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState } from "react";
 import Head from "next/head";
 
 import { useSession, signOut } from "next-auth/react";
 import useSWR from "swr";
-
-// import JamListItem, { JamProps } from "../../components/jam";
+import { toast } from "react-toastify";
+import { fetcher } from "../../libs/fetcher";
 
 import ArtistProjects from "../../components/me/artistProjects";
 import ArtistProfile from "../../components/me/artistProfile";
 import Welcome from "../../components/me/welcome";
+import MeLayout from "../../components/me/meLayout";
 import SetArtistProfile from "../../components/me/setArtistProfile";
 
 import AccessDenied from "../../components/access-denied";
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-
-  if (!res.ok) {
-    const error = new Error("An error occurred while fetching the data.");
-    throw error;
-  }
-  return res.json();
-};
+import ErrorBoundary from "components/ErrorBoundary";
+import Toast from "components/Toast";
 
 export function useUser() {
-  const { data, error, isLoading } = useSWR(`/api/users/me`, fetcher);
+  const {
+    data: dataUser,
+    error: errorUser,
+    isLoading: isLoadingUser,
+  } = useSWR(`/api/users/me`, fetcher);
+  if (errorUser) {
+    toast.error(
+      <Toast
+        error={"Erreur pour recupérer votre profil"}
+        info={errorUser.status + ": " + errorUser.statusText}
+      />,
+      {
+        toastId: "useUser",
+      },
+    );
+  }
   return {
-    user: data,
-    isLoading,
-    isError: error,
+    dataUser,
+    isLoadingUser,
+    errorUser,
   };
 }
 
@@ -39,6 +46,18 @@ export function useUserProjects() {
     error: errorProjects,
     isLoading: isLoadingProjects,
   } = useSWR(`/api/projects/me`, fetcher);
+  if (errorProjects) {
+    toast.error(
+      <Toast
+        error={"Erreur pour recupérer vos projets"}
+        info={errorProjects.status + ": " + errorProjects.statusText}
+      />,
+      {
+        toastId: "useUserProjects",
+      },
+    );
+  }
+
   return {
     dataProjects,
     isLoadingProjects,
@@ -47,17 +66,13 @@ export function useUserProjects() {
 }
 
 const Me: React.FC = () => {
-  const { data: session, status } = useSession();
-  const { user, isLoading, isError } = useUser();
-  const [artistData, setArtistData] = useState<Artist>();
+  const { status } = useSession();
+  const { dataUser, isLoadingUser, errorUser } = useUser();
   const [showsetArtist, setShowsetArtist] = useState<boolean>(false);
 
   // If no session exists, display access denied message
   if (status !== "authenticated") {
     return <AccessDenied />;
-  }
-  if (isLoading) {
-    return <p data-testid="loading">loading...</p>;
   }
 
   return (
@@ -65,34 +80,28 @@ const Me: React.FC = () => {
       <Head>
         <title key="title">Me | Quebra</title>
       </Head>
-      <div className="md:flex">
-        <div className="mb-20 md:flex-1 ">
-          <div className="flex items-center justify-between">
-            <h1 className="text-5xl uppercase">Mon Compte</h1>
-            <div
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className="text-md inline-block cursor-pointer rounded-md border-b-4 border-jam-light-purple bg-[#323232] px-4 py-2 text-sm uppercase leading-none text-white hover:text-white"
-              // style={"dark"}
-            >
-              Se déconnecter
-            </div>
-          </div>
+      <MeLayout title={"Mon compte"}>
+        <ErrorBoundary>
+          {isLoadingUser && <p data-testid="loading">loading...</p>}
           {!showsetArtist && (
             <>
-              {!user?.artistName && (
+              {!dataUser?.artistName && !errorUser && (
                 <Welcome setShowsetArtist={setShowsetArtist} />
               )}
-              {user?.artistName && (
+              {dataUser?.artistName && (
                 <ArtistProfile setShowsetArtist={setShowsetArtist} />
               )}
-              {user?.artistName && <ArtistProjects artistData={user} />}
+              {dataUser?.artistName && <ArtistProjects artistData={dataUser} />}
             </>
           )}
           {showsetArtist && (
-            <SetArtistProfile user={user} setShowsetArtist={setShowsetArtist} />
+            <SetArtistProfile
+              user={dataUser}
+              setShowsetArtist={setShowsetArtist}
+            />
           )}
-        </div>
-      </div>
+        </ErrorBoundary>
+      </MeLayout>
     </>
   );
 };
