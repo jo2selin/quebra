@@ -9,7 +9,7 @@ import { server } from "../../../../../config";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   //                  api/projects/a_uuid/p_uuid/views
   // === POST ========================================
@@ -21,7 +21,7 @@ export default async function handler(
       new GetCommand({
         TableName: process.env.TABLE,
         Key: { pk: "PROJECT", sk: req.query.a_uuid + "#" + req.query.p_uuid },
-      })
+      }),
     );
 
     if (!project.Item) {
@@ -41,7 +41,7 @@ export default async function handler(
       ExpressionAttributeValues: {
         ":v": project.Item.views + 1,
       },
-      ReturnValues: "ALL_NEW",
+      ReturnValues: "ALL_NEW" as const,
     };
 
     const data = await ddbDocClient.send(new UpdateCommand(params));

@@ -13,7 +13,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 // GET /api/projects/:slug
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   // === GET ========================================
   // if (req.method === "GET") {
@@ -54,7 +54,7 @@ export default async function handler(
           ":t": req.query.newTrackName,
           ":n": req.query.newTrackNumber,
         },
-        ReturnValues: "ALL_NEW",
+        ReturnValues: "ALL_NEW" as const,
       };
 
       const data = await ddbDocClient.send(new UpdateCommand(params));

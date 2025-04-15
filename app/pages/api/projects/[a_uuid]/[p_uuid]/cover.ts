@@ -9,7 +9,7 @@ import { server } from "../../../../../config";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   //                  api/projects/a_uuid/p_uuid/cover
   // === POST ========================================
@@ -36,7 +36,7 @@ export default async function handler(
         ExpressionAttributeValues: {
           ":c": extension[0],
         },
-        ReturnValues: "ALL_NEW",
+        ReturnValues: "ALL_NEW" as const,
       };
 
       const data = await ddbDocClient.send(new UpdateCommand(params));
