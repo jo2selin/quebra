@@ -40,8 +40,13 @@ const uploadTask = async (archiveKey: string): Promise<[string, string]> => {
     console.log("Zip uploaded.");
     return [TARGET_BUCKET_NAME, archiveKey];
   } catch (error) {
-    console.error("Upload error:", error);
-    throw new Error("Upload failed: " + error.message);
+    if (error instanceof Error) {
+      console.error("Upload error:", error.message);
+      throw new Error("Upload failed: " + error.message);
+    } else {
+      console.error("Unknown upload error:", error);
+      throw new Error("Upload failed due to an unknown error.");
+    }
   }
 };
 

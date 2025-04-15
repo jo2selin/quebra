@@ -105,7 +105,7 @@ export default async function handler(
           ":a": artistName,
           ":s": slug,
         },
-        ReturnValues: "ALL_NEW",
+        ReturnValues: "ALL_NEW" as const,
       };
 
       const data = await ddbDocClient.send(new UpdateCommand(params));

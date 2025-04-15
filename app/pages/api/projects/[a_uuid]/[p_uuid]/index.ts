@@ -92,7 +92,7 @@ export default async function handler(
           ":s": status,
           ":a": allow_download,
         },
-        ReturnValues: "ALL_NEW",
+        ReturnValues: "ALL_NEW" as const,
       };
       // console.log(params);
       const data = await ddbDocClient.send(new UpdateCommand(params));
@@ -224,7 +224,7 @@ export default async function handler(
           ExpressionAttributeValues: {
             ":s": "DELETED",
           },
-          ReturnValues: "ALL_NEW",
+          ReturnValues: "ALL_NEW" as const,
         };
         try {
           const data = await ddbDocClient.send(new UpdateCommand(params));
